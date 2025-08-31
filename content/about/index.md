@@ -10,7 +10,7 @@ I love taking {{< h1 >}}pictures,{{< /h1 >}} {{< h1 >}}shit-posting,{{< /h1 >}}{
 
 Currently in gradschool working on my master's degree in Computer Science, but spending that time pretending im not voluntarily learning stuff
 
-And as a software engineer for just over two decades, saying this w/ authority, computers were a mistake and we should all move to the forest
+And as a software engineer for just over two decades, so saying this w/ a tiny bit of authority, computers were a huge mistake and we should all move to the forest
 
 Anyway, {{< h1 >}}nice to meet you!{{< /h1 >}} If you'd like to {{< h1 >}}get in touch{{< /h1 >}} for any reason just reach out to one of my [socials](..)
 {{< /profile-row >}}
