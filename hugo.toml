@@ -1,4 +1,4 @@
-baseURL = "https://dusty.wtf"
+baseURL = "https://dusty.wtf/"
 languageCode = "en-us"
 title = "dusty.wtf"
 theme = "hugo-theme-console"
