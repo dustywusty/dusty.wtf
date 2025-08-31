@@ -1,0 +1,47 @@
+{{- $src := .Get "src" -}} {{- $alt := default "Profile photo" (.Get "alt") -}} {{- $size := default "175" (.Get "size") -}}
+{{- $uid := printf "pr-%d" now.UnixNano -}}
+
+<div id="{{ $uid }}" class="profile-row" style="--img-size: {{ $size }}px">
+  <style>
+    /* Scoped to this instance */
+    #{{ $uid }}.profile-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    #{{ $uid }} .profile-row__img {
+      flex: 0 0 var(--img-size);
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+    #{{ $uid }} .profile-row__text {
+      flex: 1 1 0;
+      min-width: 12rem;
+
+    }
+    /* Keep paragraphs left-aligned even if theme centers text */
+    #{{ $uid }} .profile-row__text p {
+      margin: 0 0 0.75rem 0;
+      text-align: left;
+    }
+    @media (max-width: 600px) {
+      #{{ $uid }}.profile-row { flex-direction: column; align-items: center; }
+      #{{ $uid }} .profile-row__text { width: 100%; }
+    }
+  </style>
+
+  <img
+    class="profile-row__img"
+    src="{{ $src | relURL }}"
+    alt="{{ $alt }}"
+    width="{{ $size }}"
+    height="{{ $size }}"
+    loading="lazy"
+    decoding="async"
+  />
+  <div class="profile-row__text">{{- .Inner | markdownify -}}</div>
+</div>

@@ -1,0 +1,100 @@
+<div class="theme-picker" id="theme-drawer" aria-label="Theme & color" role="group">
+  <div class="picker-accents" role="radiogroup" aria-label="Accent color">
+    <!-- circles pull colors from CSS vars by slot -->
+    <button class="swatch circle" role="radio" aria-label="Teal" data-slot="1"></button>
+    <button class="swatch circle" role="radio" aria-label="Purple" data-slot="2"></button>
+    <button class="swatch circle" role="radio" aria-label="Orange" data-slot="3"></button>
+    <button class="swatch circle" role="radio" aria-label="Pink" data-slot="4"></button>
+    <button class="swatch circle" role="radio" aria-label="Lime" data-slot="5"></button>
+  </div>
+
+  <div class="picker-gap" aria-hidden="true"></div>
+
+  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
+    <!-- squares -->
+    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark"></button>
+    <button class="swatch square" role="radio" aria-label="Light" data-theme="light"></button>
+  </div>
+</div>
+
+<!-- Mobile emoji FAB (no chrome) -->
+<button class="theme-fab" aria-label="Theme & color" aria-controls="theme-drawer" aria-expanded="false">🎨</button>
+
+<script defer>
+  (() => {
+    const root = document.documentElement;
+    const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
+
+    function setTheme(t) {
+      root.setAttribute("data-theme", t);
+      try {
+        localStorage.setItem("site:theme", t);
+      } catch {}
+      updateChecked();
+    }
+    function setAccent(hex) {
+      root.style.setProperty("--accent", hex);
+      try {
+        localStorage.setItem("site:accent", hex);
+      } catch {}
+      updateChecked();
+    }
+    function swatchColor(el) {
+      // prefer explicit data-accent; otherwise read computed --swatch (theme-aware)
+      return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
+    }
+    function updateChecked() {
+      const theme = root.getAttribute("data-theme");
+      const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
+      $(".picker-modes .swatch", true).forEach((b) =>
+        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
+      );
+      $(".picker-accents .swatch", true).forEach((b) => {
+        const sw = swatchColor(b).toLowerCase();
+        b.setAttribute("aria-checked", sw === accent ? "true" : "false");
+      });
+    }
+
+    // apply on click
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".swatch");
+      if (!btn) return;
+      if (btn.dataset.theme) setTheme(btn.dataset.theme);
+      else setAccent(swatchColor(btn));
+
+      // close drawer after a pick on mobile
+      if (matchMedia("(max-width: 850px)").matches && $("#theme-drawer")?.dataset.open === "true") setOpen(false);
+    });
+
+    // keyboard
+    document.addEventListener("keydown", (e) => {
+      if (!e.target.classList?.contains("swatch")) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+
+    // mobile drawer toggle
+    const fab = $(".theme-fab");
+    const drawer = $("#theme-drawer");
+    function setOpen(open) {
+      if (!drawer || !fab) return;
+      drawer.dataset.open = open ? "true" : "false";
+      fab.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    if (fab && drawer) {
+      fab.addEventListener("click", () => setOpen(drawer.dataset.open !== "true"));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setOpen(false);
+      });
+      document.addEventListener("click", (e) => {
+        if (drawer.dataset.open !== "true") return;
+        if (e.target.closest(".theme-picker") || e.target.closest(".theme-fab")) return;
+        setOpen(false);
+      });
+    }
+
+    updateChecked();
+  })();
+</script>

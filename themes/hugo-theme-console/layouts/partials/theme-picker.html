@@ -1,0 +1,67 @@
+<div class="theme-picker" aria-label="Theme & color" role="group">
+  <div class="picker-accents" role="radiogroup" aria-label="Accent color">
+    <!-- circles -->
+    <button class="swatch circle" role="radio" aria-label="Teal" data-accent="#29e3c7" style="--swatch: #29e3c7"></button>
+    <button class="swatch circle" role="radio" aria-label="Purple" data-accent="#8b5cf6" style="--swatch: #8b5cf6"></button>
+    <button class="swatch circle" role="radio" aria-label="Orange" data-accent="#f59e0b" style="--swatch: #f59e0b"></button>
+    <button class="swatch circle" role="radio" aria-label="Pink" data-accent="#ec4899" style="--swatch: #ec4899"></button>
+    <button class="swatch circle" role="radio" aria-label="Lime" data-accent="#84cc16" style="--swatch: #84cc16"></button>
+  </div>
+
+  <div class="picker-gap" aria-hidden="true"></div>
+
+  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
+    <!-- squares -->
+    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark" style="--swatch: #0f1115"></button>
+    <button class="swatch square" role="radio" aria-label="Light" data-theme="light" style="--swatch: #ffffff"></button>
+  </div>
+</div>
+<script defer>
+  (() => {
+    const root = document.documentElement;
+    const pick = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function setTheme(t) {
+      root.setAttribute("data-theme", t);
+      try {
+        localStorage.setItem("site:theme", t);
+      } catch {}
+      updateChecked();
+    }
+    function setAccent(hex) {
+      root.style.setProperty("--accent", hex);
+      try {
+        localStorage.setItem("site:accent", hex);
+      } catch {}
+      updateChecked();
+    }
+    function updateChecked() {
+      const theme = root.getAttribute("data-theme");
+      const accent = getComputedStyle(root).getPropertyValue("--accent").trim();
+      pick(".picker-modes .swatch").forEach((b) =>
+        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
+      );
+      pick(".picker-accents .swatch").forEach((b) =>
+        b.setAttribute("aria-checked", b.dataset.accent.toLowerCase() === accent.toLowerCase() ? "true" : "false")
+      );
+    }
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".swatch");
+      if (!btn) return;
+      if (btn.dataset.theme) setTheme(btn.dataset.theme);
+      if (btn.dataset.accent) setAccent(btn.dataset.accent);
+    });
+
+    // keyboard support
+    document.addEventListener("keydown", (e) => {
+      if (!e.target.classList?.contains("swatch")) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+
+    updateChecked();
+  })();
+</script>

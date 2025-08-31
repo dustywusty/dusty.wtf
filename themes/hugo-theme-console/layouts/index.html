@@ -1,0 +1,44 @@
+{{ define "main" }}
+
+<div class="profile-card">
+  <div class="profile">
+    <img src="{{ "dusty.png" | relURL }}" alt="Dusty" width="175" height="175" loading="lazy" decoding="async">
+  </div>
+  <div class="intro">
+    <div class="description">
+      Good-trouble maker, taco enthusiast, principle engineer, maker, elder millennial, he/him/y'all
+      <a href="about/">(more)</a>
+    </div>
+    {{ partial "social.html" . }}
+  </div>
+</div>
+
+<h1>Latest posts</h1>
+<div class="posts-list">
+{{ with .Site.GetPage "/posts" }}
+    {{ range first 1 (sort .Pages "Date" "desc" (where .Pages ".Params.private" "!=" true))}}
+        <div class="post">
+            <p>
+                <div class="date">{{ .Date | time.Format ":date_medium" }}</div>
+                <h1><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h1>
+                {{ .Summary }}
+            </p>
+        </div>    
+    {{ end }}
+{{ end }}
+</div>
+
+<h1>Webrings & Blogroll</h1>
+<p>
+  <a href="https://pixilic.com/?ref=clicky" style="display:inline-block">
+    <img
+      src="https://pixilic.com/wp-content/uploads/2023/11/hunter.png"
+      alt="Hunter"
+      width="W"
+      height="H"
+      style="max-width:none;height:auto"
+    >
+  </a>
+</p>
+
+{{ end }}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>dusty.wtf/posts/</title>
+    
+    <meta name="description" content="be kind, please rewind" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="all,follow" />
+    <meta name="googlebot" content="index,follow,snippet,archive" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+
+        const toInk = (hex) => {
+          const c = (hex || "#29e3c7").replace("#", "");
+          const r = parseInt(c.slice(0, 2), 16) / 255;
+          const g = parseInt(c.slice(2, 4), 16) / 255;
+          const b = parseInt(c.slice(4, 6), 16) / 255;
+          const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+          const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b); 
+          return L > 0.55 ? "#0f1115" : "#ffffff"; 
+        };
+
+        try {
+          const theme =
+            localStorage.getItem("site:theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          const accent = localStorage.getItem("site:accent") || "#29e3c7";
+          const ink = localStorage.getItem("site:accentInk") || toInk(accent);
+
+          root.setAttribute("data-theme", theme);
+          root.style.setProperty("--accent", accent);
+          root.style.setProperty("--accent-ink", ink);
+        } catch {}
+      })();
+    </script>
+
+    <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/terminal-0.7.4.min.css"> <link rel="stylesheet"
+    href="http://localhost:1313/hugo-theme-console/css/animate-4.1.1.min.css"> <link rel="stylesheet" href="http://localhost:1313/hugo-theme-console/css/console.css">
+    <script src="https://kit.fontawesome.com/386d44956a.js" crossorigin="anonymous"></script>
+    
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        
+    <link href="http://localhost:1313/posts/index.xml" rel="alternate" type="application/rss+xml" title="dusty.wtf" />
+     <meta property="og:title" content="Posts" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/posts/" />
+
+
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content="be kind, please rewind"/>
+
+</head>
+  <body class="terminal">
+    <div class="container">
+      <div class="terminal-nav">
+        <header class="terminal-logo">
+          <div class="logo terminal-prompt">
+             
+            <a href="http://localhost:1313/" class="no-style "
+              >dusty.wtf</a
+            >:~# <a
+              href='http://localhost:1313/posts'
+              >posts</a
+            >/
+          </div>
+        </header>
+        <nav class="terminal-menu">
+          <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+            
+            <li property="itemListElement" typeof="ListItem">
+              <a property="item" typeof="WebPage" href="http://localhost:1313/about/"> <span property="name">about</span></a>
+              <meta property="position" content="1" />
+            </li>
+            
+            <li property="itemListElement" typeof="ListItem">
+              <a property="item" typeof="WebPage" href="http://localhost:1313/posts/"> <span property="name">posts</span></a>
+              <meta property="position" content="2" />
+            </li>
+            
+          </ul>
+          <div class="theme-picker" id="theme-drawer" aria-label="Theme & color" role="group">
+  <div class="picker-accents" role="radiogroup" aria-label="Accent color">
+    
+    <button class="swatch circle" role="radio" aria-label="Teal" data-slot="1"></button>
+    <button class="swatch circle" role="radio" aria-label="Purple" data-slot="2"></button>
+    <button class="swatch circle" role="radio" aria-label="Orange" data-slot="3"></button>
+    <button class="swatch circle" role="radio" aria-label="Pink" data-slot="4"></button>
+    <button class="swatch circle" role="radio" aria-label="Lime" data-slot="5"></button>
+  </div>
+
+  <div class="picker-gap" aria-hidden="true"></div>
+
+  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
+    
+    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark"></button>
+    <button class="swatch square" role="radio" aria-label="Light" data-theme="light"></button>
+  </div>
+</div>
+
+
+<button class="theme-fab" aria-label="Theme & color" aria-controls="theme-drawer" aria-expanded="false">🎨</button>
+
+<script defer>
+  (() => {
+    const root = document.documentElement;
+    const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
+
+    function setTheme(t) {
+      root.setAttribute("data-theme", t);
+      try {
+        localStorage.setItem("site:theme", t);
+      } catch {}
+      updateChecked();
+    }
+    function setAccent(hex) {
+      root.style.setProperty("--accent", hex);
+      try {
+        localStorage.setItem("site:accent", hex);
+      } catch {}
+      updateChecked();
+    }
+    function swatchColor(el) {
+      
+      return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
+    }
+    function updateChecked() {
+      const theme = root.getAttribute("data-theme");
+      const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
+      $(".picker-modes .swatch", true).forEach((b) =>
+        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
+      );
+      $(".picker-accents .swatch", true).forEach((b) => {
+        const sw = swatchColor(b).toLowerCase();
+        b.setAttribute("aria-checked", sw === accent ? "true" : "false");
+      });
+    }
+
+    
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".swatch");
+      if (!btn) return;
+      if (btn.dataset.theme) setTheme(btn.dataset.theme);
+      else setAccent(swatchColor(btn));
+
+      
+      if (matchMedia("(max-width: 850px)").matches && $("#theme-drawer")?.dataset.open === "true") setOpen(false);
+    });
+
+    
+    document.addEventListener("keydown", (e) => {
+      if (!e.target.classList?.contains("swatch")) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+
+    
+    const fab = $(".theme-fab");
+    const drawer = $("#theme-drawer");
+    function setOpen(open) {
+      if (!drawer || !fab) return;
+      drawer.dataset.open = open ? "true" : "false";
+      fab.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    if (fab && drawer) {
+      fab.addEventListener("click", () => setOpen(drawer.dataset.open !== "true"));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setOpen(false);
+      });
+      document.addEventListener("click", (e) => {
+        if (drawer.dataset.open !== "true") return;
+        if (e.target.closest(".theme-picker") || e.target.closest(".theme-fab")) return;
+        setOpen(false);
+      });
+    }
+
+    updateChecked();
+  })();
+</script>
+
+        </nav>
+      </div>
+    </div>
+    <div class="container animate-fade-up">
+<h1>Posts</h1>
+<br/>
+
+
+<div class="posts-list">
+
+    
+        <div class="post">
+            <p>
+                <div class="date">Aug. 29, 2025</div>    
+                <h1><a href="http://localhost:1313/posts/amsat-adventures-pt1/" title="AMSAT Adventures (Part 1)">AMSAT Adventures (Part 1)</a></h1>
+                <p>Wouldn&rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbitting the Earth?</p>
+            </p>
+        </div>
+    
+
+    
+
+</div>
+
+</div>
+    
+
+  </body>
+</html>

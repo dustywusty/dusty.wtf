@@ -1,0 +1,47 @@
+baseURL = "https://dusty.wtf"
+languageCode = "en-us"
+title = "dusty.wtf"
+theme = "hugo-theme-console"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  description = "be kind, please rewind"
+  animateStyle = "animate-fade-up" # Animation style for content
+
+  [[params.navlinks]]
+    name = "about"
+    url = "about/"
+
+  [[params.navlinks]]
+    name = "posts"
+    url = "posts/"
+
+  [[params.social_links]]
+    name = "GitHub"
+    url  = "https://github.com/dustywusty"
+    icon = "fa-brands fa-github"
+
+  [[params.social_links]]
+    name = "Instagram"
+    url  = "https://instagram.com/dustywusty"
+    icon = "fa-brands fa-instagram"
+
+  [[params.social_links]]
+    name = "Mastodon"
+    url  = "https://mastodon.social/@dusty"
+    rel  = "me"
+    icon = "fa-brands fa-mastodon"
+
+  [[params.social_links]]
+    name = "Bluesky"
+    url  = "https://bsky.app/profile/dusty.wtf"
+    icon = "fa-brands fa-bluesky"
+
+  [[params.social_links]]
+    name = "LinkedIn"
+    url  = "https://www.linkedin.com/in/dustinclark/"
+    icon = "fa-brands fa-linkedin"

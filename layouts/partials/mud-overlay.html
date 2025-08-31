@@ -1,0 +1,31 @@
+{{ if or .Params.mud_overlay .Site.Params.mud_overlay }}
+<script data-mud-src="{{ "js/mud-overlay.js" | relURL }}">
+(function(){
+  if (window.__mud_loader) return; window.__mud_loader = true;
+  var src = document.currentScript && document.currentScript.getAttribute('data-mud-src') || "{{ "js/mud-overlay.js" | relURL }}";
+
+  function findLink(t){ return t && t.closest('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]'); }
+  function resolveUrl(a){
+    var u = a.getAttribute('data-mud-ws') || '';
+    if (!u) { var href = a.getAttribute('href')||''; if (/^wss?:\/\//i.test(href)) u = href; }
+    var p = a.getAttribute('data-mud-path');
+    if (!u && p) u = (location.protocol==='https:'?'wss://':'ws://') + location.host + p;
+    return u;
+  }
+
+  document.addEventListener('click', function(e){
+    var a = findLink(e.target); if (!a) return;
+    var url = resolveUrl(a);    if (!url) return;
+    e.preventDefault();
+
+    if (window.spawnMudOverlay) { window.spawnMudOverlay(url); return; }
+
+    var s = document.createElement('script');
+    s.src = src; s.defer = true;
+    s.onload  = function(){ window.spawnMudOverlay && window.spawnMudOverlay(url); };
+    s.onerror = function(){ console.error('Failed to load MUD overlay script at', src); };
+    document.head.appendChild(s);
+  }, { capture: true });
+})();
+</script>
+{{ end }}

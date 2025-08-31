@@ -1,0 +1,9 @@
+<ul class="social-links">
+  {{ range .Site.Params.social_links }}
+  <li>
+    <a href="{{ .url }}" target="_blank" {{ with .rel }}rel="{{ . }}" {{ end }} aria-label="{{ .name }}">
+      <i class="{{ .icon }}" aria-hidden="true"></i>
+    </a>
+  </li>
+  {{ end }}
+</ul>
