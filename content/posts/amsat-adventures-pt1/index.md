@@ -11,7 +11,7 @@ I thought so too! So I got started learning about [Yagi antennas](https://makezi
 
 I ended up getting an antenna that broke down from [ebay](https://www.ebay.com/itm/116579153781)
 
-Because I don't want pointing the antenna to be a problem I have to deal with I'm going to use a tracking rig. Something I can just feed a azimuth and elevation to. My antenna is light, so we can likely get away with 3d printed parts assuming I can find anything
+Because I don't want pointing the antenna to be a problem I have to deal with I'm going to use a tracking rig. Something I can just feed a azimuth and elevation to. This antenna is light, so we can get away with 3d printed parts assuming I can find anything
 
 Enter [Satran!](https://satran.danaco.se/specifications/) -- a completed open source project doing everything we want.
 
