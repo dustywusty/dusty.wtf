@@ -7,17 +7,19 @@ Wouldn't it be awesome to pull telemetery and images from the downlink of a sate
 
 <!--more-->
 
-Thought so too! So I got started here [https://makezine.com/projects/homemade-yagi-antenna/](https://makezine.com/projects/homemade-yagi-antenna/), learning about Yagi antennas and UHF FM -- I ended up just grabbing one on [ebay.](https://www.ebay.com/itm/116579153781)
+I thought so too!
 
-I wanted a tracking rig and I knew they existed, and were pretty expensive, but figured the antenna is light enough and folks are always doing projects like this..
+Getting started here [https://makezine.com/projects/homemade-yagi-antenna/](https://makezine.com/projects/homemade-yagi-antenna/) learning about Yagi antennas and UHF FM. We're not going to be able to transmit, but with line of sight we should be able to point this at one and potentially get something. I ended up getting this one from [ebay](https://www.ebay.com/itm/116579153781) instead of making my own.
 
-Enter [satran!](https://satran.danaco.se/specifications/) This project is amazing.
+I'm going to find a tracking rig because I don't want to hold an antenna out on the plains, and I already don't know much about any of this. So let's make pointing the antenna not an issue. We know tracking rigs exist, but typically they are expensive and built to carry more weight.
 
-It seems like a kit they sold at one time, but ended up [opensourcing.](https://satran.danaco.se/downloads/) The 3d files, the BOM, PCBs, part lists, all of it.
+I'd like something I can break down and fit into my carry-on (travel for a potential future talk). My antenna is light and I am sure someone has a 3d printed something we can make work..
 
-Very cool folks!
+Enter [Satran!](https://satran.danaco.se/specifications/) -- and these awesome folks went above and beyond.
 
-And other awesome internet people have put together [spreadsheets](https://docs.google.com/spreadsheets/d/1tgL_Klc7qYQEB_H5mjExTGCIgY_hv1UHhMzeUf3lJTk/edit?gid=0#gid) w/ places you can order all the parts online.
+It looks like a kit that they once sold, as of this writing they do not. But they opensourced and provide all the 3d model files, BOMs, PCBs, every part list, and some other cool internet people put together [spreadsheets](https://docs.google.com/spreadsheets/d/1tgL_Klc7qYQEB_H5mjExTGCIgY_hv1UHhMzeUf3lJTk/edit?gid=0#gid) with vendors you can order all the parts from online.
+
+Here is my progress w/ the 3d printed parts, basically the only thing I can do for right now. Next steps? I've ordered the PCBs, aluminum pieces, and electronic components.I should have everything in 2-3 weeks. 🤞🤞🤞🤞
 
 # 3d Printing
 
@@ -26,9 +28,3 @@ The files print perfectly, matte white w/ a Bambulabs P1P.
 [MK3 print files (.rar)](https://satran.danaco.se/Satran-MK3-printfiles.rar) from [https://satran.danaco.se/downloads/](https://satran.danaco.se/downloads/)
 
 ![alt text](3d.jpg "Title")
-
-# Next Steps
-
-I've ordered the PCBs and aluminum pieces from OSHPark and OSHCut respectively and the electronic components should be here in a few weeks.
-
-🤞

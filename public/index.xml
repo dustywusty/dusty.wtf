@@ -20,7 +20,7 @@
       <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
-      <description>Hey! If you made it in here, this is just me fooling around for right now, but you manage to connect to the game, try the &amp;ldquo;help&amp;rdquo; command&#xA;π </description>
+      <description>This is just me fooling around w/ a text based game im building dmud To clear the console type &amp;ldquo;/clear&amp;rdquo; for game help type &amp;ldquo;help&amp;rdquo;&#xA;π </description>
     </item>
     <item>
       <title>About</title>

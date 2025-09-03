@@ -3,7 +3,7 @@ date = "2016-11-05T21:05:33+05:30"
 title = "About"
 +++
 
-{{< profile-row src="dusty1.jpg" alt="Dusty" size="225" >}}
+{{< profile-row src="df.jpg" alt="Dusty" size="250" >}}
 Yoooo, I'm Dusty✌️
 
 I love taking {{< h1 >}}pictures,{{< /h1 >}} {{< h1 >}}shit-posting,{{< /h1 >}}{{< h1 >}}traveling,{{< /h1 >}} and {{< h1 >}}making{{< /h1 >}} stuff!
