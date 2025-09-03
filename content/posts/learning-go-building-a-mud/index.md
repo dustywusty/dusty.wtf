@@ -4,7 +4,7 @@ date = "2025-08-10"
 mud_overlay = true
 +++
 
-This is just me fooling around w/ a text based game im [building](https://github.com/dustywusty/dmud)
+Just me fooling around w/ a text based [game](https://github.com/dustywusty/dmud)
 
 # dmud
 
