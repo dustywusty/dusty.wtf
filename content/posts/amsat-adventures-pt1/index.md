@@ -7,7 +7,7 @@ Wouldn't it be awesome to pull telemetery and images from the downlink of a sate
 
 <!--more-->
 
-I thought so too! So I got started learning about [Yagi antennas](https://makezine.com/projects/homemade-yagi-antenna/) and UHF FM. And we're not going to be able to transmit, but with line of sight we should be able to point this at one and potentially get telemetry or images.
+I thought so too! So I got started learning about [Yagi antennas](https://makezine.com/projects/homemade-yagi-antenna/) and UHF FM. And we're not going to be able to transmit, but with line of sight we should be able to point this at one and potentially get data.
 
 I ended up getting an antenna that broke down from [ebay](https://www.ebay.com/itm/116579153781)
 
