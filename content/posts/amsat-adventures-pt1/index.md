@@ -15,9 +15,9 @@ Because I don't want pointing the antenna to be a problem I have to deal with I'
 
 Enter [Satran!](https://satran.danaco.se/specifications/) -- a completed open source project doing everything we want.
 
-It looks like a kit that they once sold (as of this writing they no longer did) and they provide all the 3d model files, BOMs, PCBs, everything you need to make your own. And other cool folks put together [vendor spreadsheets](https://docs.google.com/spreadsheets/d/ t1tgL_Klc7qYQEB_H5mjExTGCIgY_hv1UHhMzeUf3lJTk/edit?gid=0#gid) to source parts online
+It looks like a kit that they once sold, but they provide all the 3d model files, BOMs, PCBs, everything you need to make your own. And other cool folks put together [vendor spreadsheets](https://docs.google.com/spreadsheets/d/t1tgL_Klc7qYQEB_H5mjExTGCIgY_hv1UHhMzeUf3lJTk/edit?gid=0#gid) to source the parts online
 
-Here is my progress w/ the 3d printed parts, basically the only thing I can do for right now. Next steps? I've ordered the PCBs, aluminum pieces, and electronic components.I should have everything in 2-3 weeks. 🤞🤞🤞🤞
+Here is my progress w/ the 3d printed parts, basically the only thing I can do for right now. Next steps? I've ordered the PCBs, aluminum pieces, and electronic components. I should have everything in 2-3 weeks. 🤞🤞🤞🤞
 
 # 3d Printing
 
