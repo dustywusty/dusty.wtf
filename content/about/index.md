@@ -17,12 +17,12 @@ Anyway, {{< h1 >}}nice to meet you!{{< /h1 >}} If you'd like to get in touch for
 
 # This Site
 
-[dusty.wtf](https://github.com/dustywusty/dusty.wtf)
-
-[github pages](https://docs.github.com/en/pages)
+[hugo-theme-console/](https://mrmierzejewski.com/hugo-theme-console/)
 
 [hugo](https://github.com/gohugoio/hugo)
 
-[hugo-theme-console/](https://mrmierzejewski.com/hugo-theme-console/) (w/ some personal modifications! picker, stuff like that)
+[github pages](https://docs.github.com/en/pages)
 
 [fontawesome](https://fontawesome.com/)
+
+[dusty.wtf](https://github.com/dustywusty/dusty.wtf)
