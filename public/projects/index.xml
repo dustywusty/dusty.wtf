@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on dusty.wtf</title>
+    <link>http://localhost:1313/projects/</link>
+    <description>Recent content in Projects on dusty.wtf</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dmud</title>
+      <link>http://localhost:1313/projects/dmud/</link>
+      <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/dmud/</guid>
+      <description>github To clear the MUD console type &amp;ldquo;/clear&amp;rdquo; for in-game help type &amp;ldquo;help&amp;rdquo; &amp;ndash; to join click π&#xA;π </description>
+    </item>
+  </channel>
+</rss>
