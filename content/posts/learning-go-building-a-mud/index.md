@@ -1,13 +1,11 @@
 +++
-title = "Building a MUD to learn GO"
+title = "Vibe-coding a MUD w/ Robots: ChatGPT, Claude, & Codex agents"
 date = "2025-08-10"
 mud_overlay = true
 +++
 
-Just me fooling around w/ a text based [game](https://github.com/dustywusty/dmud)
+# [dmud](https://github.com/dustywusty/dmud)
 
-# dmud
-
-To clear the console type "/clear" for game help type "help"
+To clear the MUD console type "/clear" for in-game help type "help" -- to join click π
 
 [π](wss://dmud-495017347762.us-central1.run.app/ws)
