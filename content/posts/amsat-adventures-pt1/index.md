@@ -3,7 +3,7 @@ title = "AMSAT Adventures (Part 1)"
 date = "2025-08-29"
 +++
 
-Wouldn't it be awesome to pull telemetery and images from the downlink of a satellite orbitting the Earth?
+Wouldn't it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?
 
 <!--more-->
 
