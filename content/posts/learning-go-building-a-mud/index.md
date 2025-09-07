@@ -1,11 +1,14 @@
 +++
 title = "Vibe-coding a MUD w/ Robots: ChatGPT, Claude, & Codex agents"
 date = "2025-08-10"
+private = true
 mud_overlay = true
 +++
 
-# [dmud](https://github.com/dustywusty/dmud)
+Placeholder for future talk?
 
-To clear the MUD console type "/clear" for in-game help type "help" -- to join click π
+<!--more--!>
 
-[π](wss://dmud-495017347762.us-central1.run.app/ws)
+# DMUD
+
+..
