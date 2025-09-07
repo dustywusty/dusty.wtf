@@ -9,11 +9,11 @@
     <lastBuildDate>Sun, 10 Aug 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>dmud</title>
+      <title>DMUD</title>
       <link>http://localhost:1313/projects/dmud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/projects/dmud/</guid>
-      <description>github To clear the MUD console type &amp;ldquo;/clear&amp;rdquo; for in-game help type &amp;ldquo;help&amp;rdquo; &amp;ndash; to join click π&#xA;π </description>
+      <description>&lt;p&gt;Hey! I&amp;rsquo;ve been learning GO by building a really basic MUD. This is that. &lt;a href=&#34;https://github.com/dustywusty/dmud&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;github&lt;/a&gt; &lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
