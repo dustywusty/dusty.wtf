@@ -20,6 +20,10 @@ theme = "hugo-theme-console"
     name = "posts"
     url = "posts/"
 
+  [[params.navlinks]]
+    name = "projects"
+    url = "projects/"
+
   [[params.social_links]]
     name = "GitHub"
     url  = "https://github.com/dustywusty"
