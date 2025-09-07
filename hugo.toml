@@ -31,15 +31,20 @@ theme = "hugo-theme-console"
     icon = "fa-brands fa-instagram"
 
   [[params.social_links]]
-    name = "Mastodon"
-    url  = "https://mastodon.social/@dusty"
-    rel  = "me"
-    icon = "fa-brands fa-mastodon"
+    name = "Spotify"
+    url  = "https://open.spotify.com/user/316xqjsja5rwctlgtjubzwpijrtu?si=4d0cb4429b624594"
+    icon = "fa-brands fa-spotify"    
 
   [[params.social_links]]
     name = "Bluesky"
     url  = "https://bsky.app/profile/dusty.wtf"
     icon = "fa-brands fa-bluesky"
+
+  [[params.social_links]]
+    name = "Mastodon"
+    url  = "https://mastodon.social/@dusty"
+    rel  = "me"
+    icon = "fa-brands fa-mastodon"
 
   [[params.social_links]]
     name = "LinkedIn"

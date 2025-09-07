@@ -16,11 +16,11 @@
       <description>&lt;p&gt;Wouldn&amp;rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbitting the Earth?&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Building a MUD to learn GO</title>
+      <title>Vibe-coding a MUD w/ Robots: ChatGPT, Claude, &amp; Codex agents</title>
       <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
-      <description>Just me fooling around w/ a text based game dmud To clear the console type &amp;ldquo;/clear&amp;rdquo; for game help type &amp;ldquo;help&amp;rdquo;&#xA;π </description>
+      <description>dmud To clear the MUD console type &amp;ldquo;/clear&amp;rdquo; for in-game help type &amp;ldquo;help&amp;rdquo; &amp;ndash; to join click π&#xA;π </description>
     </item>
   </channel>
 </rss>
