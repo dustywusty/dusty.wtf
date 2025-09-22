@@ -1,0 +1,19 @@
+{{- $class := .Get "class" | default "" -}}
+{{- $ws := .Get "ws" -}}
+{{- if not $ws -}}
+  {{- with .Page.Params.mud_ws -}}
+    {{- $ws = . -}}
+  {{- end -}}
+{{- end -}}
+{{- $path := .Get "path" -}}
+{{- if not $path -}}
+  {{- with .Page.Params.mud_path -}}
+    {{- $path = . -}}
+  {{- end -}}
+{{- end -}}
+{{- $show := .Get "show" -}}
+<div data-mud-mount
+     class="mud-console-mount{{ if $class }} {{ $class }}{{ end }}"
+     {{- if $ws }} data-mud-ws="{{ $ws }}"{{ end -}}
+     {{- if and (not $ws) $path }} data-mud-path="{{ $path }}"{{ end -}}
+     {{- if not $show }} hidden{{ end -}}></div>
