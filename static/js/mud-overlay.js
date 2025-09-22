@@ -77,6 +77,25 @@
   const DARK_INK = { r: 15, g: 17, b: 21 };
   const LIGHT_INK = { r: 255, g: 255, b: 255 };
   const pickInk = (color) => (relativeLuminance(color) > 0.55 ? DARK_INK : LIGHT_INK);
+  const contrastRatio = (a, b) => {
+    const l1 = relativeLuminance(a);
+    const l2 = relativeLuminance(b);
+    const light = Math.max(l1, l2);
+    const dark = Math.min(l1, l2);
+    return (light + 0.05) / (dark + 0.05);
+  };
+  const ensureReadable = (color, background, reference, minRatio = 4.5) => {
+    const bg = background || FALLBACK.background;
+    const base = color || reference || FALLBACK.text;
+    if (contrastRatio(base, bg) >= minRatio) return base;
+    const target = reference || pickInk(bg);
+    const steps = [0.25, 0.5, 0.75, 1];
+    for (const step of steps) {
+      const candidate = mix(base, target, step);
+      if (contrastRatio(candidate, bg) >= minRatio) return candidate;
+    }
+    return pickInk(bg);
+  };
 
   const FALLBACK = {
     background: parseColor("#0b0f12"),
@@ -127,17 +146,28 @@
     const shadow = mix(text, bg, 0.12);
     const scrollThumb = mix(text, bg, 0.7);
 
+    const readableText = ensureReadable(text, panel, text, 4.5);
+    const readableMuted = ensureReadable(textMuted, panel, readableText, 3.2);
+    const readableSys = ensureReadable(sys, surface, readableText, 4.5);
+    const readableInbound = ensureReadable(inbound, surface, readableText, 4.5);
+    const readableError = ensureReadable(error, surface, readableText, 4.5);
+    const readableStatusIdle = ensureReadable(statusIdle, surface, readableMuted, 3.5);
+    const readableStatusConnecting = ensureReadable(statusConnecting, surface, readableSys, 4.5);
+    const readableStatusConnected = ensureReadable(statusConnected, surface, readableSys, 4.5);
+    const readableStatusError = ensureReadable(error, surface, readableError, 4.5);
+    const readablePrimaryText = ensureReadable(accentInk, btnPrimaryBg, pickInk(btnPrimaryBg), 4.5);
+
     target.style.setProperty("--mud-bg", toRgbString(surface, FALLBACK.background));
     target.style.setProperty("--mud-panel", toRgbString(panel, FALLBACK.background));
     target.style.setProperty("--mud-panel-strong", toRgbString(panelStrong, FALLBACK.background));
     target.style.setProperty("--mud-input-bg", toRgbString(inputBg, FALLBACK.background));
     target.style.setProperty("--mud-border", toRgbString(border, FALLBACK.border));
     target.style.setProperty("--mud-border-strong", toRgbString(borderStrong, FALLBACK.border));
-    target.style.setProperty("--mud-text", toRgbString(text, FALLBACK.text));
-    target.style.setProperty("--mud-text-muted", toRgbString(textMuted, FALLBACK.text));
-    target.style.setProperty("--mud-sys", toRgbString(sys, FALLBACK.text));
-    target.style.setProperty("--mud-in", toRgbString(inbound, FALLBACK.accent));
-    target.style.setProperty("--mud-err", toRgbString(error, FALLBACK.error));
+    target.style.setProperty("--mud-text", toRgbString(readableText, FALLBACK.text));
+    target.style.setProperty("--mud-text-muted", toRgbString(readableMuted, FALLBACK.text));
+    target.style.setProperty("--mud-sys", toRgbString(readableSys, FALLBACK.text));
+    target.style.setProperty("--mud-in", toRgbString(readableInbound, FALLBACK.accent));
+    target.style.setProperty("--mud-err", toRgbString(readableError, FALLBACK.error));
     target.style.setProperty("--mud-btn-bg", toRgbString(btnBg, FALLBACK.background));
     target.style.setProperty("--mud-btn-hover-bg", toRgbString(btnHoverBg, FALLBACK.background));
     target.style.setProperty("--mud-btn-border", toRgbString(btnBorder, FALLBACK.border));
@@ -145,11 +175,11 @@
     target.style.setProperty("--mud-btn-primary-hover-bg", toRgbString(btnPrimaryHoverBg, FALLBACK.accent));
     target.style.setProperty("--mud-btn-primary-border", toRgbString(btnPrimaryBorder, FALLBACK.accent));
     target.style.setProperty("--mud-btn-primary-hover-border", toRgbString(btnPrimaryHoverBorder, FALLBACK.accent));
-    target.style.setProperty("--mud-btn-primary-text", toRgbString(accentInk || pickInk(btnPrimaryBg), FALLBACK.accentInk));
-    target.style.setProperty("--mud-status-idle", toRgbString(statusIdle, FALLBACK.text));
-    target.style.setProperty("--mud-status-connecting", toRgbString(statusConnecting, FALLBACK.accent));
-    target.style.setProperty("--mud-status-connected", toRgbString(statusConnected, FALLBACK.accent));
-    target.style.setProperty("--mud-status-error", toRgbString(error, FALLBACK.error));
+    target.style.setProperty("--mud-btn-primary-text", toRgbString(readablePrimaryText, FALLBACK.accentInk));
+    target.style.setProperty("--mud-status-idle", toRgbString(readableStatusIdle, FALLBACK.text));
+    target.style.setProperty("--mud-status-connecting", toRgbString(readableStatusConnecting, FALLBACK.accent));
+    target.style.setProperty("--mud-status-connected", toRgbString(readableStatusConnected, FALLBACK.accent));
+    target.style.setProperty("--mud-status-error", toRgbString(readableStatusError, FALLBACK.error));
     target.style.setProperty("--mud-gap-color", toRgbString(gap, FALLBACK.border));
     target.style.setProperty("--mud-shadow", toRgbaString(shadow, 0.35, FALLBACK.text));
     target.style.setProperty("--mud-scroll-thumb", toRgbaString(scrollThumb, 0.4, FALLBACK.text));
