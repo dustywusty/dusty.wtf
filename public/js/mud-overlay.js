@@ -228,7 +228,25 @@
   }
 
   // ---------- utils ----------
-  const now = () => new Date().toLocaleTimeString();
+  const now = () => new Date();
+  const normalizeTimestamp = (value) => {
+    let date = value instanceof Date ? value : null;
+    if (!date) {
+      if (typeof value === "number") date = new Date(value);
+      else if (typeof value === "string") return { display: value, key: value };
+    }
+    if (!date || Number.isNaN(date.getTime())) date = new Date();
+    const hh = String(date.getHours()).padStart(2, "0");
+    const mm = String(date.getMinutes()).padStart(2, "0");
+    const ss = String(date.getSeconds()).padStart(2, "0");
+    let display;
+    try {
+      display = date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
+    } catch {
+      display = `${hh}:${mm}:${ss}`;
+    }
+    return { display, key: `${hh}:${mm}:${ss}` };
+  };
   const el = (tag, attrs = {}, children = []) => {
     const n = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs)) {
@@ -528,6 +546,7 @@
     let ws = null;
     let history = [];
     let idx = -1;
+    let lastTimestampKey = null;
 
     // helpers
     const setStatus = (txt, state = "idle") => {
@@ -541,10 +560,13 @@
     let grpTimer = null;
     const FLUSH_MS = 80;
     const pushLine = (cls, text, timestamp = now()) => {
+      const { display, key } = normalizeTimestamp(timestamp);
+      const showTimestamp = lastTimestampKey && key === lastTimestampKey ? "" : display;
+      lastTimestampKey = key;
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
       const msgClass = cls ? `msg ${cls}` : "msg";
       const line = el("div", { class: "line" }, [
-        el("div", { class: "ts" }, timestamp),
+        el("div", { class: "ts" }, showTimestamp),
         el("div", { class: msgClass }, text),
       ]);
       out.appendChild(line);
@@ -669,6 +691,7 @@
       const t = v.trim();
       if (t === "/clear") {
         out.innerHTML = "";
+        lastTimestampKey = null;
         return true;
       }
       if (t === "/help") {
@@ -689,7 +712,10 @@
     btnClose.addEventListener("click", closeOverlay);
 
     btnSend.addEventListener("click", send);
-    btnClear.addEventListener("click", () => (out.innerHTML = ""));
+    btnClear.addEventListener("click", () => {
+      out.innerHTML = "";
+      lastTimestampKey = null;
+    });
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey) {
