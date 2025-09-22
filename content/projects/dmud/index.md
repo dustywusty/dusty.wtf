@@ -6,8 +6,12 @@ mud_autostart = true
 mud_path = "/mud"
 +++
 <!--more-->
-<br/>
-# Getting Started
+
+## Console
+
+{{< mud-console >}}
+
+## Getting Started
 
 The console should pop open automatically. To clear the MUD console type "/clear"; for in-game help type "help". If it doesn't launch on its own, click <a data-mud-path="/mud" href="#join-dmud" aria-label="Launch the DMUD console">π</a>.
 
