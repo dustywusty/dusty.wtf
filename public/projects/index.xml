@@ -4,7 +4,7 @@
     <title>Projects on dusty.wtf</title>
     <link>http://localhost:1313/projects/</link>
     <description>Recent content in Projects on dusty.wtf</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 10 Aug 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,7 @@
       <link>http://localhost:1313/projects/dmud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/projects/dmud/</guid>
-      <description>&lt;p&gt;Hey! I&amp;rsquo;ve been learning GO by building a really basic MUD. This is that. &lt;a href=&#34;https://github.com/dustywusty/dmud&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;github&lt;/a&gt; &lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;a href=&#34;wss://dmud-495017347762.us-central1.run.app/ws&#34;&gt;π&lt;/a&gt; &lt;/p&gt;&#xA;&lt;h1 id=&#34;getting-started&#34;&gt;Getting Started&lt;/h1&gt; &lt;p&gt;To clear the MUD console type &amp;ldquo;/clear&amp;rdquo; for in-game help type &amp;ldquo;help&amp;rdquo; &amp;ndash; to join click π&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

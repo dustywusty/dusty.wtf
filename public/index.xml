@@ -4,7 +4,7 @@
     <title>dusty.wtf</title>
     <link>http://localhost:1313/</link>
     <description>Recent content on dusty.wtf</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 29 Aug 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
@@ -20,21 +20,21 @@
       <link>http://localhost:1313/projects/dmud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/projects/dmud/</guid>
-      <description>&lt;p&gt;Hey! I&amp;rsquo;ve been learning GO by building a really basic MUD. This is that. &lt;a href=&#34;https://github.com/dustywusty/dmud&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;github&lt;/a&gt; &lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;a href=&#34;wss://dmud-495017347762.us-central1.run.app/ws&#34;&gt;π&lt;/a&gt; &lt;/p&gt;&#xA;&lt;h1 id=&#34;getting-started&#34;&gt;Getting Started&lt;/h1&gt; &lt;p&gt;To clear the MUD console type &amp;ldquo;/clear&amp;rdquo; for in-game help type &amp;ldquo;help&amp;rdquo; &amp;ndash; to join click π&lt;/p&gt;</description>
     </item>
     <item>
       <title>Vibe-coding a MUD w/ Robots: ChatGPT, Claude, &amp; Codex agents</title>
       <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
-      <description>Placeholder for future talk?</description>
+      <description>&lt;p&gt;Placeholder for future talk?&lt;/p&gt;&#xA;&lt;!--more--!&gt;&#xA;&#xA;# DMUD&#xA;&#xA;..</description>
     </item>
     <item>
       <title>About</title>
       <link>http://localhost:1313/about/</link>
       <pubDate>Sat, 05 Nov 2016 21:05:33 +0530</pubDate>
       <guid>http://localhost:1313/about/</guid>
-      <description>Yoooo, I&amp;rsquo;m Dusty✌️&#xA;I love taking pictures shit-posting traveling and making things&#xA;Currently in gradschool working on my master&amp;rsquo;s degree in Computer Science and spending that entire time pretending im not voluntarily learning stuff&#xA;Have been a software engineer for just over two decades, but honestly at this point I figure we should all packup and move to the forest &amp;ndash; we&amp;rsquo;d be better off&#xA;Anyway, nice to meet you!</description>
+      <description>&lt;div id=&#34;pr-1758520627650079000&#34; class=&#34;profile-row&#34; style=&#34;--img-size: 250px&#34;&gt;&#xA;  &lt;style&gt;&#xA;     &#xA;    #pr-1758520627650079000.profile-row {&#xA;      display: flex;&#xA;      align-items: flex-start;&#xA;      gap: 1rem;&#xA;      margin: 1rem 0;&#xA;    }&#xA;    #pr-1758520627650079000 .profile-row__img {&#xA;      flex: 0 0 var(--img-size);&#xA;      width: var(--img-size);&#xA;      height: var(--img-size);&#xA;      object-fit: cover;&#xA;      border-radius: 50%;&#xA;      display: block;&#xA;    }&#xA;    #pr-1758520627650079000 .profile-row__text {&#xA;      flex: 1 1 0;&#xA;      min-width: 12rem;&#xA;&#xA;    }&#xA;     &#xA;    #pr-1758520627650079000 .profile-row__text p {&#xA;      margin: 0 0 0.75rem 0;&#xA;      text-align: left;&#xA;    }&#xA;    @media (max-width: 600px) {&#xA;      #pr-1758520627650079000.profile-row { flex-direction: column; align-items: center; }&#xA;      #pr-1758520627650079000 .profile-row__text { width: 100%; }&#xA;    }&#xA;  &lt;/style&gt;&#xA;&#xA;  &lt;img&#xA;    class=&#34;profile-row__img&#34;&#xA;    src=&#34;http://localhost:1313/df.jpg&#34;&#xA;    alt=&#34;Dusty&#34;&#xA;    width=&#34;250&#34;&#xA;    height=&#34;250&#34;&#xA;    loading=&#34;lazy&#34;&#xA;    decoding=&#34;async&#34;&#xA;  /&gt;&#xA;  &lt;div class=&#34;profile-row__text&#34;&gt;&lt;p&gt;Yoooo, I&amp;rsquo;m Dusty✌️&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
