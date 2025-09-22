@@ -8,7 +8,6 @@
   const OVERLAY_ID = "mud-ws-overlay";
   const STYLE_ID = "mud-ws-style";
   const MAX_LINES = 5000; // prune DOM to avoid bloat
-  const SEND_NL = true; // newline-terminate commands
   const LS_KEY = "mud_ws_url";
   const MOUNT_SELECTOR = ".container.animate-fade-up";
   
@@ -540,7 +539,6 @@
     let grpBuf = "";
     let grpCls = null;
     let grpTimer = null;
-    let grpCarry = "";
     const FLUSH_MS = 80;
     const pushLine = (cls, text, timestamp = now()) => {
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
@@ -554,12 +552,6 @@
     };
     const flushGroup = () => {
       if (!grpBuf) return;
-      if (grpCls === "outl") {
-        const trailing = grpBuf.match(/(\n+)$/);
-        grpCarry = trailing ? trailing[1] : "";
-      } else {
-        grpCarry = "";
-      }
       pushLine(grpCls || "outl", grpBuf);
       grpBuf = "";
       grpCls = null;
@@ -571,22 +563,15 @@
     const append = (text, cls = "outl", grouped = true) => {
       // group only normal server output
       if (grouped && cls === "outl") {
-        if (grpCarry) {
-          text = grpCarry + text;
-          grpCarry = "";
-        }
         if (grpCls && grpCls !== cls) flushGroup();
         grpCls = cls;
-        const needsSeparator =
-          grpBuf && !grpBuf.endsWith("\n") && text && !text.startsWith("\n");
-        grpBuf += (needsSeparator ? "\n" : "") + text;
+        grpBuf += text;
         if (grpTimer) clearTimeout(grpTimer);
         grpTimer = setTimeout(flushGroup, FLUSH_MS);
         return;
       }
       // non-grouped: flush any pending group, then append standalone
       flushGroup();
-      grpCarry = "";
       pushLine(cls, text);
     };
     const disconnect = () => {
@@ -634,15 +619,7 @@
           }
           if (!s) return;
           console.log("[MUD WS] raw message:", JSON.stringify(s));
-          const normalized = s.replace(/\r\n/g, "\n").replace(/\r/g, "");
-          console.log("[MUD WS] normalized message:", JSON.stringify(normalized));
-          if (!normalized) return;
-          if (!normalized.trim()) {
-            // Preserve intentional blank lines from the server.
-            append(normalized, "outl");
-            return;
-          }
-          append(normalized, "outl");
+          append(s, "outl");
         } catch (e) {
           append("Message handling error: " + (e?.message || e), "err");
         }
@@ -668,22 +645,17 @@
     };
 
     const send = () => {
-      const raw = input.value;
-      const trimmed = raw.replace(/[\r\n]+$/g, ""); // strip trailing newlines
-      if (!trimmed.trim()) {
+      const text = input.value;
+      if (!text.trim()) {
         // nothing meaningful
         input.value = "";
         return;
       }
-      const text =
-        SEND_NL && !trimmed.endsWith("\n") // append a \n if needed
-          ? trimmed + "\n"
-          : trimmed;
-      history.push(trimmed);
+      history.push(text);
       idx = history.length;
       flushGroup();
       addGap(); // isolate commands with a leading gap
-      append(trimmed, "inl");
+      append(text, "inl");
       addGap(); // visual gap without a timestamp
       if (!ws || ws.readyState !== WebSocket.OPEN) {
         append("Not connected.", "err");
