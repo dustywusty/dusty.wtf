@@ -11,8 +11,9 @@
   const SEND_NL = true; // newline-terminate commands
   const LS_KEY = "mud_ws_url";
   const MOUNT_SELECTOR = ".container.animate-fade-up";
-
+  
   let controller = null; // singleton overlay controller
+  let lastAnchor = null;
 
   // ---------- theme sync ----------
   const themeTargets = new Set();
@@ -420,25 +421,53 @@
   }
 
   // ---------- overlay builder ----------
-  function buildOverlay() {
-    ensureStyles();
+  function extractUrlFromLink(link) {
+    if (!link) return "";
+    const explicit = link.getAttribute("data-mud-ws") || link.getAttribute("data-mud") || "";
+    if (explicit) return explicit;
+    const href = link.getAttribute("href") || "";
+    if (/^wss?:\/\//i.test(href)) return href;
+    const path = link.getAttribute("data-mud-path");
+    if (path) {
+      const base = location.protocol === "https:" ? "wss://" : "ws://";
+      return `${base}${location.host}${path}`;
+    }
+    return "";
+  }
 
-    // Find blog container (your <div class="container animate-fade-up">)
-    const mount = document.querySelector(MOUNT_SELECTOR);
+  function placeOverlay(root, anchor) {
+    const usableAnchor = anchor && anchor.nodeType === 1 && anchor.isConnected ? anchor : null;
+    let inserted = false;
+    if (usableAnchor) {
+      const block = usableAnchor.closest(
+        "[data-mud-mount],p,div,section,article,li,dd,dt,main,aside,header,footer,figure"
+      );
+      if (block && block.parentNode) {
+        block.insertAdjacentElement("afterend", root);
+        root.classList.add("embedded");
+        inserted = true;
+      }
+    }
+    if (!inserted) {
+      const fallback = document.querySelector(MOUNT_SELECTOR) || document.body;
+      if (root.parentNode !== fallback) {
+        fallback.appendChild(root);
+      }
+      if (fallback === document.body) root.classList.remove("embedded");
+      else root.classList.add("embedded");
+    }
+    lastAnchor = inserted ? usableAnchor : null;
+  }
+
+  function buildOverlay(anchor) {
+    ensureStyles();
 
     let root = document.getElementById(OVERLAY_ID);
     if (!root) {
       root = el("div", { id: OVERLAY_ID });
     }
 
-    // Move (or place) the overlay into the mount when present; fall back to body otherwise
-    if (mount) {
-      if (root.parentNode !== mount) mount.appendChild(root); // ends up below your header/link
-      root.classList.add("embedded");
-    } else {
-      if (!root.parentNode) document.body.appendChild(root);
-      root.classList.remove("embedded");
-    }
+    placeOverlay(root, anchor);
 
     registerThemeTarget(root);
 
@@ -446,10 +475,8 @@
     // Header
     const statusEl = el("span", { class: "status status-idle", role: "status", "aria-live": "polite" }, "● disconnected");
     const savedUrl = localStorage.getItem(LS_KEY) || "";
-    const linkUrl =
-      savedUrl ||
-      (mount && mount.querySelector('a[href^="ws"]')?.href) || // picks up your wss://... link
-      "";
+    const contextualLink = anchor && anchor.isConnected ? anchor : document.querySelector('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]');
+    const linkUrl = savedUrl || extractUrlFromLink(contextualLink) || "";
     const urlEl = el("input", {
       class: "url",
       type: "text",
@@ -687,16 +714,19 @@
         urlEl.value = u || "";
       },
       focus: () => input.focus(),
+      place: (nextAnchor) => placeOverlay(root, nextAnchor || lastAnchor),
     };
   }
 
   // ---------- public API ----------
-  function spawn(initialUrl) {
+  function spawn(initialUrl, options) {
+    const anchor = options && options.anchor && options.anchor.nodeType === 1 ? options.anchor : lastAnchor;
     // build or reuse
     if (!controller || !document.body.contains(controller.root)) {
-      controller = buildOverlay();
+      controller = buildOverlay(anchor);
     } else {
       controller.root.style.display = "";
+      controller.place(anchor);
     }
 
     // bring to front
@@ -710,7 +740,11 @@
   }
 
   // Optional: support `document.dispatchEvent(new CustomEvent('mud:spawn', { detail: { url } }))`
-  document.addEventListener("mud:spawn", (e) => spawn(e?.detail?.url), { passive: true });
+  document.addEventListener(
+    "mud:spawn",
+    (e) => spawn(e?.detail?.url, e?.detail?.anchor ? { anchor: e.detail.anchor } : undefined),
+    { passive: true }
+  );
 
   // Expose for the lazy loader
   window.spawnMudOverlay = window.spawnMudOverlay || spawn;
