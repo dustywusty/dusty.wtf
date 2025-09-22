@@ -90,8 +90,8 @@
   }, { capture: true });
 
   var autoLaunch = {{ if or .Params.mud_autostart .Site.Params.mud_autostart }}true{{ else }}false{{ end }};
-  var explicitUrl = {{ with or .Params.mud_ws .Site.Params.mud_ws }}{{ printf "%q" . }}{{ else }}null{{ end }};
-  var explicitPath = {{ with or .Params.mud_path .Site.Params.mud_path }}{{ printf "%q" . }}{{ else }}null{{ end }};
+  var explicitUrl = {{ with or .Params.mud_ws .Site.Params.mud_ws }}{{ printf "%q" . | safeJS }}{{ else }}null{{ end }};
+  var explicitPath = {{ with or .Params.mud_path .Site.Params.mud_path }}{{ printf "%q" . | safeJS }}{{ else }}null{{ end }};
 
   if (autoLaunch) {
     var link = findFirstLink();

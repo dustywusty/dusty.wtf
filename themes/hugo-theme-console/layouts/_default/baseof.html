@@ -37,9 +37,9 @@
       })();
     </script>
     <script defer data-domain="dusty.wtf" src="https://plausible.io/js/script.outbound-links.js"></script>
-    <link rel="stylesheet" href="{{ "hugo-theme-console/css/terminal-0.7.4.min.css" | absURL }}"> <link rel="stylesheet"
-    href="{{ "hugo-theme-console/css/animate-4.1.1.min.css" | absURL }}"> <link rel="stylesheet" href="{{
-    "hugo-theme-console/css/console.css" | absURL }}">
+    <link rel="stylesheet" href="{{ "hugo-theme-console/css/terminal-0.7.4.min.css" | relURL }}"> <link rel="stylesheet"
+    href="{{ "hugo-theme-console/css/animate-4.1.1.min.css" | relURL }}"> <link rel="stylesheet" href="{{
+    "hugo-theme-console/css/console.css" | relURL }}">
     <script src="https://kit.fontawesome.com/386d44956a.js" crossorigin="anonymous"></script>
     {{ `
     <!--[if lt IE 9]>
@@ -48,7 +48,7 @@
     <![endif]-->
     ` | safeHTML }} {{- partial "favicon.html" . -}} {{ with .OutputFormats.Get "RSS" }} {{ printf `
     <link href="%s" rel="%s" type="%s" title="%s" />
-    ` .Permalink .Rel .MediaType.Type $.Site.Title | safeHTML }} {{ end }} {{- partial "opengraph.html" . -}} {{- partial
+    ` .RelPermalink .Rel .MediaType.Type $.Site.Title | safeHTML }} {{ end }} {{- partial "opengraph.html" . -}} {{- partial
     "twitter_cards.html" . -}} {{ template "_internal/google_analytics.html" . }} {{- partial "header.html" . -}}
   </head>
   <body class="terminal">
@@ -56,11 +56,11 @@
       <div class="terminal-nav">
         <header class="terminal-logo">
           <div class="logo terminal-prompt">
-            {{ $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }} {{ $.Scratch.Add "path" .Site.BaseURL }}
-            <a href="{{ .Site.BaseURL }}" class="no-style {{ with .Site.Params.TitleCutting }}site-name{{ end }}"
+            {{ $url := trim .RelPermalink "/" }} {{ $.Scratch.Set "path" "/" }}
+            <a href="{{ "/" | relURL }}" class="no-style {{ with .Site.Params.TitleCutting }}site-name{{ end }}"
               >{{ .Site.Title }}</a
             >:~# {{ range $index, $element := split $url "/" }}{{ $.Scratch.Add "path" $element }}{{ if ne $element "" }}<a
-              href='{{ $.Scratch.Get "path" | absURL }}'
+              href='{{ $.Scratch.Get "path" | relURL }}'
               >{{ . }}</a
             >/{{ $.Scratch.Add "path" "/" }}{{ end }}{{ end }}
           </div>
@@ -69,7 +69,7 @@
           <ul vocab="https://schema.org/" typeof="BreadcrumbList">
             {{ range $index, $element := .Site.Params.navlinks }}
             <li property="itemListElement" typeof="ListItem">
-              <a property="item" typeof="WebPage" href="{{ absURL .url }}"> <span property="name">{{ .name }}</span></a>
+              <a property="item" typeof="WebPage" href="{{ .url | relURL }}"> <span property="name">{{ .name }}</span></a>
               <meta property="position" content="{{ add $index 1}}" />
             </li>
             {{ end }}
