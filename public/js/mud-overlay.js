@@ -475,7 +475,10 @@
     // Header
     const statusEl = el("span", { class: "status status-idle", role: "status", "aria-live": "polite" }, "● disconnected");
     const savedUrl = localStorage.getItem(LS_KEY) || "";
-    const contextualLink = anchor && anchor.isConnected ? anchor : document.querySelector('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]');
+    const contextualLink =
+      anchor && anchor.isConnected
+        ? anchor
+        : document.querySelector('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]');
     const linkUrl = savedUrl || extractUrlFromLink(contextualLink) || "";
     const urlEl = el("input", {
       class: "url",

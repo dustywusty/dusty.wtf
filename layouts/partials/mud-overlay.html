@@ -7,9 +7,17 @@
   var pendingAnchor = null;
   var loading = false;
 
-  function findLink(t){ return t && t.closest('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]'); }
+  var TRIGGER_SELECTOR = 'a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]';
+
+  function findLink(t){
+    if (!t) return null;
+    var link = t.closest('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]');
+    if (link) return link;
+    return t.closest('[data-mud-mount]');
+  }
+
   function findFirstLink(){
-    var links = document.querySelectorAll('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]');
+    var links = document.querySelectorAll(TRIGGER_SELECTOR);
     for (var i = 0; i < links.length; i++) {
       var skip = links[i].getAttribute('data-mud-autostart');
       if (skip && skip.toLowerCase() === 'false') continue;
@@ -61,7 +69,7 @@
   }
 
   document.addEventListener('click', function(e){
-    var a = findLink(e.target); if (!a) return;
+    var a = findLink(e.target); if (!a || a.tagName !== 'A') return;
     var url = resolveUrl(a);    if (!url) return;
     e.preventDefault();
     summon(url, a);
@@ -71,11 +79,8 @@
   var explicitUrl = {{ with or .Params.mud_ws .Site.Params.mud_ws }}{{ printf "%q" . }}{{ else }}null{{ end }};
 
   if (autoLaunch) {
-    var targetUrl = explicitUrl;
-    if (!targetUrl) {
-      var link = findFirstLink();
-      targetUrl = resolveUrl(link) || null;
-    }
+    var link = findFirstLink();
+    var targetUrl = explicitUrl || resolveUrl(link) || null;
     if (targetUrl) {
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function(){ summon(targetUrl, link); }, { once: true });
