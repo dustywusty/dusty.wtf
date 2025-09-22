@@ -368,6 +368,25 @@
   background:var(--mud-bg,#0b0f12);
   border-bottom:1px solid var(--mud-border,#2d3741);
 }
+#${OVERLAY_ID} .line{
+  display:grid;
+  grid-template-columns:max-content 1fr;
+  align-items:flex-start;
+  gap:12px;
+  padding:2px 0;
+}
+#${OVERLAY_ID} .ts{
+  color:var(--mud-text-muted,#9da7b3);
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  text-align:right;
+  white-space:nowrap;
+  padding-top:2px;
+}
+#${OVERLAY_ID} .msg{
+  white-space:pre-wrap;
+  word-break:break-word;
+}
 #${OVERLAY_ID} .out::-webkit-scrollbar{width:10px;}
 #${OVERLAY_ID} .out::-webkit-scrollbar-thumb{
   background:var(--mud-scroll-thumb,rgba(150,150,150,.35));
@@ -522,12 +541,19 @@
     let grpCls = null;
     let grpTimer = null;
     const FLUSH_MS = 80;
+    const pushLine = (cls, text, timestamp = now()) => {
+      while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
+      const msgClass = cls ? `msg ${cls}` : "msg";
+      const line = el("div", { class: "line" }, [
+        el("div", { class: "ts" }, timestamp),
+        el("div", { class: msgClass }, text),
+      ]);
+      out.appendChild(line);
+      out.scrollTop = out.scrollHeight;
+    };
     const flushGroup = () => {
       if (!grpBuf) return;
-      while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
-      const d = el("div", { class: grpCls || "outl" }, `[${now()}] ${grpBuf}`);
-      out.appendChild(d);
-      out.scrollTop = out.scrollHeight;
+      pushLine(grpCls || "outl", grpBuf);
       grpBuf = "";
       grpCls = null;
       if (grpTimer) {
@@ -547,10 +573,7 @@
       }
       // non-grouped: flush any pending group, then append standalone
       flushGroup();
-      while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
-      const d = el("div", { class: cls }, `[${now()}] ${text}`);
-      out.appendChild(d);
-      out.scrollTop = out.scrollHeight;
+      pushLine(cls, text);
     };
     const disconnect = () => {
       if (ws && ws.readyState === WebSocket.OPEN) ws.close(1000, "client closing");
