@@ -540,6 +540,7 @@
     let grpBuf = "";
     let grpCls = null;
     let grpTimer = null;
+    let grpCarry = "";
     const FLUSH_MS = 80;
     const pushLine = (cls, text, timestamp = now()) => {
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
@@ -553,6 +554,12 @@
     };
     const flushGroup = () => {
       if (!grpBuf) return;
+      if (grpCls === "outl") {
+        const trailing = grpBuf.match(/(\n+)$/);
+        grpCarry = trailing ? trailing[1] : "";
+      } else {
+        grpCarry = "";
+      }
       pushLine(grpCls || "outl", grpBuf);
       grpBuf = "";
       grpCls = null;
@@ -564,6 +571,10 @@
     const append = (text, cls = "outl", grouped = true) => {
       // group only normal server output
       if (grouped && cls === "outl") {
+        if (grpCarry) {
+          text = grpCarry + text;
+          grpCarry = "";
+        }
         if (grpCls && grpCls !== cls) flushGroup();
         grpCls = cls;
         const needsSeparator =
@@ -575,6 +586,7 @@
       }
       // non-grouped: flush any pending group, then append standalone
       flushGroup();
+      grpCarry = "";
       pushLine(cls, text);
     };
     const disconnect = () => {
