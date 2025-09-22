@@ -540,6 +540,7 @@
     let grpBuf = "";
     let grpCls = null;
     let grpTimer = null;
+    let grpCarry = "";
     const FLUSH_MS = 80;
     const pushLine = (cls, text, timestamp = now()) => {
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
@@ -553,6 +554,12 @@
     };
     const flushGroup = () => {
       if (!grpBuf) return;
+      if (grpCls === "outl") {
+        const trailing = grpBuf.match(/(\n+)$/);
+        grpCarry = trailing ? trailing[1] : "";
+      } else {
+        grpCarry = "";
+      }
       pushLine(grpCls || "outl", grpBuf);
       grpBuf = "";
       grpCls = null;
@@ -564,15 +571,22 @@
     const append = (text, cls = "outl", grouped = true) => {
       // group only normal server output
       if (grouped && cls === "outl") {
+        if (grpCarry) {
+          text = grpCarry + text;
+          grpCarry = "";
+        }
         if (grpCls && grpCls !== cls) flushGroup();
         grpCls = cls;
-        grpBuf += (grpBuf ? "\n" : "") + text;
+        const needsSeparator =
+          grpBuf && !grpBuf.endsWith("\n") && text && !text.startsWith("\n");
+        grpBuf += (needsSeparator ? "\n" : "") + text;
         if (grpTimer) clearTimeout(grpTimer);
         grpTimer = setTimeout(flushGroup, FLUSH_MS);
         return;
       }
       // non-grouped: flush any pending group, then append standalone
       flushGroup();
+      grpCarry = "";
       pushLine(cls, text);
     };
     const disconnect = () => {
@@ -618,8 +632,17 @@
             append("[unknown message type]", "sys");
             return;
           }
-          if (!s || !s.trim()) return; // drop empty/whitespace-only payloads
-          append(s, "outl");
+          if (!s) return;
+          console.log("[MUD WS] raw message:", JSON.stringify(s));
+          const normalized = s.replace(/\r\n/g, "\n").replace(/\r/g, "");
+          console.log("[MUD WS] normalized message:", JSON.stringify(normalized));
+          if (!normalized) return;
+          if (!normalized.trim()) {
+            // Preserve intentional blank lines from the server.
+            append(normalized, "outl");
+            return;
+          }
+          append(normalized, "outl");
         } catch (e) {
           append("Message handling error: " + (e?.message || e), "err");
         }
@@ -638,6 +661,8 @@
       });
     };
     const addGap = () => {
+      const last = out.lastElementChild;
+      if (last && last.classList && last.classList.contains("gap")) return;
       out.appendChild(el("div", { class: "gap" }));
       out.scrollTop = out.scrollHeight;
     };
@@ -656,6 +681,8 @@
           : trimmed;
       history.push(trimmed);
       idx = history.length;
+      flushGroup();
+      addGap(); // isolate commands with a leading gap
       append(trimmed, "inl");
       addGap(); // visual gap without a timestamp
       if (!ws || ws.readyState !== WebSocket.OPEN) {
