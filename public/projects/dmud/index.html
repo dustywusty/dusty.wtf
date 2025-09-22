@@ -200,7 +200,7 @@
 <h1>DMUD</h1>
 <br/>
 # Getting Started
-<p>To clear the MUD console type &ldquo;/clear&rdquo; for in-game help type &ldquo;help&rdquo; &ndash; to join click π</p>
+<p>The console should pop open automatically. To clear the MUD console type &ldquo;/clear&rdquo;; for in-game help type &ldquo;help&rdquo;. If it doesn&rsquo;t launch on its own, click <a data-mud-path="/mud" href="#join-dmud" aria-label="Launch the DMUD console">π</a>.</p>
 </div>
     
 <script data-mud-src="/js/mud-overlay.js">
@@ -209,6 +209,7 @@
   var src = document.currentScript && document.currentScript.getAttribute('data-mud-src') || "\/js\/mud-overlay.js";
   var pendingUrl = null;
   var pendingAnchor = null;
+  var pendingForce = false;
   var loading = false;
 
   var TRIGGER_SELECTOR = 'a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]';
@@ -235,20 +236,32 @@
     if (!u && p) u = (location.protocol==='https:'?'wss://':'ws://') + location.host + p;
     return u;
   }
-  function summon(url, anchor){
-    if (!url) return;
+  function pathToUrl(path){
+    if (!path) return '';
+    var raw = String(path).trim();
+    if (!raw) return '';
+    if (/^wss?:\/\//i.test(raw)) return raw;
+    if (raw.charAt(0) !== '/') raw = '/' + raw;
+    var scheme = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    return scheme + location.host + raw;
+  }
+  function summon(url, anchor, options){
+    options = options || {};
+    var force = !!options.force;
+    if (!url && !force) return;
     var targetAnchor = anchor && anchor.nodeType === 1 ? anchor : null;
     if (window.spawnMudOverlay) {
-      if (targetAnchor) {
-        window.spawnMudOverlay(url, { anchor: targetAnchor });
-      } else {
-        window.spawnMudOverlay(url);
-      }
+      var spawnOptions = {};
+      if (targetAnchor) spawnOptions.anchor = targetAnchor;
+      if (force && !url) spawnOptions.deferConnect = true;
+      var opts = Object.keys(spawnOptions).length ? spawnOptions : undefined;
+      window.spawnMudOverlay(url || undefined, opts);
       return;
     }
 
     pendingUrl = url;
     pendingAnchor = targetAnchor;
+    pendingForce = force && !url;
     if (loading) return;
 
     loading = true;
@@ -258,12 +271,13 @@
       loading = false;
       var target = pendingUrl; pendingUrl = null;
       var anchor = pendingAnchor; pendingAnchor = null;
-      if (window.spawnMudOverlay && target) {
-        if (anchor) {
-          window.spawnMudOverlay(target, { anchor: anchor });
-        } else {
-          window.spawnMudOverlay(target);
-        }
+      var forceLaunch = pendingForce; pendingForce = false;
+      if (window.spawnMudOverlay) {
+        var spawnOptions = {};
+        if (anchor) spawnOptions.anchor = anchor;
+        if (forceLaunch && !target) spawnOptions.deferConnect = true;
+        var opts = Object.keys(spawnOptions).length ? spawnOptions : undefined;
+        window.spawnMudOverlay(target || undefined, opts);
       }
     };
     s.onerror = function(){ loading = false; console.error('Failed to load MUD overlay script at', src); };
@@ -279,15 +293,23 @@
 
   var autoLaunch = true;
   var explicitUrl = null;
+  var explicitPath = "/mud";
 
   if (autoLaunch) {
     var link = findFirstLink();
-    var targetUrl = explicitUrl || resolveUrl(link) || null;
+    var targetUrl = explicitUrl || resolveUrl(link) || pathToUrl(explicitPath) || null;
+    var summonOptions = targetUrl ? null : { force: true };
     if (targetUrl) {
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function(){ summon(targetUrl, link); }, { once: true });
       } else {
         summon(targetUrl, link);
+      }
+    } else if (summonOptions) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ summon(null, link, summonOptions); }, { once: true });
+      } else {
+        summon(null, link, summonOptions);
       }
     }
   }

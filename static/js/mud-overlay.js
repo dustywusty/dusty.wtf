@@ -724,6 +724,7 @@
   // ---------- public API ----------
   function spawn(initialUrl, options) {
     const anchor = options && options.anchor && options.anchor.nodeType === 1 ? options.anchor : lastAnchor;
+    const deferConnect = !!(options && options.deferConnect);
     // build or reuse
     if (!controller || !document.body.contains(controller.root)) {
       controller = buildOverlay(anchor);
@@ -737,7 +738,9 @@
     controller.root.style.zIndex = String(baseZ + 1);
 
     if (initialUrl) controller.setUrl(initialUrl);
-    controller.connect();
+    if (!deferConnect) {
+      controller.connect();
+    }
     controller.focus();
     return controller;
   }
