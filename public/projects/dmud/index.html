@@ -198,10 +198,8 @@
     </div>
     <div class="container animate-fade-up">
 <h1>DMUD</h1>
-<h2 id="console">Console</h2>
-<div data-mud-mount class="mud-console-mount" data-mud-path="/mud" hidden></div>
-<h2 id="getting-started">Getting Started</h2>
-<p>The console should pop open automatically. To clear the MUD console type &ldquo;/clear&rdquo;; for in-game help type &ldquo;help&rdquo;. If it doesn&rsquo;t launch on its own, click <a data-mud-path="/mud" href="#join-dmud" aria-label="Launch the DMUD console">π</a>.</p>
+<div data-mud-mount
+     class="mud-console-mount" data-mud-path="/mud" hidden></div>
 </div>
     
 <script data-mud-src="/js/mud-overlay.js">
@@ -214,12 +212,14 @@
   var loading = false;
 
   var TRIGGER_SELECTOR = 'a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]';
+
   function findLink(t){
     if (!t) return null;
     var link = t.closest('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"]');
     if (link) return link;
     return t.closest('[data-mud-mount]');
   }
+
   function findFirstLink(){
     var links = document.querySelectorAll(TRIGGER_SELECTOR);
     for (var i = 0; i < links.length; i++) {
@@ -294,7 +294,7 @@
 
   var autoLaunch = true;
   var explicitUrl = null;
-  var explicitPath = "/mud";
+  var explicitPath = "\"/mud\"";
 
   if (autoLaunch) {
     var link = findFirstLink();
