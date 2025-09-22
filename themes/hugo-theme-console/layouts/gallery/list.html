@@ -4,7 +4,7 @@
 <div class="image-grid">
     {{ range sort .Pages "Date" "desc" }}
         {{ if and (isset .Params "image") .Params.image }}
-            <a href="{{ .Permalink }}" title="{{ .Title }}">
+            <a href="{{ .RelPermalink }}" title="{{ .Title }}">
             {{ $image := .Page.Resources.GetMatch .Params.image }}
             {{ with $image }}
                 {{ $thumb := .Resize "400x" }}
