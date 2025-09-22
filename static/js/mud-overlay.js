@@ -618,8 +618,12 @@
             append("[unknown message type]", "sys");
             return;
           }
-          if (!s || !s.trim()) return; // drop empty/whitespace-only payloads
-          append(s, "outl");
+          if (!s) return;
+          let normalized = s.replace(/\r\n/g, "\n").replace(/\r/g, "");
+          if (/^\n[^\n]/.test(normalized)) normalized = normalized.slice(1);
+          if (/[^\n]\n$/.test(normalized)) normalized = normalized.slice(0, -1);
+          if (!normalized.trim()) return; // drop empty/whitespace-only payloads
+          append(normalized, "outl");
         } catch (e) {
           append("Message handling error: " + (e?.message || e), "err");
         }
@@ -638,6 +642,8 @@
       });
     };
     const addGap = () => {
+      const last = out.lastElementChild;
+      if (last && last.classList && last.classList.contains("gap")) return;
       out.appendChild(el("div", { class: "gap" }));
       out.scrollTop = out.scrollHeight;
     };
@@ -656,6 +662,8 @@
           : trimmed;
       history.push(trimmed);
       idx = history.length;
+      flushGroup();
+      addGap(); // isolate commands with a leading gap
       append(trimmed, "inl");
       addGap(); // visual gap without a timestamp
       if (!ws || ws.readyState !== WebSocket.OPEN) {
