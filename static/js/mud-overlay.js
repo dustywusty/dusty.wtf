@@ -633,7 +633,9 @@
             return;
           }
           if (!s) return;
+          console.log("[MUD WS] raw message:", JSON.stringify(s));
           const normalized = s.replace(/\r\n/g, "\n").replace(/\r/g, "");
+          console.log("[MUD WS] normalized message:", JSON.stringify(normalized));
           if (!normalized) return;
           if (!normalized.trim()) {
             // Preserve intentional blank lines from the server.
