@@ -199,7 +199,7 @@
     <div class="container animate-fade-up">
 <h1>DMUD</h1>
 <div data-mud-mount
-     class="mud-console-mount" data-mud-path="/mud" hidden></div>
+     class="mud-console-mount" data-mud-ws="wss://dmud-495017347762.us-central1.run.app/ws" hidden></div>
 </div>
     
 <script data-mud-src="/js/mud-overlay.js">
@@ -293,8 +293,8 @@
   }, { capture: true });
 
   var autoLaunch = true;
-  var explicitUrl = null;
-  var explicitPath = "\"/mud\"";
+  var explicitUrl = "\"wss://dmud-495017347762.us-central1.run.app/ws\"";
+  var explicitPath = null;
 
   if (autoLaunch) {
     var link = findFirstLink();
