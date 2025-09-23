@@ -618,7 +618,6 @@
             return;
           }
           if (!s) return;
-          console.log("[MUD WS] raw message:", JSON.stringify(s));
           append(s, "outl");
         } catch (e) {
           append("Message handling error: " + (e?.message || e), "err");
@@ -627,8 +626,7 @@
       ws.addEventListener("error", (e) => {
         flushGroup();
         setStatus("error", "error");
-        append("WebSocket error (see console).", "err");
-        console.error("[MUD WS] error", e);
+        append("WebSocket error.", "err");
       });
       ws.addEventListener("close", (e) => {
         flushGroup();

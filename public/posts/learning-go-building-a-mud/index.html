@@ -292,7 +292,14 @@ Aug 10, 2025
         window.spawnMudOverlay(target || undefined, opts);
       }
     };
-    s.onerror = function(){ loading = false; console.error('Failed to load MUD overlay script at', src); };
+    s.onerror = function(){
+      loading = false;
+      if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+        try {
+          window.dispatchEvent(new CustomEvent('mud-overlay-load-error', { detail: { src: src } }));
+        } catch (err) {}
+      }
+    };
     document.head.appendChild(s);
   }
 
