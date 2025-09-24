@@ -378,6 +378,7 @@
   color:var(--mud-text-muted,#9da7b3);
   font-size:12px;
   font-variant-numeric:tabular-nums;
+  min-width:var(--mud-ts-min-width,11ch);
   text-align:right;
   white-space:nowrap;
   padding-top:2px;
