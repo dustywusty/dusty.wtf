@@ -378,6 +378,7 @@
   color:var(--mud-text-muted,#9da7b3);
   font-size:12px;
   font-variant-numeric:tabular-nums;
+  min-width:var(--mud-ts-min-width,11ch);
   text-align:right;
   white-space:nowrap;
   padding-top:2px;
@@ -536,10 +537,20 @@
     };
     setStatus("disconnected", "idle");
     // Coalesce fast bursts (e.g., multi-line help) into one timestamped block.
-    let grpBuf = "";
+    let grpBuf = [];
     let grpCls = null;
+    let grpStamp = null;
     let grpTimer = null;
     const FLUSH_MS = 80;
+    const resetGroup = () => {
+      grpBuf = [];
+      grpCls = null;
+      grpStamp = null;
+      if (grpTimer) {
+        clearTimeout(grpTimer);
+        grpTimer = null;
+      }
+    };
     const pushLine = (cls, text, timestamp = now()) => {
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
       const msgClass = cls ? `msg ${cls}` : "msg";
@@ -551,21 +562,20 @@
       out.scrollTop = out.scrollHeight;
     };
     const flushGroup = () => {
-      if (!grpBuf) return;
-      pushLine(grpCls || "outl", grpBuf);
-      grpBuf = "";
-      grpCls = null;
-      if (grpTimer) {
-        clearTimeout(grpTimer);
-        grpTimer = null;
-      }
+      if (!grpBuf.length) return;
+      const stamp = grpStamp || now();
+      grpBuf.forEach((msg, idx) => {
+        pushLine(grpCls || "outl", msg, idx === 0 ? stamp : "");
+      });
+      resetGroup();
     };
     const append = (text, cls = "outl", grouped = true) => {
       // group only normal server output
       if (grouped && cls === "outl") {
         if (grpCls && grpCls !== cls) flushGroup();
         grpCls = cls;
-        grpBuf += text;
+        if (!grpStamp) grpStamp = now();
+        grpBuf.push(String(text));
         if (grpTimer) clearTimeout(grpTimer);
         grpTimer = setTimeout(flushGroup, FLUSH_MS);
         return;
@@ -670,6 +680,7 @@
     const handleSlash = (v) => {
       const t = v.trim();
       if (t === "/clear") {
+        resetGroup();
         out.innerHTML = "";
         return true;
       }
@@ -691,7 +702,10 @@
     btnClose.addEventListener("click", closeOverlay);
 
     btnSend.addEventListener("click", send);
-    btnClear.addEventListener("click", () => (out.innerHTML = ""));
+    btnClear.addEventListener("click", () => {
+      resetGroup();
+      out.innerHTML = "";
+    });
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey) {
