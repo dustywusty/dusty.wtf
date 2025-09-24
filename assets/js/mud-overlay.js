@@ -145,6 +145,10 @@
     const statusConnected = mix(accent, text, 0.4);
     const shadow = mix(text, bg, 0.12);
     const scrollThumb = mix(text, bg, 0.7);
+    const deathSurface = mix(bg, error, 0.18);
+    const deathBorder = mix(error, text, 0.4);
+
+    const readableDeath = ensureReadable(error, deathSurface, error, 4.5);
 
     const readableText = ensureReadable(text, panel, text, 4.5);
     const readableMuted = ensureReadable(textMuted, panel, readableText, 3.2);
@@ -184,6 +188,9 @@
     target.style.setProperty("--mud-shadow", toRgbaString(shadow, 0.35, FALLBACK.text));
     target.style.setProperty("--mud-scroll-thumb", toRgbaString(scrollThumb, 0.4, FALLBACK.text));
     target.style.setProperty("--mud-focus-ring", toRgbaString(focusRing, 0.35, FALLBACK.accent));
+    target.style.setProperty("--mud-death-bg", toRgbaString(deathSurface, 0.4, FALLBACK.error));
+    target.style.setProperty("--mud-death-border", toRgbaString(deathBorder, 0.85, FALLBACK.error));
+    target.style.setProperty("--mud-death-text", toRgbString(readableDeath, FALLBACK.error));
   }
 
   function refreshThemeTargets() {
@@ -387,6 +394,36 @@
   white-space:pre-wrap;
   word-break:break-word;
 }
+#${OVERLAY_ID} .line-death{
+  position:relative;
+  padding:6px 10px;
+  margin:6px -6px;
+  border-radius:10px;
+  overflow:hidden;
+}
+#${OVERLAY_ID} .line-death::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--mud-death-bg,rgba(255,123,114,.16));
+  border-left:3px solid var(--mud-death-border,rgba(255,123,114,.45));
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(255,123,114,.25);
+  pointer-events:none;
+}
+#${OVERLAY_ID} .line-death > *{
+  position:relative;
+}
+#${OVERLAY_ID} .line-death .ts{
+  color:var(--mud-death-text,var(--mud-err,#ff7b72));
+}
+#${OVERLAY_ID} .line-death .msg{
+  color:var(--mud-death-text,var(--mud-err,#ff7b72));
+}
+#${OVERLAY_ID} .msg.death{
+  font-weight:600;
+  text-shadow:0 0 12px rgba(255,123,114,.4);
+}
 #${OVERLAY_ID} .out::-webkit-scrollbar{width:10px;}
 #${OVERLAY_ID} .out::-webkit-scrollbar-thumb{
   background:var(--mud-scroll-thumb,rgba(150,150,150,.35));
@@ -551,10 +588,13 @@
         grpTimer = null;
       }
     };
-    const pushLine = (cls, text, timestamp = now()) => {
+    const pushLine = (cls, text, timestamp = now(), lineClass = "") => {
       while (out.childElementCount > MAX_LINES) out.removeChild(out.firstChild);
       const msgClass = cls ? `msg ${cls}` : "msg";
-      const line = el("div", { class: "line" }, [
+      const classes = ["line"];
+      if (lineClass) classes.push(lineClass);
+      else if (cls && String(cls).split(/\s+/).includes("death")) classes.push("line-death");
+      const line = el("div", { class: classes.join(" ") }, [
         el("div", { class: "ts" }, timestamp),
         el("div", { class: msgClass }, text),
       ]);
@@ -569,20 +609,58 @@
       });
       resetGroup();
     };
+    const deathMatchers = [
+      /\bhas been slain\b/i,
+      /\bhas slain you\b/i,
+      /\bhas killed you\b/i,
+      /\byou have been slain\b/i,
+      /\byou have been killed\b/i,
+      /\byou were slain\b/i,
+      /\byou were killed\b/i,
+      /\byou got slain\b/i,
+      /\byou got killed\b/i,
+      /\byou have died\b/i,
+      /\byou died\b/i,
+      /\byou are dead\b/i,
+      /\byou are slain\b/i,
+      /\byou have perished\b/i,
+    ];
+    const detectLineEffects = (text, cls) => {
+      if (!text || !cls) return null;
+      const baseCls = String(cls).trim();
+      if (!baseCls.split(/\s+/).includes("outl")) return null;
+      const message = String(text);
+      if (!message.trim()) return null;
+      if (deathMatchers.some((pattern) => pattern.test(message))) {
+        const classes = baseCls ? baseCls.split(/\s+/) : [];
+        if (!classes.includes("death")) classes.push("death");
+        return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
+      }
+      return null;
+    };
     const append = (text, cls = "outl", grouped = true) => {
-      // group only normal server output
-      if (grouped && cls === "outl") {
-        if (grpCls && grpCls !== cls) flushGroup();
-        grpCls = cls;
+      let effectiveCls = cls;
+      let lineClass = "";
+      let useGrouping = grouped && cls === "outl";
+      const special = cls === "outl" ? detectLineEffects(text, cls) : null;
+      if (special) {
+        effectiveCls = special.cls || effectiveCls;
+        lineClass = special.lineClass || lineClass;
+        if (special.grouped === false) useGrouping = false;
+      }
+      const normalizedCls = String(effectiveCls || "").trim();
+      const canGroup = useGrouping && normalizedCls === "outl";
+      if (canGroup) {
+        if (grpCls && grpCls !== normalizedCls) flushGroup();
+        grpCls = normalizedCls;
         if (!grpStamp) grpStamp = now();
         grpBuf.push(String(text));
         if (grpTimer) clearTimeout(grpTimer);
         grpTimer = setTimeout(flushGroup, FLUSH_MS);
         return;
       }
-      // non-grouped: flush any pending group, then append standalone
       flushGroup();
-      pushLine(cls, text);
+      pushLine(effectiveCls, text, undefined, lineClass);
     };
     const disconnect = () => {
       if (ws && ws.readyState === WebSocket.OPEN) ws.close(1000, "client closing");
