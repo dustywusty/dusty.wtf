@@ -598,7 +598,8 @@
       ws = new WebSocket(url);
       localStorage.setItem(LS_KEY, url);
 
-      ws.addEventListener("open", () => {
+      ws.addEventListener("open", (ev) => {
+        console.log("[mud ws] open", ev);
         flushGroup();
         setStatus("connected", "connected");
         btnConn.textContent = "Disconnect";
@@ -606,6 +607,7 @@
         input.focus();
       });
       ws.addEventListener("message", async (ev) => {
+        console.log("[mud ws] message", ev);
         try {
           let s;
           if (typeof ev.data === "string") s = ev.data;
@@ -624,11 +626,13 @@
         }
       });
       ws.addEventListener("error", (e) => {
+        console.log("[mud ws] error", e);
         flushGroup();
         setStatus("error", "error");
         append("WebSocket error.", "err");
       });
       ws.addEventListener("close", (e) => {
+        console.log("[mud ws] close", e);
         flushGroup();
         setStatus("disconnected", "idle");
         btnConn.textContent = "Connect";
