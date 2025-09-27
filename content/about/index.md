@@ -26,3 +26,16 @@ Anyway, {{< h1 >}}nice to meet you!{{< /h1 >}} If you'd like to get in touch for
 [fontawesome](https://fontawesome.com/)
 
 [dusty.wtf](https://github.com/dustywusty/dusty.wtf)
+
+# Rand
+
+<div class="badges-88x31">
+  <a href="https://cyber.dabamos.de/88x31/index.html" target="_blank">
+    <img src="/a1animate3.gif" alt="clipart" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  </a>
+  <img src="/anybrow.gif" alt="dusty" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  <img src="/aol_sucks02.gif" alt="aolsucks" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  <img src="/apple.gif" alt="apple" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  <img src="/say-no-to-web3.gif" alt="no-web-3-keep-the-web-open" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  <img src="/acab.gif" alt="all cats are beautiful" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+</div>

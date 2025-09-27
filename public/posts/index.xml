@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on dusty.wtf</title>
-    <link>https://dusty.wtf/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on dusty.wtf</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 29 Aug 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://dusty.wtf/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AMSAT Adventures (Part 1)</title>
-      <link>https://dusty.wtf/posts/amsat-adventures-pt1/</link>
+      <link>http://localhost:1313/posts/amsat-adventures-pt1/</link>
       <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/posts/amsat-adventures-pt1/</guid>
+      <guid>http://localhost:1313/posts/amsat-adventures-pt1/</guid>
       <description>&lt;p&gt;Wouldn&amp;rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?&lt;/p&gt;</description>
     </item>
     <item>
       <title>Vibe-coding a MUD w/ Robots: ChatGPT, Claude, &amp; Codex agents</title>
-      <link>https://dusty.wtf/posts/learning-go-building-a-mud/</link>
+      <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/posts/learning-go-building-a-mud/</guid>
-      <description>Placeholder for future talk?</description>
+      <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
+      <description>&lt;p&gt;Placeholder for future talk?&lt;/p&gt;&#xA;&lt;!--more--!&gt;&#xA;&#xA;# DMUD&#xA;&#xA;..</description>
     </item>
   </channel>
 </rss>
