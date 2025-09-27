@@ -290,6 +290,7 @@ figure {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  padding: 10px;
 }
 
 .description {
@@ -301,6 +302,7 @@ figure {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: 10px;
 }
 
 /* Social links list */
