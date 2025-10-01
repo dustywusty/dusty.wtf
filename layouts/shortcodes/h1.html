@@ -1,1 +1,3 @@
-<mark class="hl">{{- trim .Inner " \n\r\t" -}}</mark>
+{{- $inner := trim .Inner " \n\r\t" -}}
+{{- $rendered := .Page.RenderString (dict "display" "inline") $inner -}}
+<mark class="hl">{{- trim $rendered " \n\r\t" | safeHTML -}}</mark>
