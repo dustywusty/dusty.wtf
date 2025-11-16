@@ -8,7 +8,7 @@ Hey! I'm Dusty✌️
 
 I love {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[shit-posting](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff
 
-I've been a Software Engineer for over two decades, I'm the {{< h1 >}}Founding Engineer{{< /h1 >}} at {{< h1 >}}[Nexus.gg](https://nexus.gg){{< /h1 >}} and I'm in gradschool working on my master's degree in Computer Science
+I've been a Software Engineer for over two decades, I'm the founding engineer at {{< h1 >}}[Nexus.gg](https://nexus.gg){{< /h1 >}} and I'm in gradschool working on my master's degree in Computer Science
 
 If you'd like to get in touch for any reason just reach out to one of my {{< h1 >}}[socials](https://dusty.wtf){{< /h1 >}}
 
@@ -27,7 +27,7 @@ I'd love to chat!
 
 [dusty.wtf](https://github.com/dustywusty/dusty.wtf)
 
-# Geocities Vibe
+# Geocities Vibes
 
 <div class="badges-88x31">
   <a href="https://cyber.dabamos.de/88x31/index.html" target="_blank">
