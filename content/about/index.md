@@ -37,5 +37,5 @@ I'd love to chat!
   <img src="/aol_sucks02.gif" alt="aolsucks" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
   <img src="/apple.gif" alt="apple" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
   <img src="/say-no-to-web3.gif" alt="no-web-3-keep-the-web-open" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
-  <img src="/acab.gif" alt="all cats are beautiful" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle">
+  <!-- <img src="/acab.gif" alt="all cats are beautiful" style="width:88px;height:31px;max-width:none;image-rendering:pixelated;margin-right:10px;vertical-align:middle"> -->
 </div>
