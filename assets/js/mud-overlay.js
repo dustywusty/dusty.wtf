@@ -191,6 +191,9 @@
     target.style.setProperty("--mud-death-bg", toRgbaString(deathSurface, 0.4, FALLBACK.error));
     target.style.setProperty("--mud-death-border", toRgbaString(deathBorder, 0.85, FALLBACK.error));
     target.style.setProperty("--mud-death-text", toRgbString(readableDeath, FALLBACK.error));
+
+    // Export primary color for health bar
+    target.style.setProperty("--primary", toRgbString(accent, FALLBACK.accent));
   }
 
   function refreshThemeTargets() {
