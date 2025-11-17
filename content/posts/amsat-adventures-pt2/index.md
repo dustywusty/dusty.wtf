@@ -13,11 +13,11 @@ We've got our mounting bracket from [OSH Cut](https://www.oshcut.com/)
 
 PCBs from [OSH Park](https://oshpark.com/)
 
-![Printed circuit boards](bracket.jpg "PCBs")
+![Printed circuit boards](pcbs.jpg "PCBs")
 
 And finally the components from [DigiKey](https://www.digikey.com/)
 
-![PCB components](bracket.jpg "components")
+![PCB components](components.jpg "components")
 
 In the mean-time I had been playing w/ SDR and my YAGI to some success!
 
