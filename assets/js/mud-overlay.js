@@ -592,11 +592,12 @@
     const healthText = el("span", { class: "health-text" }, "HP: --/--");
     const areaText = el("span", { class: "area-text" }, "");
     const effectsText = el("span", { class: "effects-text" }, "");
-    const statusPanel = el("div", { class: "status-panel", style: "display: none;" }, [
+    const statusPanel = el("div", { class: "status-panel" }, [
       el("div", { class: "health-container" }, [healthText, healthBar]),
       areaText,
       effectsText,
     ]);
+    statusPanel.style.display = "none";
 
     // Output + input
     const out = el("div", { class: "out" });
