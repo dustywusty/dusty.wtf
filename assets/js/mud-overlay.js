@@ -946,6 +946,32 @@
       out.innerHTML = "";
     });
 
+    // Arrow key navigation state
+    let lastKeyPress = null;
+    let lastKeyTime = 0;
+    let lastActionTime = 0;
+    const DOUBLE_TAP_WINDOW = 300; // ms to detect double tap
+    const ACTION_COOLDOWN = 1000; // ms between actions
+
+    const sendDirection = (direction) => {
+      const now = Date.now();
+      if (now - lastActionTime < ACTION_COOLDOWN) {
+        return; // Still on cooldown
+      }
+
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        append("Not connected.", "err");
+        return;
+      }
+
+      lastActionTime = now;
+      flushGroup();
+      addGap();
+      append(direction, "inl");
+      addGap();
+      ws.send(direction);
+    };
+
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey) {
         e.preventDefault();
@@ -961,13 +987,15 @@
       if (e.key === "Escape") {
         closeOverlay();
       }
-      if (e.key === "ArrowUp") {
+
+      // History navigation when input is focused
+      if (e.key === "ArrowUp" && document.activeElement === input) {
         if (idx > 0) {
           idx--;
           input.value = history[idx] || "";
           e.preventDefault();
         }
-      } else if (e.key === "ArrowDown") {
+      } else if (e.key === "ArrowDown" && document.activeElement === input) {
         if (idx < history.length - 1) {
           idx++;
           input.value = history[idx] || "";
@@ -976,6 +1004,50 @@
           input.value = "";
         }
         e.preventDefault();
+      }
+    });
+
+    // Global arrow key listener for directional movement (when input not focused)
+    document.addEventListener("keydown", (e) => {
+      // Only handle arrows when input is not focused
+      if (document.activeElement === input) return;
+      if (!e.key.startsWith("Arrow")) return;
+
+      const now = Date.now();
+      const timeSinceLastKey = now - lastKeyTime;
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        // Check for double-tap
+        if (lastKeyPress === "ArrowUp" && timeSinceLastKey < DOUBLE_TAP_WINDOW) {
+          sendDirection("n"); // double-tap = up/north shorthand
+          lastKeyPress = null; // Reset to prevent triple-taps
+        } else {
+          sendDirection("north");
+          lastKeyPress = "ArrowUp";
+        }
+        lastKeyTime = now;
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        // Check for double-tap
+        if (lastKeyPress === "ArrowDown" && timeSinceLastKey < DOUBLE_TAP_WINDOW) {
+          sendDirection("s"); // double-tap = down/south shorthand
+          lastKeyPress = null; // Reset to prevent triple-taps
+        } else {
+          sendDirection("south");
+          lastKeyPress = "ArrowDown";
+        }
+        lastKeyTime = now;
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        sendDirection("west");
+        lastKeyPress = "ArrowLeft";
+        lastKeyTime = now;
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        sendDirection("east");
+        lastKeyPress = "ArrowRight";
+        lastKeyTime = now;
       }
     });
 
