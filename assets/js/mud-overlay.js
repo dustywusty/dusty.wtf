@@ -312,7 +312,7 @@
 }
 #${OVERLAY_ID} .health-bar{
   height:100%;
-  background:var(--primary,#4ade80);
+  background:var(--mud-btn-primary-bg,#1f4b47);
   transition:width 0.3s ease, background-color 0.3s ease;
   border-radius:4px;
 }
@@ -775,9 +775,9 @@
           const percent = max > 0 ? (current / max) * 100 : 0;
           healthBar.style.width = `${percent}%`;
 
-          // Use primary color for full health, then yellow/red as it drops
+          // Use MUD theme primary color for full health, then yellow/red as it drops
           if (percent > 66) {
-            healthBar.style.backgroundColor = "var(--primary, #4ade80)";
+            healthBar.style.backgroundColor = ""; // Clear inline style to use CSS default (--mud-btn-primary-bg)
           } else if (percent > 33) {
             healthBar.style.backgroundColor = "#fbbf24"; // yellow
           } else {
