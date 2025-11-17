@@ -279,6 +279,42 @@
   background:var(--mud-panel,#0f1419);
   border-bottom:1px solid var(--mud-border,#2d3741);
 }
+#${OVERLAY_ID} .status-panel{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px;
+  background:var(--mud-panel,#0f1419);
+  border-bottom:1px solid var(--mud-border,#2d3741);
+  font-size:13px;
+  color:var(--mud-text,#e6edf3);
+}
+#${OVERLAY_ID} .health-container{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+#${OVERLAY_ID} .health-text{
+  min-width:100px;
+  font-weight:600;
+}
+#${OVERLAY_ID} .health-bar{
+  flex:1;
+  height:12px;
+  background:var(--mud-status-connected,#4ade80);
+  border-radius:6px;
+  transition:width 0.3s ease, background-color 0.3s ease;
+  position:relative;
+  overflow:hidden;
+}
+#${OVERLAY_ID} .area-text{
+  opacity:0.8;
+  font-size:12px;
+}
+#${OVERLAY_ID} .effects-text{
+  font-size:12px;
+  color:var(--mud-sys,#fbbf24);
+}
 #${OVERLAY_ID} .status{
   padding:6px 10px;
   border:1px solid var(--mud-border,#2d3741);
@@ -551,6 +587,17 @@
 
     const head = el("div", { class: "head" }, [statusEl, urlEl, btnConn, btnClose]);
 
+    // Player status panel
+    const healthBar = el("div", { class: "health-bar" });
+    const healthText = el("span", { class: "health-text" }, "HP: --/--");
+    const areaText = el("span", { class: "area-text" }, "");
+    const effectsText = el("span", { class: "effects-text" }, "");
+    const statusPanel = el("div", { class: "status-panel", style: "display: none;" }, [
+      el("div", { class: "health-container" }, [healthText, healthBar]),
+      areaText,
+      effectsText,
+    ]);
+
     // Output + input
     const out = el("div", { class: "out" });
     const input = el("textarea", { class: "input", placeholder: "Type… (Enter=send, Ctrl+Enter=newline, /clear, /help)" });
@@ -559,6 +606,7 @@
     const inputBar = el("div", { class: "in" }, [input, btnSend, btnClear]);
 
     root.appendChild(head);
+    root.appendChild(statusPanel);
     root.appendChild(out);
     root.appendChild(inputBar);
 
@@ -694,6 +742,50 @@
         append("Connected.", "sys");
         input.focus();
       });
+      const updateStatus = (stateMsg) => {
+        // Parse STATE|HP:450/600|AREA:Town Square|EFFECTS:Guard's Blessing:500
+        const parts = stateMsg.split("|");
+        let hp = null, area = null, effects = [];
+
+        for (const part of parts) {
+          if (part.startsWith("HP:")) {
+            hp = part.substring(3);
+          } else if (part.startsWith("AREA:")) {
+            area = part.substring(5);
+          } else if (part.startsWith("EFFECTS:")) {
+            const effectsStr = part.substring(8);
+            effects = effectsStr.split(",").filter(e => e);
+          }
+        }
+
+        if (hp) {
+          const [current, max] = hp.split("/").map(n => parseInt(n, 10));
+          healthText.textContent = `HP: ${current}/${max}`;
+          const percent = max > 0 ? (current / max) * 100 : 0;
+          healthBar.style.width = `${percent}%`;
+          healthBar.style.backgroundColor =
+            percent > 66 ? "var(--mud-status-connected, #4ade80)" :
+            percent > 33 ? "var(--mud-sys, #fbbf24)" :
+            "var(--mud-err, #ef4444)";
+        }
+
+        if (area) {
+          areaText.textContent = `📍 ${area}`;
+        }
+
+        if (effects.length > 0) {
+          const effectsList = effects.map(e => {
+            const [name, bonus] = e.split(":");
+            return `${name} (+${bonus} HP)`;
+          }).join(", ");
+          effectsText.textContent = `✨ ${effectsList}`;
+        } else {
+          effectsText.textContent = "";
+        }
+
+        statusPanel.style.display = "block";
+      };
+
       ws.addEventListener("message", async (ev) => {
         console.log("[mud ws] message", ev);
         try {
@@ -708,6 +800,13 @@
             return;
           }
           if (!s) return;
+
+          // Check if it's a STATE message
+          if (s.startsWith("STATE|")) {
+            updateStatus(s);
+            return;
+          }
+
           append(s, "outl");
         } catch (e) {
           append("Message handling error: " + (e?.message || e), "err");
