@@ -298,14 +298,20 @@
   min-width:100px;
   font-weight:600;
 }
-#${OVERLAY_ID} .health-bar{
+#${OVERLAY_ID} .health-bar-bg{
   flex:1;
   height:12px;
-  background:var(--mud-status-connected,#4ade80);
+  background:var(--mud-bg,#0b0f12);
+  border:1px solid var(--mud-border,#2d3741);
   border-radius:6px;
-  transition:width 0.3s ease, background-color 0.3s ease;
-  position:relative;
   overflow:hidden;
+  position:relative;
+}
+#${OVERLAY_ID} .health-bar{
+  height:100%;
+  background:var(--primary,#4ade80);
+  transition:width 0.3s ease, background-color 0.3s ease;
+  border-radius:4px;
 }
 #${OVERLAY_ID} .area-text{
   opacity:0.8;
@@ -589,11 +595,12 @@
 
     // Player status panel
     const healthBar = el("div", { class: "health-bar" });
+    const healthBarBg = el("div", { class: "health-bar-bg" }, [healthBar]);
     const healthText = el("span", { class: "health-text" }, "HP: --/--");
     const areaText = el("span", { class: "area-text" }, "");
     const effectsText = el("span", { class: "effects-text" }, "");
     const statusPanel = el("div", { class: "status-panel" }, [
-      el("div", { class: "health-container" }, [healthText, healthBar]),
+      el("div", { class: "health-container" }, [healthText, healthBarBg]),
       areaText,
       effectsText,
     ]);
@@ -764,10 +771,15 @@
           healthText.textContent = `HP: ${current}/${max}`;
           const percent = max > 0 ? (current / max) * 100 : 0;
           healthBar.style.width = `${percent}%`;
-          healthBar.style.backgroundColor =
-            percent > 66 ? "var(--mud-status-connected, #4ade80)" :
-            percent > 33 ? "var(--mud-sys, #fbbf24)" :
-            "var(--mud-err, #ef4444)";
+
+          // Use primary color for full health, then yellow/red as it drops
+          if (percent > 66) {
+            healthBar.style.backgroundColor = "var(--primary, #4ade80)";
+          } else if (percent > 33) {
+            healthBar.style.backgroundColor = "#fbbf24"; // yellow
+          } else {
+            healthBar.style.backgroundColor = "#ef4444"; // red
+          }
         }
 
         if (area) {
