@@ -6,7 +6,7 @@ title = "Dustin Clark"
 {{< profile-row src="df.jpg" alt="Dusty" size="250" >}}
 Hey! I'm Dusty✌️
 
-I love {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[shit-posting](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff
+I love {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[posting memes](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff
 
 I've been a Software Engineer for over two decades, I'm the founding engineer at {{< h1 >}}[Nexus.gg](https://nexus.gg){{< /h1 >}} and I'm in gradschool working on my master's degree in Computer Science
 
