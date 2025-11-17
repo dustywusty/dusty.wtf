@@ -3,7 +3,7 @@ title = "Quick AMSAT Adventures Update (Part 2)"
 date = "2025-11-01"
 +++
 
-All of our components are finally here and I can start assembly soon(tm)!
+All of our components are here and I can start assembly soon(tm)!
 
 <!--more-->
 
