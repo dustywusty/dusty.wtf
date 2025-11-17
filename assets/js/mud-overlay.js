@@ -180,6 +180,7 @@
     target.style.setProperty("--mud-btn-primary-border", toRgbString(btnPrimaryBorder, FALLBACK.accent));
     target.style.setProperty("--mud-btn-primary-hover-border", toRgbString(btnPrimaryHoverBorder, FALLBACK.accent));
     target.style.setProperty("--mud-btn-primary-text", toRgbString(readablePrimaryText, FALLBACK.accentInk));
+    target.style.setProperty("--mud-health-bar", toRgbString(accent, FALLBACK.accent));
     target.style.setProperty("--mud-status-idle", toRgbString(readableStatusIdle, FALLBACK.text));
     target.style.setProperty("--mud-status-connecting", toRgbString(readableStatusConnecting, FALLBACK.accent));
     target.style.setProperty("--mud-status-connected", toRgbString(readableStatusConnected, FALLBACK.accent));
@@ -302,7 +303,7 @@
   font-weight:600;
 }
 #${OVERLAY_ID} .level-text{
-  min-width:80px;
+  min-width:100px;
   font-weight:600;
 }
 #${OVERLAY_ID} .xp-bar-bg{
@@ -336,7 +337,7 @@
 }
 #${OVERLAY_ID} .health-bar{
   height:100%;
-  background:var(--mud-btn-primary-bg,#1f4b47);
+  background:var(--mud-health-bar,#29e3c7);
   transition:width 0.3s ease, background-color 0.3s ease;
   border-radius:4px;
 }
@@ -809,7 +810,7 @@
 
           // Use MUD theme primary color for full health, then yellow/red as it drops
           if (percent > 66) {
-            healthBar.style.backgroundColor = ""; // Clear inline style to use CSS default (--mud-btn-primary-bg)
+            healthBar.style.backgroundColor = ""; // Clear inline style to use CSS default (--mud-health-bar)
           } else if (percent > 33) {
             healthBar.style.backgroundColor = "#fbbf24"; // yellow
           } else {
