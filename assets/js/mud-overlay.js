@@ -301,10 +301,12 @@
 #${OVERLAY_ID} .health-text{
   min-width:100px;
   font-weight:600;
+  opacity:1;
 }
 #${OVERLAY_ID} .level-text{
   min-width:100px;
   font-weight:600;
+  opacity:1;
 }
 #${OVERLAY_ID} .xp-bar-bg{
   flex:1;
