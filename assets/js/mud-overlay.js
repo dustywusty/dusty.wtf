@@ -948,7 +948,7 @@
 
     // Arrow key navigation state
     let lastActionTime = 0;
-    const ACTION_COOLDOWN = 1000; // ms between actions
+    const ACTION_COOLDOWN = 500; // ms between actions
 
     const sendDirection = (direction) => {
       const now = Date.now();
