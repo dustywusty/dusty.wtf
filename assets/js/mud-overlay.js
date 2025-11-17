@@ -301,6 +301,30 @@
   min-width:100px;
   font-weight:600;
 }
+#${OVERLAY_ID} .level-text{
+  min-width:80px;
+  font-weight:600;
+}
+#${OVERLAY_ID} .xp-bar-bg{
+  flex:1;
+  height:8px;
+  background:var(--mud-bg,#0b0f12);
+  border:1px solid var(--mud-border,#2d3741);
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+}
+#${OVERLAY_ID} .xp-bar{
+  height:100%;
+  background:var(--mud-sys,#fbbf24);
+  transition:width 0.3s ease;
+  border-radius:3px;
+}
+#${OVERLAY_ID} .level-container{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 #${OVERLAY_ID} .health-bar-bg{
   flex:1;
   height:12px;
@@ -600,10 +624,14 @@
     const healthBar = el("div", { class: "health-bar" });
     const healthBarBg = el("div", { class: "health-bar-bg" }, [healthBar]);
     const healthText = el("span", { class: "health-text" }, "HP: --/--");
+    const xpBar = el("div", { class: "xp-bar" });
+    const xpBarBg = el("div", { class: "xp-bar-bg" }, [xpBar]);
+    const levelText = el("span", { class: "level-text" }, "Level --");
     const areaText = el("span", { class: "area-text" }, "");
     const effectsText = el("span", { class: "effects-text" }, "");
     const statusPanel = el("div", { class: "status-panel" }, [
       el("div", { class: "health-container" }, [healthText, healthBarBg]),
+      el("div", { class: "level-container" }, [levelText, xpBarBg]),
       areaText,
       effectsText,
     ]);
@@ -754,13 +782,17 @@
         input.focus();
       });
       const updateStatus = (stateMsg) => {
-        // Parse STATE|HP:450/600|AREA:Town Square|EFFECTS:Guard's Blessing:500
+        // Parse STATE|HP:450/600|LEVEL:5|XP:120/250|AREA:Town Square|EFFECTS:Guard's Blessing:500
         const parts = stateMsg.split("|");
-        let hp = null, area = null, effects = [];
+        let hp = null, level = null, xp = null, area = null, effects = [];
 
         for (const part of parts) {
           if (part.startsWith("HP:")) {
             hp = part.substring(3);
+          } else if (part.startsWith("LEVEL:")) {
+            level = part.substring(6);
+          } else if (part.startsWith("XP:")) {
+            xp = part.substring(3);
           } else if (part.startsWith("AREA:")) {
             area = part.substring(5);
           } else if (part.startsWith("EFFECTS:")) {
@@ -783,6 +815,16 @@
           } else {
             healthBar.style.backgroundColor = "#ef4444"; // red
           }
+        }
+
+        if (level) {
+          levelText.textContent = `Level ${level}`;
+        }
+
+        if (xp) {
+          const [current, required] = xp.split("/").map(n => parseInt(n, 10));
+          const percent = required > 0 ? (current / required) * 100 : 0;
+          xpBar.style.width = `${percent}%`;
         }
 
         if (area) {
