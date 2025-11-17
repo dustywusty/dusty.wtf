@@ -307,10 +307,10 @@
 }
 #${OVERLAY_ID} .xp-bar-bg{
   flex:1;
-  height:8px;
+  height:12px;
   background:var(--mud-bg,#0b0f12);
   border:1px solid var(--mud-border,#2d3741);
-  border-radius:4px;
+  border-radius:6px;
   overflow:hidden;
   position:relative;
 }
@@ -318,7 +318,7 @@
   height:100%;
   background:var(--mud-sys,#fbbf24);
   transition:width 0.3s ease;
-  border-radius:3px;
+  border-radius:4px;
 }
 #${OVERLAY_ID} .level-container{
   display:flex;
