@@ -947,10 +947,7 @@
     });
 
     // Arrow key navigation state
-    let lastKeyPress = null;
-    let lastKeyTime = 0;
     let lastActionTime = 0;
-    const DOUBLE_TAP_WINDOW = 300; // ms to detect double tap
     const ACTION_COOLDOWN = 1000; // ms between actions
 
     const sendDirection = (direction) => {
@@ -1007,47 +1004,29 @@
       }
     });
 
-    // Global arrow key listener for directional movement (when input not focused)
+    // Global key listener for directional movement (when input not focused)
     document.addEventListener("keydown", (e) => {
-      // Only handle arrows when input is not focused
+      // Only handle navigation when input is not focused
       if (document.activeElement === input) return;
-      if (!e.key.startsWith("Arrow")) return;
-
-      const now = Date.now();
-      const timeSinceLastKey = now - lastKeyTime;
 
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        // Check for double-tap
-        if (lastKeyPress === "ArrowUp" && timeSinceLastKey < DOUBLE_TAP_WINDOW) {
-          sendDirection("n"); // double-tap = up/north shorthand
-          lastKeyPress = null; // Reset to prevent triple-taps
-        } else {
-          sendDirection("north");
-          lastKeyPress = "ArrowUp";
-        }
-        lastKeyTime = now;
+        sendDirection("north");
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
-        // Check for double-tap
-        if (lastKeyPress === "ArrowDown" && timeSinceLastKey < DOUBLE_TAP_WINDOW) {
-          sendDirection("s"); // double-tap = down/south shorthand
-          lastKeyPress = null; // Reset to prevent triple-taps
-        } else {
-          sendDirection("south");
-          lastKeyPress = "ArrowDown";
-        }
-        lastKeyTime = now;
+        sendDirection("south");
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         sendDirection("west");
-        lastKeyPress = "ArrowLeft";
-        lastKeyTime = now;
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
         sendDirection("east");
-        lastKeyPress = "ArrowRight";
-        lastKeyTime = now;
+      } else if (e.key === "u" || e.key === "U") {
+        e.preventDefault();
+        sendDirection("u");
+      } else if (e.key === "d" || e.key === "D") {
+        e.preventDefault();
+        sendDirection("d");
       }
     });
 
