@@ -319,7 +319,8 @@
 }
 #${OVERLAY_ID} .xp-bar{
   height:100%;
-  background:var(--mud-sys,#fbbf24);
+  background:var(--mud-health-bar,#29e3c7);
+  opacity:1;
   transition:width 0.3s ease;
   border-radius:4px;
 }
