@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>dusty.wtf</title>
-    <link>https://dusty.wtf/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on dusty.wtf</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 29 Aug 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://dusty.wtf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>AMSAT Adventures (Part 1)</title>
-      <link>https://dusty.wtf/posts/amsat-adventures-pt1/</link>
-      <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/posts/amsat-adventures-pt1/</guid>
-      <description>&lt;p&gt;Wouldn&amp;rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?&lt;/p&gt;</description>
+      <title>Quick AMSAT Adventures Update (Part 2)</title>
+      <link>http://localhost:1313/posts/amsat-adventures-pt2/</link>
+      <pubDate>Sat, 01 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/amsat-adventures-pt2/</guid>
+      <description>&lt;p&gt;All of our components are here and I can start assembly soon(tm)!&lt;/p&gt;</description>
     </item>
     <item>
       <title>AMSAT Adventures (Part 1)</title>
-      <link>https://dusty.wtf/posts/amsat-adventures-pt2/</link>
+      <link>http://localhost:1313/posts/amsat-adventures-pt1/</link>
       <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/posts/amsat-adventures-pt2/</guid>
+      <guid>http://localhost:1313/posts/amsat-adventures-pt1/</guid>
       <description>&lt;p&gt;Wouldn&amp;rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?&lt;/p&gt;</description>
     </item>
     <item>
       <title>DMUD</title>
-      <link>https://dusty.wtf/projects/dmud/</link>
+      <link>http://localhost:1313/projects/dmud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/projects/dmud/</guid>
-      <description></description>
+      <guid>http://localhost:1313/projects/dmud/</guid>
+      <description>github </description>
     </item>
     <item>
       <title>Vibe-coding a MUD w/ Robots: ChatGPT, Claude, &amp; Codex agents</title>
-      <link>https://dusty.wtf/posts/learning-go-building-a-mud/</link>
+      <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://dusty.wtf/posts/learning-go-building-a-mud/</guid>
+      <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
       <description>Placeholder for future talk?</description>
     </item>
     <item>
       <title>Dustin Clark</title>
-      <link>https://dusty.wtf/about/</link>
+      <link>http://localhost:1313/about/</link>
       <pubDate>Sat, 05 Nov 2016 21:05:33 +0530</pubDate>
-      <guid>https://dusty.wtf/about/</guid>
+      <guid>http://localhost:1313/about/</guid>
       <description> Hey! I&amp;rsquo;m Dusty✌️&#xA;I love photography traveling posting memes and making stuff&#xA;I&amp;rsquo;ve been a Software Engineer for over two decades, I&amp;rsquo;m the founding engineer at Nexus.gg and I&amp;rsquo;m in gradschool working on my master&amp;rsquo;s degree in Computer Science&#xA;If you&amp;rsquo;d like to get in touch for any reason just reach out to one of my socials&#xA;I&amp;rsquo;d love to chat!&#xA;This Site hugo-theme-console/ hugo github pages fontawesome dusty.wtf Geocities Vibes </description>
     </item>
   </channel>
