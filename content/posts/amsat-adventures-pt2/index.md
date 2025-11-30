@@ -1,11 +1,15 @@
 +++
-title = "Quick AMSAT Adventures Update (Part 2)"
+title = "Quick AMSAT Adventure Update"
 date = "2025-11-01"
 +++
 
-All of our components are here and I can start assembly soon(tm)!
+All of our components are here and ~~I can start assembly soon(tm)!~~ I've started assembly!
 
 <!--more-->
+
+Here is the completed rotator control board
+
+![rotator control pcb](satran.jpg "rotator control pcb")
 
 We've got our mounting bracket from [OSH Cut](https://www.oshcut.com/)
 
