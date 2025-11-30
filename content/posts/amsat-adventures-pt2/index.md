@@ -7,7 +7,7 @@ All of our components are here and ~~I can start assembly soon(tm)!~~ I've start
 
 <!--more-->
 
-Here is the completed rotator control board
+Update: 11/30 - Here is the completed rotator control board!
 
 ![rotator control pcb](satran.jpg "rotator control pcb")
 
