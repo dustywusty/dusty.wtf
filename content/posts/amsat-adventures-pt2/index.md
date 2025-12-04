@@ -7,7 +7,7 @@ All of our components are here and ~~I can start assembly soon(tm)!~~ I've start
 
 <!--more-->
 
-Update: 11/30 - Here is the completed rotator control board!
+Update: 11/30 - Here is the completed rotator control board
 
 ![rotator control pcb](satran.jpg "rotator control pcb")
 
@@ -23,6 +23,6 @@ And finally the components from [DigiKey](https://www.digikey.com/)
 
 ![PCB components](components.jpg "components")
 
-In the mean-time I had been playing w/ SDR and my YAGI to some success!
+In the mean-time I have also been playing w/ SDR and my YAGI to ~some success
 
 ![Yagi antenna mounted on tripod](antenna.jpg "antenna")
