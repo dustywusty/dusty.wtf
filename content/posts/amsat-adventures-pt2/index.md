@@ -1,5 +1,5 @@
 +++
-title = "Quick AMSAT Adventure Update"
+title = "Quick AMSAT Update"
 date = "2025-11-01"
 +++
 
