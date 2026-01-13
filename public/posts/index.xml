@@ -4,7 +4,7 @@
     <title>Posts on dusty.wtf</title>
     <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on dusty.wtf</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 01 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
@@ -27,7 +27,7 @@
       <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
-      <description>Placeholder for future talk?</description>
+      <description>&lt;p&gt;Placeholder for future talk?&lt;/p&gt;&#xA;&lt;!--more--!&gt;&#xA;&#xA;# DMUD&#xA;&#xA;..</description>
     </item>
   </channel>
 </rss>

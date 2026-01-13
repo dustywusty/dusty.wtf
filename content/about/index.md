@@ -1,18 +1,17 @@
 +++
 date = "2016-11-05T21:05:33+05:30"
-title = "Dustin Clark"
+title = "Dustin Clark "
 +++
 
 {{< profile-row src="df.jpg" alt="Dusty" size="250" >}}
-Hey! I'm Dusty✌️
 
-I love {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[posting memes](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff
+Hey y'all, my name's Dusty! ✌️
 
-I've been a Software Engineer for over two decades, I'm the founding engineer at {{< h1 >}}[Nexus.gg](https://nexus.gg){{< /h1 >}} and I'm in gradschool working on my master's degree in Computer Science
+I've been tinkering w/ computers and electronics for a few decades and in my free time I like {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[shit-posting](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff!
 
-If you'd like to get in touch for any reason just reach out to one of my {{< h1 >}}[socials](https://dusty.wtf){{< /h1 >}}
+Hopefully, this website will be a place I keep up w/ my different projects and maybe even writing about some of my experiences in tech.
 
-I'd love to chat!
+If you'd like to get in touch for any reason, just reach out to one of my {{< h1 >}}[socials](https://dusty.wtf){{< /h1 >}} :)
 {{< /profile-row >}}
 
 # This Site
@@ -27,7 +26,7 @@ I'd love to chat!
 
 [dusty.wtf](https://github.com/dustywusty/dusty.wtf)
 
-# Geocities Vibes
+# A Geocities Vibes
 
 <div class="badges-88x31">
   <a href="https://cyber.dabamos.de/88x31/index.html" target="_blank">
