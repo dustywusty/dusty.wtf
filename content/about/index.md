@@ -9,7 +9,7 @@ Hey y'all, my name's Dusty! ✌️
 
 I've been tinkering w/ computers and electronics for a few decades and in my free time I like {{< h1 >}}[photography](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[traveling](https://instagram.com/dustywusty){{< /h1 >}}{{< h1 >}}[shit-posting](https://bsky.app/profile/dusty.wtf){{< /h1 >}}and {{< h1 >}}[making](https://github.com/dustywusty){{< /h1 >}} stuff!
 
-Hopefully, this website will be a place I keep up w/ my different projects and maybe even writing about some of my experiences in tech.
+Hopefully, this website will be a place I keep up w/ my different projects and maybe even writing about some of my experiences in tech
 
 If you'd like to get in touch for any reason, just reach out to one of my {{< h1 >}}[socials](https://dusty.wtf){{< /h1 >}} :)
 {{< /profile-row >}}
@@ -26,7 +26,7 @@ If you'd like to get in touch for any reason, just reach out to one of my {{< h1
 
 [dusty.wtf](https://github.com/dustywusty/dusty.wtf)
 
-# A Geocities Vibes
+# A Geocities Vibe
 
 <div class="badges-88x31">
   <a href="https://cyber.dabamos.de/88x31/index.html" target="_blank">
