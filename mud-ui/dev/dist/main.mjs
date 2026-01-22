@@ -24489,6 +24489,36 @@ var require_jsx_runtime = __commonJS({
 var import_react = __toESM(require_react());
 var import_client = __toESM(require_client());
 
+// src/cockpit/effects.ts
+var deathMatchers = [
+  /\bhas been slain\b/i,
+  /\bhas slain you\b/i,
+  /\bhas killed you\b/i,
+  /\byou have been slain\b/i,
+  /\byou have been killed\b/i,
+  /\byou were slain\b/i,
+  /\byou were killed\b/i,
+  /\byou got slain\b/i,
+  /\byou got killed\b/i,
+  /\byou have died\b/i,
+  /\byou died\b/i,
+  /\byou are dead\b/i,
+  /\byou are slain\b/i,
+  /\byou have perished\b/i
+];
+function detectLineEffects(text, cls) {
+  if (!text || !cls) return null;
+  const baseCls = cls.trim();
+  if (!baseCls.split(/\s+/).includes("outl")) return null;
+  if (!text.trim()) return null;
+  if (deathMatchers.some((pattern) => pattern.test(text))) {
+    const classes = baseCls ? baseCls.split(/\s+/) : [];
+    if (!classes.includes("death")) classes.push("death");
+    return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
+  }
+  return null;
+}
+
 // src/cockpit/styles.ts
 var OVERLAY_ID = "mud-ws-overlay";
 var STYLE_ID = "mud-ws-style";
@@ -25097,37 +25127,6 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     resetGroup();
     pushMessages(entries);
   }, [pushMessages, resetGroup]);
-  const deathMatchers = (0, import_react.useRef)([
-    /\bhas been slain\b/i,
-    /\bhas slain you\b/i,
-    /\bhas killed you\b/i,
-    /\byou have been slain\b/i,
-    /\byou have been killed\b/i,
-    /\byou were slain\b/i,
-    /\byou were killed\b/i,
-    /\byou got slain\b/i,
-    /\byou got killed\b/i,
-    /\byou have died\b/i,
-    /\byou died\b/i,
-    /\byou are dead\b/i,
-    /\byou are slain\b/i,
-    /\byou have perished\b/i
-  ]);
-  const detectLineEffects = (0, import_react.useCallback)(
-    (text, cls) => {
-      if (!text || !cls) return null;
-      const baseCls = cls.trim();
-      if (!baseCls.split(/\s+/).includes("outl")) return null;
-      if (!text.trim()) return null;
-      if (deathMatchers.current.some((pattern) => pattern.test(text))) {
-        const classes = baseCls ? baseCls.split(/\s+/) : [];
-        if (!classes.includes("death")) classes.push("death");
-        return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
-      }
-      return null;
-    },
-    []
-  );
   const append = (0, import_react.useCallback)(
     (text, cls = "outl", grouped = true) => {
       let effectiveCls = cls;
@@ -25162,7 +25161,7 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
         }
       ]);
     },
-    [detectLineEffects, flushGroup, pushMessages]
+    [flushGroup, pushMessages]
   );
   const addGap = (0, import_react.useCallback)(() => {
     flushGroup();

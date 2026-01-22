@@ -1,6 +1,7 @@
 /// <reference types="react" />
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react";
 import { createRoot, Root } from "react-dom/client";
+import { detectLineEffects } from "./effects";
 import { ensureStyles, OVERLAY_ID } from "./styles";
 import { registerThemeTarget, unregisterThemeTarget } from "./theme";
 
@@ -164,39 +165,6 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
     pushMessages(entries);
   }, [pushMessages, resetGroup]);
 
-  const deathMatchers = useRef<RegExp[]>([
-    /\bhas been slain\b/i,
-    /\bhas slain you\b/i,
-    /\bhas killed you\b/i,
-    /\byou have been slain\b/i,
-    /\byou have been killed\b/i,
-    /\byou were slain\b/i,
-    /\byou were killed\b/i,
-    /\byou got slain\b/i,
-    /\byou got killed\b/i,
-    /\byou have died\b/i,
-    /\byou died\b/i,
-    /\byou are dead\b/i,
-    /\byou are slain\b/i,
-    /\byou have perished\b/i,
-  ]);
-
-  const detectLineEffects = useCallback(
-    (text: string, cls: string) => {
-      if (!text || !cls) return null;
-      const baseCls = cls.trim();
-      if (!baseCls.split(/\s+/).includes("outl")) return null;
-      if (!text.trim()) return null;
-      if (deathMatchers.current.some((pattern) => pattern.test(text))) {
-        const classes = baseCls ? baseCls.split(/\s+/) : [];
-        if (!classes.includes("death")) classes.push("death");
-        return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
-      }
-      return null;
-    },
-    []
-  );
-
   const append = useCallback(
     (text: string, cls = "outl", grouped = true) => {
       let effectiveCls = cls;
@@ -231,7 +199,7 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
         },
       ]);
     },
-    [detectLineEffects, flushGroup, pushMessages]
+    [flushGroup, pushMessages]
   );
 
   const addGap = useCallback(() => {

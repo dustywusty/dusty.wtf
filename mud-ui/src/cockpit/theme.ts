@@ -236,3 +236,5 @@ export function registerThemeTarget(target: HTMLElement) {
 export function unregisterThemeTarget(target: HTMLElement) {
   themeTargets.delete(target);
 }
+
+export { parseColor, ensureReadable, contrastRatio, mix };
