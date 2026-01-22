@@ -1083,7 +1083,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState2(initialState) {
+        function useState4(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1091,11 +1091,11 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useReducer(reducer, initialArg, init);
         }
-        function useRef2(initialValue) {
+        function useRef4(initialValue) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect2(create, deps) {
+        function useEffect4(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1107,7 +1107,7 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useLayoutEffect(create, deps);
         }
-        function useCallback2(callback, deps) {
+        function useCallback4(callback, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useCallback(callback, deps);
         }
@@ -1874,19 +1874,19 @@ var require_react_development = __commonJS({
         exports.memo = memo;
         exports.startTransition = startTransition;
         exports.unstable_act = act;
-        exports.useCallback = useCallback2;
+        exports.useCallback = useCallback4;
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect2;
+        exports.useEffect = useEffect4;
         exports.useId = useId;
         exports.useImperativeHandle = useImperativeHandle2;
         exports.useInsertionEffect = useInsertionEffect;
         exports.useLayoutEffect = useLayoutEffect;
         exports.useMemo = useMemo;
         exports.useReducer = useReducer;
-        exports.useRef = useRef2;
-        exports.useState = useState2;
+        exports.useRef = useRef4;
+        exports.useState = useState4;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -6000,7 +6000,7 @@ var require_react_dom_development = __commonJS({
         var cancelCallback = Scheduler.unstable_cancelCallback;
         var shouldYield = Scheduler.unstable_shouldYield;
         var requestPaint = Scheduler.unstable_requestPaint;
-        var now2 = Scheduler.unstable_now;
+        var now = Scheduler.unstable_now;
         var getCurrentPriorityLevel = Scheduler.unstable_getCurrentPriorityLevel;
         var ImmediatePriority = Scheduler.unstable_ImmediatePriority;
         var UserBlockingPriority = Scheduler.unstable_UserBlockingPriority;
@@ -18386,7 +18386,7 @@ var require_react_dom_development = __commonJS({
                       row = row.sibling;
                     }
                   }
-                  if (renderState.tail !== null && now2() > getRenderTargetTime()) {
+                  if (renderState.tail !== null && now() > getRenderTargetTime()) {
                     workInProgress2.flags |= DidCapture;
                     didSuspendAlready = true;
                     cutOffTailIfNeeded(renderState, false);
@@ -18415,7 +18415,7 @@ var require_react_dom_development = __commonJS({
                     // The time it took to render last row is greater than the remaining
                     // time we have to render. So rendering one more row would likely
                     // exceed it.
-                    now2() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes2 !== OffscreenLane
+                    now() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes2 !== OffscreenLane
                   ) {
                     workInProgress2.flags |= DidCapture;
                     didSuspendAlready = true;
@@ -18440,7 +18440,7 @@ var require_react_dom_development = __commonJS({
                 var next = renderState.tail;
                 renderState.rendering = next;
                 renderState.tail = next.sibling;
-                renderState.renderingStartTime = now2();
+                renderState.renderingStartTime = now();
                 next.sibling = null;
                 var suspenseContext = suspenseStackCursor.current;
                 if (didSuspendAlready) {
@@ -20412,7 +20412,7 @@ var require_react_dom_development = __commonJS({
         var RENDER_TIMEOUT_MS = 500;
         var workInProgressTransitions = null;
         function resetRenderTimer() {
-          workInProgressRootRenderTargetTime = now2() + RENDER_TIMEOUT_MS;
+          workInProgressRootRenderTargetTime = now() + RENDER_TIMEOUT_MS;
         }
         function getRenderTargetTime() {
           return workInProgressRootRenderTargetTime;
@@ -20441,12 +20441,12 @@ var require_react_dom_development = __commonJS({
         }
         function requestEventTime() {
           if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-            return now2();
+            return now();
           }
           if (currentEventTime !== NoTimestamp) {
             return currentEventTime;
           }
-          currentEventTime = now2();
+          currentEventTime = now();
           return currentEventTime;
         }
         function requestUpdateLane(fiber) {
@@ -20643,7 +20643,7 @@ var require_react_dom_development = __commonJS({
               var fatalError = workInProgressRootFatalError;
               prepareFreshStack(root2, NoLanes);
               markRootSuspended$1(root2, lanes);
-              ensureRootIsScheduled(root2, now2());
+              ensureRootIsScheduled(root2, now());
               throw fatalError;
             }
             if (exitStatus === RootDidNotComplete) {
@@ -20664,7 +20664,7 @@ var require_react_dom_development = __commonJS({
                   var _fatalError = workInProgressRootFatalError;
                   prepareFreshStack(root2, NoLanes);
                   markRootSuspended$1(root2, lanes);
-                  ensureRootIsScheduled(root2, now2());
+                  ensureRootIsScheduled(root2, now());
                   throw _fatalError;
                 }
               }
@@ -20673,7 +20673,7 @@ var require_react_dom_development = __commonJS({
               finishConcurrentRender(root2, exitStatus, lanes);
             }
           }
-          ensureRootIsScheduled(root2, now2());
+          ensureRootIsScheduled(root2, now());
           if (root2.callbackNode === originalCallbackNode) {
             return performConcurrentWorkOnRoot.bind(null, root2);
           }
@@ -20722,7 +20722,7 @@ var require_react_dom_development = __commonJS({
               markRootSuspended$1(root2, lanes);
               if (includesOnlyRetries(lanes) && // do not delay if we're inside an act() scope
               !shouldForceFlushFallbacksInDEV()) {
-                var msUntilTimeout = globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now2();
+                var msUntilTimeout = globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now();
                 if (msUntilTimeout > 10) {
                   var nextLanes = getNextLanes(root2, NoLanes);
                   if (nextLanes !== NoLanes) {
@@ -20749,7 +20749,7 @@ var require_react_dom_development = __commonJS({
               if (!shouldForceFlushFallbacksInDEV()) {
                 var mostRecentEventTime = getMostRecentEventTime(root2, lanes);
                 var eventTimeMs = mostRecentEventTime;
-                var timeElapsedMs = now2() - eventTimeMs;
+                var timeElapsedMs = now() - eventTimeMs;
                 var _msUntilTimeout = jnd(timeElapsedMs) - timeElapsedMs;
                 if (_msUntilTimeout > 10) {
                   root2.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root2, workInProgressRootRecoverableErrors, workInProgressTransitions), _msUntilTimeout);
@@ -20826,7 +20826,7 @@ var require_react_dom_development = __commonJS({
           flushPassiveEffects();
           var lanes = getNextLanes(root2, NoLanes);
           if (!includesSomeLane(lanes, SyncLane)) {
-            ensureRootIsScheduled(root2, now2());
+            ensureRootIsScheduled(root2, now());
             return null;
           }
           var exitStatus = renderRootSync(root2, lanes);
@@ -20841,7 +20841,7 @@ var require_react_dom_development = __commonJS({
             var fatalError = workInProgressRootFatalError;
             prepareFreshStack(root2, NoLanes);
             markRootSuspended$1(root2, lanes);
-            ensureRootIsScheduled(root2, now2());
+            ensureRootIsScheduled(root2, now());
             throw fatalError;
           }
           if (exitStatus === RootDidNotComplete) {
@@ -20851,13 +20851,13 @@ var require_react_dom_development = __commonJS({
           root2.finishedWork = finishedWork;
           root2.finishedLanes = lanes;
           commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
-          ensureRootIsScheduled(root2, now2());
+          ensureRootIsScheduled(root2, now());
           return null;
         }
         function flushRoot(root2, lanes) {
           if (lanes !== NoLanes) {
             markRootEntangled(root2, mergeLanes(lanes, SyncLane));
-            ensureRootIsScheduled(root2, now2());
+            ensureRootIsScheduled(root2, now());
             if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
               resetRenderTimer();
               flushSyncCallbacks();
@@ -21017,7 +21017,7 @@ var require_react_dom_development = __commonJS({
           ReactCurrentDispatcher$2.current = prevDispatcher;
         }
         function markCommitTimeOfFallback() {
-          globalMostRecentFallbackTime = now2();
+          globalMostRecentFallbackTime = now();
         }
         function markSkippedUpdateLanes(lane) {
           workInProgressRootSkippedLanes = mergeLanes(lane, workInProgressRootSkippedLanes);
@@ -21351,7 +21351,7 @@ var require_react_dom_development = __commonJS({
           {
             onCommitRoot$1();
           }
-          ensureRootIsScheduled(root2, now2());
+          ensureRootIsScheduled(root2, now());
           if (recoverableErrors !== null) {
             var onRecoverableError = root2.onRecoverableError;
             for (var i = 0; i < recoverableErrors.length; i++) {
@@ -21558,7 +21558,7 @@ var require_react_dom_development = __commonJS({
           markRootPinged(root2, pingedLanes);
           warnIfSuspenseResolutionNotWrappedWithActDEV(root2);
           if (workInProgressRoot === root2 && isSubsetOfLanes(workInProgressRootRenderLanes, pingedLanes)) {
-            if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && includesOnlyRetries(workInProgressRootRenderLanes) && now2() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
+            if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && includesOnlyRetries(workInProgressRootRenderLanes) && now() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
               prepareFreshStack(root2, NoLanes);
             } else {
               workInProgressRootPingedLanes = mergeLanes(workInProgressRootPingedLanes, pingedLanes);
@@ -24486,37 +24486,49 @@ var require_jsx_runtime = __commonJS({
 });
 
 // src/cockpit/index.tsx
-var import_react = __toESM(require_react());
+var import_react3 = __toESM(require_react());
 var import_client = __toESM(require_client());
 
-// src/cockpit/effects.ts
-var deathMatchers = [
-  /\bhas been slain\b/i,
-  /\bhas slain you\b/i,
-  /\bhas killed you\b/i,
-  /\byou have been slain\b/i,
-  /\byou have been killed\b/i,
-  /\byou were slain\b/i,
-  /\byou were killed\b/i,
-  /\byou got slain\b/i,
-  /\byou got killed\b/i,
-  /\byou have died\b/i,
-  /\byou died\b/i,
-  /\byou are dead\b/i,
-  /\byou are slain\b/i,
-  /\byou have perished\b/i
-];
-function detectLineEffects(text, cls) {
-  if (!text || !cls) return null;
-  const baseCls = cls.trim();
-  if (!baseCls.split(/\s+/).includes("outl")) return null;
-  if (!text.trim()) return null;
-  if (deathMatchers.some((pattern) => pattern.test(text))) {
-    const classes = baseCls ? baseCls.split(/\s+/) : [];
-    if (!classes.includes("death")) classes.push("death");
-    return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
+// src/cockpit/dom.ts
+function extractUrlFromLink(link) {
+  if (!link) return "";
+  const explicit = (link.getAttribute("data-mud-ws") || link.getAttribute("data-mud") || "").trim();
+  if (explicit) return explicit;
+  const href = (link.getAttribute("href") || "").trim();
+  if (/^wss?:\/\//i.test(href)) return href;
+  const path = link.getAttribute("data-mud-path");
+  if (path) {
+    const base = location.protocol === "https:" ? "wss://" : "ws://";
+    return `${base}${location.host}${path}`;
   }
-  return null;
+  return "";
+}
+function placeOverlay(root, anchor, mountSelector, lastAnchor2) {
+  const usableAnchor = anchor && anchor.nodeType === 1 && anchor.isConnected ? anchor : null;
+  let inserted = false;
+  if (usableAnchor) {
+    const block = usableAnchor.closest(
+      "[data-mud-mount],p,div,section,article,li,dd,dt,main,aside,header,footer,figure"
+    );
+    if (block && block.parentNode) {
+      block.insertAdjacentElement("afterend", root);
+      root.classList.add("embedded");
+      inserted = true;
+    }
+  }
+  if (!inserted) {
+    const fallback = document.querySelector(mountSelector) || document.body;
+    if (root.parentNode !== fallback) fallback.appendChild(root);
+    if (fallback === document.body) root.classList.remove("embedded");
+    else root.classList.add("embedded");
+  }
+  return inserted ? usableAnchor : anchor || lastAnchor2;
+}
+function resolveInitialUrl(initialUrl, anchor, storageKey) {
+  const savedUrl = localStorage.getItem(storageKey) || "";
+  const contextualLink = anchor && anchor.isConnected ? anchor : document.querySelector('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]');
+  const linkUrl = extractUrlFromLink(contextualLink);
+  return initialUrl || savedUrl || linkUrl || "";
 }
 
 // src/cockpit/styles.ts
@@ -25030,75 +25042,56 @@ function unregisterThemeTarget(target) {
   themeTargets.delete(target);
 }
 
-// src/cockpit/index.tsx
-var import_jsx_runtime = __toESM(require_jsx_runtime());
-var MAX_LINES = 5e3;
-var LS_KEY = "mud_ws_url";
-var MOUNT_SELECTOR = ".container.animate-fade-up";
-var controllers = /* @__PURE__ */ new WeakMap();
-var lastAnchor = null;
-var now = () => (/* @__PURE__ */ new Date()).toLocaleTimeString();
-function extractUrlFromLink(link) {
-  if (!link) return "";
-  const explicit = (link.getAttribute("data-mud-ws") || link.getAttribute("data-mud") || "").trim();
-  if (explicit) return explicit;
-  const href = (link.getAttribute("href") || "").trim();
-  if (/^wss?:\/\//i.test(href)) return href;
-  const path = link.getAttribute("data-mud-path");
-  if (path) {
-    const base = location.protocol === "https:" ? "wss://" : "ws://";
-    return `${base}${location.host}${path}`;
+// src/cockpit/useMessageBuffer.ts
+var import_react = __toESM(require_react());
+
+// src/cockpit/effects.ts
+var deathMatchers = [
+  /\bhas been slain\b/i,
+  /\bhas slain you\b/i,
+  /\bhas killed you\b/i,
+  /\byou have been slain\b/i,
+  /\byou have been killed\b/i,
+  /\byou were slain\b/i,
+  /\byou were killed\b/i,
+  /\byou got slain\b/i,
+  /\byou got killed\b/i,
+  /\byou have died\b/i,
+  /\byou died\b/i,
+  /\byou are dead\b/i,
+  /\byou are slain\b/i,
+  /\byou have perished\b/i
+];
+function detectLineEffects(text, cls) {
+  if (!text || !cls) return null;
+  const baseCls = cls.trim();
+  if (!baseCls.split(/\s+/).includes("outl")) return null;
+  if (!text.trim()) return null;
+  if (deathMatchers.some((pattern) => pattern.test(text))) {
+    const classes = baseCls ? baseCls.split(/\s+/) : [];
+    if (!classes.includes("death")) classes.push("death");
+    return { cls: classes.join(" "), lineClass: "line-death", grouped: false };
   }
-  return "";
+  return null;
 }
-function placeOverlay(root, anchor) {
-  const usableAnchor = anchor && anchor.nodeType === 1 && anchor.isConnected ? anchor : null;
-  let inserted = false;
-  if (usableAnchor) {
-    const block = usableAnchor.closest(
-      "[data-mud-mount],p,div,section,article,li,dd,dt,main,aside,header,footer,figure"
-    );
-    if (block && block.parentNode) {
-      block.insertAdjacentElement("afterend", root);
-      root.classList.add("embedded");
-      inserted = true;
-    }
-  }
-  if (!inserted) {
-    const fallback = document.querySelector(MOUNT_SELECTOR) || document.body;
-    if (root.parentNode !== fallback) fallback.appendChild(root);
-    if (fallback === document.body) root.classList.remove("embedded");
-    else root.classList.add("embedded");
-  }
-  lastAnchor = inserted ? usableAnchor : anchor || lastAnchor;
-}
-var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl = "", deferConnect = false, container, onRequestClose }, ref) {
-  const [url, setUrlState] = (0, import_react.useState)(initialUrl);
-  const urlRef = (0, import_react.useRef)(url);
-  const [statusMode, setStatusMode] = (0, import_react.useState)("idle");
-  const [statusText, setStatusText] = (0, import_react.useState)("disconnected");
+
+// src/cockpit/useMessageBuffer.ts
+function useMessageBuffer(options) {
+  const { maxLines } = options;
   const [messages, setMessages] = (0, import_react.useState)([]);
-  const [health, setHealth] = (0, import_react.useState)(null);
-  const [xp, setXp] = (0, import_react.useState)(null);
-  const [level, setLevel] = (0, import_react.useState)(null);
-  const [area, setArea] = (0, import_react.useState)("");
-  const [effects, setEffects] = (0, import_react.useState)([]);
-  const [statusVisible, setStatusVisible] = (0, import_react.useState)(false);
-  const wsRef = (0, import_react.useRef)(null);
-  const outRef = (0, import_react.useRef)(null);
-  const inputRef = (0, import_react.useRef)(null);
-  const historyRef = (0, import_react.useRef)([]);
-  const historyIdxRef = (0, import_react.useRef)(-1);
   const grpBufRef = (0, import_react.useRef)([]);
   const grpClsRef = (0, import_react.useRef)(null);
   const grpStampRef = (0, import_react.useRef)(null);
   const grpTimerRef = (0, import_react.useRef)(null);
   const msgIdRef = (0, import_react.useRef)(0);
-  const lastActionRef = (0, import_react.useRef)(0);
-  const trimMessages = (0, import_react.useCallback)((list) => {
-    if (list.length <= MAX_LINES) return list;
-    return list.slice(list.length - MAX_LINES);
-  }, []);
+  const now = () => (/* @__PURE__ */ new Date()).toLocaleTimeString();
+  const trimMessages = (0, import_react.useCallback)(
+    (list) => {
+      if (list.length <= maxLines) return list;
+      return list.slice(list.length - maxLines);
+    },
+    [maxLines]
+  );
   const pushMessages = (0, import_react.useCallback)(
     (entries) => setMessages((prev) => trimMessages([...prev, ...entries])),
     [trimMessages]
@@ -25171,19 +25164,87 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
       return trimMessages([...prev, { kind: "gap", id: msgIdRef.current++ }]);
     });
   }, [flushGroup, trimMessages]);
-  const focusInput = (0, import_react.useCallback)(() => {
-    inputRef.current?.focus();
-  }, []);
-  const setStatus = (0, import_react.useCallback)((txt, state) => {
+  const clearMessages = (0, import_react.useCallback)(() => {
+    resetGroup();
+    setMessages([]);
+  }, [resetGroup]);
+  (0, import_react.useEffect)(() => {
+    return () => {
+      flushGroup();
+      if (grpTimerRef.current) window.clearTimeout(grpTimerRef.current);
+    };
+  }, [flushGroup]);
+  return {
+    messages,
+    append,
+    addGap,
+    flushGroup,
+    resetGroup,
+    clearMessages
+  };
+}
+
+// src/cockpit/useMudConnection.ts
+var import_react2 = __toESM(require_react());
+
+// src/cockpit/status.ts
+function parseStatusMessage(stateMsg) {
+  const parts = stateMsg.split("|");
+  let hp = null;
+  let level = null;
+  let xp = null;
+  let areaStr = null;
+  let effectsList = [];
+  for (const part of parts) {
+    if (part.startsWith("HP:")) hp = part.substring(3);
+    else if (part.startsWith("LEVEL:")) level = part.substring(6);
+    else if (part.startsWith("XP:")) xp = part.substring(3);
+    else if (part.startsWith("AREA:")) areaStr = part.substring(5);
+    else if (part.startsWith("EFFECTS:")) {
+      const effectsStr = part.substring(8);
+      effectsList = effectsStr.split(",").filter(Boolean);
+    }
+  }
+  const parsed = { effects: effectsList };
+  if (hp) {
+    const [current, max] = hp.split("/").map((n) => parseInt(n, 10));
+    if (Number.isFinite(current) && Number.isFinite(max)) parsed.health = { current, max };
+  }
+  if (level) {
+    const lvl = parseInt(level, 10);
+    if (Number.isFinite(lvl)) parsed.level = lvl;
+  }
+  if (xp) {
+    const [current, required] = xp.split("/").map((n) => parseInt(n, 10));
+    if (Number.isFinite(current) && Number.isFinite(required)) parsed.xp = { current, total: required };
+  }
+  if (areaStr) parsed.area = areaStr;
+  return parsed;
+}
+
+// src/cockpit/useMudConnection.ts
+function useMudConnection(options) {
+  const { urlRef, storageKey, append, addGap, flushGroup, clearMessages, focusInput } = options;
+  const [statusMode, setStatusMode] = (0, import_react2.useState)("idle");
+  const [statusText, setStatusText] = (0, import_react2.useState)("disconnected");
+  const [health, setHealth] = (0, import_react2.useState)(null);
+  const [xp, setXp] = (0, import_react2.useState)(null);
+  const [level, setLevel] = (0, import_react2.useState)(null);
+  const [area, setArea] = (0, import_react2.useState)("");
+  const [effects, setEffects] = (0, import_react2.useState)([]);
+  const [statusVisible, setStatusVisible] = (0, import_react2.useState)(false);
+  const [isConnected, setIsConnected] = (0, import_react2.useState)(false);
+  const wsRef = (0, import_react2.useRef)(null);
+  const lastActionRef = (0, import_react2.useRef)(0);
+  const setStatus = (0, import_react2.useCallback)((txt, state) => {
     setStatusText(txt);
     setStatusMode(state);
   }, []);
-  const handleSlash = (0, import_react.useCallback)(
+  const handleSlash = (0, import_react2.useCallback)(
     (value) => {
       const t = value.trim();
       if (t === "/clear") {
-        resetGroup();
-        setMessages([]);
+        clearMessages();
         return true;
       }
       if (t === "/help") {
@@ -25192,48 +25253,15 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
       }
       return false;
     },
-    [append, resetGroup]
+    [append, clearMessages]
   );
-  const updateStatus = (0, import_react.useCallback)((stateMsg) => {
-    const parts = stateMsg.split("|");
-    let hp = null;
-    let level2 = null;
-    let xp2 = null;
-    let areaStr = null;
-    let effectsList = [];
-    for (const part of parts) {
-      if (part.startsWith("HP:")) hp = part.substring(3);
-      else if (part.startsWith("LEVEL:")) level2 = part.substring(6);
-      else if (part.startsWith("XP:")) xp2 = part.substring(3);
-      else if (part.startsWith("AREA:")) areaStr = part.substring(5);
-      else if (part.startsWith("EFFECTS:")) {
-        const effectsStr = part.substring(8);
-        effectsList = effectsStr.split(",").filter(Boolean);
-      }
-    }
-    if (hp) {
-      const [current, max] = hp.split("/").map((n) => parseInt(n, 10));
-      if (Number.isFinite(current) && Number.isFinite(max)) setHealth({ current, max });
-    }
-    if (level2) {
-      const lvl = parseInt(level2, 10);
-      if (Number.isFinite(lvl)) setLevel(lvl);
-    }
-    if (xp2) {
-      const [current, required] = xp2.split("/").map((n) => parseInt(n, 10));
-      if (Number.isFinite(current) && Number.isFinite(required)) setXp({ current, total: required });
-    }
-    if (areaStr) setArea(areaStr);
-    setEffects(effectsList);
-    setStatusVisible(true);
-  }, []);
-  const disconnect = (0, import_react.useCallback)(() => {
+  const disconnect = (0, import_react2.useCallback)(() => {
     try {
       wsRef.current?.close(1e3, "client closing");
     } catch {
     }
   }, []);
-  const connect = (0, import_react.useCallback)(() => {
+  const connect = (0, import_react2.useCallback)(() => {
     const target = (urlRef.current || "").trim();
     if (!target) {
       append("No WebSocket URL provided.", "err");
@@ -25244,13 +25272,15 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     } catch {
     }
     setStatus("connecting", "connecting");
+    setIsConnected(false);
     append(`Connecting to ${target} \u2026`, "sys");
     const ws = new WebSocket(target);
     wsRef.current = ws;
-    localStorage.setItem(LS_KEY, target);
+    localStorage.setItem(storageKey, target);
     ws.addEventListener("open", () => {
       flushGroup();
       setStatus("connected", "connected");
+      setIsConnected(true);
       append("Connected.", "sys");
       focusInput();
     });
@@ -25268,7 +25298,13 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
         }
         if (!s) return;
         if (s.startsWith("STATE|")) {
-          updateStatus(s);
+          const parsed = parseStatusMessage(s);
+          if (parsed.health) setHealth(parsed.health);
+          if (parsed.level != null) setLevel(parsed.level);
+          if (parsed.xp) setXp(parsed.xp);
+          if (parsed.area) setArea(parsed.area);
+          setEffects(parsed.effects || []);
+          setStatusVisible(true);
           return;
         }
         append(s, "outl");
@@ -25280,15 +25316,17 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     ws.addEventListener("error", () => {
       flushGroup();
       setStatus("error", "error");
+      setIsConnected(false);
       append("WebSocket error.", "err");
     });
     ws.addEventListener("close", (e) => {
       flushGroup();
       setStatus("disconnected", "idle");
+      setIsConnected(false);
       append(`Disconnected (code ${e.code}).`, "sys");
     });
-  }, [append, flushGroup, focusInput, setStatus, updateStatus]);
-  const sendDirection = (0, import_react.useCallback)(
+  }, [append, focusInput, flushGroup, setStatus, storageKey, urlRef]);
+  const sendDirection = (0, import_react2.useCallback)(
     (direction) => {
       const nowTs = Date.now();
       const ACTION_COOLDOWN = 500;
@@ -25306,26 +25344,100 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     },
     [addGap, append, flushGroup]
   );
-  const send = (0, import_react.useCallback)(() => {
-    const text = inputRef.current?.value || "";
-    if (!text.trim()) {
-      if (inputRef.current) inputRef.current.value = "";
-      return;
-    }
-    historyRef.current.push(text);
-    historyIdxRef.current = historyRef.current.length;
-    flushGroup();
-    addGap();
-    append(text, "inl");
-    addGap();
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      append("Not connected.", "err");
-      return;
-    }
-    wsRef.current.send(text);
-    if (inputRef.current) inputRef.current.value = "";
-  }, [addGap, append, flushGroup]);
-  (0, import_react.useImperativeHandle)(
+  const sendText = (0, import_react2.useCallback)(
+    (text) => {
+      if (!text.trim()) return false;
+      flushGroup();
+      addGap();
+      append(text, "inl");
+      addGap();
+      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+        append("Not connected.", "err");
+        return false;
+      }
+      wsRef.current.send(text);
+      return true;
+    },
+    [addGap, append, flushGroup]
+  );
+  (0, import_react2.useEffect)(() => {
+    const handleUnload = () => {
+      try {
+        wsRef.current?.close();
+      } catch {
+      }
+    };
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, []);
+  (0, import_react2.useEffect)(() => {
+    return () => {
+      try {
+        wsRef.current?.close(1e3, "client closing");
+      } catch {
+      }
+    };
+  }, []);
+  return {
+    statusMode,
+    statusText,
+    statusVisible,
+    health,
+    xp,
+    level,
+    area,
+    effects,
+    isConnected,
+    connect,
+    disconnect,
+    sendDirection,
+    sendText,
+    handleSlash
+  };
+}
+
+// src/cockpit/index.tsx
+var import_jsx_runtime = __toESM(require_jsx_runtime());
+var LS_KEY = "mud_ws_url";
+var MOUNT_SELECTOR = ".container.animate-fade-up";
+var controllers = /* @__PURE__ */ new WeakMap();
+var lastAnchor = null;
+var MudOverlay = (0, import_react3.forwardRef)(function MudOverlay2({ initialUrl = "", deferConnect = false, container, onRequestClose }, ref) {
+  const [url, setUrlState] = (0, import_react3.useState)(initialUrl);
+  const urlRef = (0, import_react3.useRef)(url);
+  const { messages, append, addGap, flushGroup, clearMessages } = useMessageBuffer({ maxLines: 5e3 });
+  const outRef = (0, import_react3.useRef)(null);
+  const inputRef = (0, import_react3.useRef)(null);
+  const historyRef = (0, import_react3.useRef)([]);
+  const historyIdxRef = (0, import_react3.useRef)(-1);
+  const focusInput = (0, import_react3.useCallback)(() => {
+    inputRef.current?.focus();
+  }, []);
+  const {
+    statusMode,
+    statusText,
+    statusVisible,
+    health,
+    xp,
+    level,
+    area,
+    effects,
+    isConnected,
+    connect,
+    disconnect,
+    sendDirection,
+    sendText,
+    handleSlash
+  } = useMudConnection({
+    urlRef,
+    storageKey: LS_KEY,
+    append,
+    addGap,
+    flushGroup,
+    clearMessages,
+    focusInput
+  });
+  (0, import_react3.useImperativeHandle)(
     ref,
     () => ({
       connect,
@@ -25338,26 +25450,16 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     }),
     [connect, disconnect, focusInput]
   );
-  (0, import_react.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     urlRef.current = url;
   }, [url]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     registerThemeTarget(container);
     return () => {
       unregisterThemeTarget(container);
     };
   }, [container]);
-  (0, import_react.useEffect)(() => {
-    return () => {
-      flushGroup();
-      if (grpTimerRef.current) window.clearTimeout(grpTimerRef.current);
-      try {
-        wsRef.current?.close(1e3, "client closing");
-      } catch {
-      }
-    };
-  }, [flushGroup]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     const handler = (e) => {
       const active = document.activeElement;
       if (!active || !container.contains(active)) return;
@@ -25385,21 +25487,11 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [container, sendDirection]);
-  (0, import_react.useEffect)(() => {
-    const handleUnload = () => {
-      try {
-        wsRef.current?.close();
-      } catch {
-      }
-    };
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
-  }, []);
-  (0, import_react.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     if (!outRef.current) return;
     outRef.current.scrollTop = outRef.current.scrollHeight;
   }, [messages]);
-  const onInputKeyDown = (0, import_react.useCallback)(
+  const onInputKeyDown = (0, import_react3.useCallback)(
     (e) => {
       if (e.key === "Enter" && !e.ctrlKey && !e.shiftKey) {
         e.preventDefault();
@@ -25410,7 +25502,11 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
             return;
           }
         }
-        send();
+        if (sendText(v)) {
+          historyRef.current.push(v);
+          historyIdxRef.current = historyRef.current.length;
+          e.currentTarget.value = "";
+        }
       }
       if (e.key === "Escape") {
         e.preventDefault();
@@ -25433,7 +25529,7 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
         e.preventDefault();
       }
     },
-    [handleSlash, onRequestClose, send]
+    [handleSlash, onRequestClose, sendText]
   );
   const hpPercent = health && health.max > 0 ? Math.max(0, Math.min(100, health.current / health.max * 100)) : 0;
   const xpPercent = xp && xp.total > 0 ? Math.max(0, Math.min(100, xp.current / xp.total * 100)) : 0;
@@ -25467,14 +25563,10 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
           className: "btn btn-primary",
           type: "button",
           onClick: () => {
-            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-              disconnect();
-              setStatus("disconnected", "idle");
-            } else {
-              connect();
-            }
+            if (isConnected) disconnect();
+            else connect();
           },
-          children: wsRef.current && wsRef.current.readyState === WebSocket.OPEN ? "Disconnect" : "Connect"
+          children: isConnected ? "Disconnect" : "Connect"
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -25527,16 +25619,28 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
           onKeyDown: onInputKeyDown
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "btn btn-primary", type: "button", onClick: send, children: "Send" }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+        "button",
+        {
+          className: "btn btn-primary",
+          type: "button",
+          onClick: () => {
+            const v = inputRef.current?.value || "";
+            if (sendText(v)) {
+              historyRef.current.push(v);
+              historyIdxRef.current = historyRef.current.length;
+              if (inputRef.current) inputRef.current.value = "";
+            }
+          },
+          children: "Send"
+        }
+      ),
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
         "button",
         {
           className: "btn btn-muted",
           type: "button",
-          onClick: () => {
-            resetGroup();
-            setMessages([]);
-          },
+          onClick: clearMessages,
           children: "Clear"
         }
       )
@@ -25595,15 +25699,9 @@ function ensureRoot(anchor) {
     root = document.createElement("div");
     root.id = OVERLAY_ID;
   }
-  placeOverlay(root, anchor || lastAnchor);
+  lastAnchor = placeOverlay(root, anchor || lastAnchor, MOUNT_SELECTOR, lastAnchor);
   registerThemeTarget(root);
   return root;
-}
-function resolveInitialUrl(initialUrl, anchor) {
-  const savedUrl = localStorage.getItem(LS_KEY) || "";
-  const contextualLink = anchor && anchor.isConnected ? anchor : document.querySelector('a[data-mud],a[data-mud-ws],a[href^="ws"],a[href^="wss"],[data-mud-mount]');
-  const linkUrl = extractUrlFromLink(contextualLink);
-  return initialUrl || savedUrl || linkUrl || "";
 }
 function spawnMudOverlay(initialUrl, options) {
   const anchor = options?.anchor && options.anchor.nodeType === 1 ? options.anchor : lastAnchor;
@@ -25611,7 +25709,7 @@ function spawnMudOverlay(initialUrl, options) {
   root.style.display = "";
   const baseZ = parseInt(getComputedStyle(root).zIndex || "2147483647", 10);
   root.style.zIndex = String(baseZ + 1);
-  const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null);
+  const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null, LS_KEY);
   if (!controllers.has(root)) {
     const next = buildController(root, {
       initialUrl: resolvedUrl,
@@ -25620,7 +25718,7 @@ function spawnMudOverlay(initialUrl, options) {
     });
     controllers.set(root, next);
   } else {
-    placeOverlay(root, anchor || null);
+    lastAnchor = placeOverlay(root, anchor || null, MOUNT_SELECTOR, lastAnchor);
   }
   controllers.get(root)?.onReady((api) => {
     if (resolvedUrl) api.setUrl(resolvedUrl);
@@ -25629,7 +25727,9 @@ function spawnMudOverlay(initialUrl, options) {
   });
   return {
     root,
-    place: (nextAnchor) => placeOverlay(root, nextAnchor || lastAnchor),
+    place: (nextAnchor) => {
+      lastAnchor = placeOverlay(root, nextAnchor || lastAnchor, MOUNT_SELECTOR, lastAnchor);
+    },
     connect: () => controllers.get(root)?.onReady((api) => api.connect()),
     disconnect: () => controllers.get(root)?.onReady((api) => api.disconnect()),
     setUrl: (url) => controllers.get(root)?.onReady((api) => api.setUrl(url)),

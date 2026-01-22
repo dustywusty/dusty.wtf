@@ -1,33 +1,13 @@
 /// <reference types="react" />
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react";
 import { createRoot, Root } from "react-dom/client";
-import { detectLineEffects } from "./effects";
-import { ensureStyles, OVERLAY_ID } from "./styles";
-import { registerThemeTarget, unregisterThemeTarget } from "./theme";
-
-const MAX_LINES = 5000;
+import { placeOverlay, resolveInitialUrl } from "./dom.ts";
+import { ensureStyles, OVERLAY_ID } from "./styles.ts";
+import { registerThemeTarget, unregisterThemeTarget } from "./theme.ts";
+import { useMessageBuffer } from "./useMessageBuffer.ts";
+import { useMudConnection } from "./useMudConnection.ts";
 const LS_KEY = "mud_ws_url";
 const MOUNT_SELECTOR = ".container.animate-fade-up";
-
-type StatusState = "idle" | "connecting" | "connected" | "error";
-type MessageKind = "line" | "gap";
-
-
-interface MessageLine {
-  kind: "line";
-  id: number;
-  ts?: string;
-  text: string;
-  cls: string;
-  lineClass?: string;
-}
-
-interface MessageGap {
-  kind: "gap";
-  id: number;
-}
-
-type Message = MessageLine | MessageGap;
 
 interface MudOverlayHandle {
   connect(): void;
@@ -61,325 +41,49 @@ type ControllerState = {
 const controllers = new WeakMap<HTMLElement, ControllerState>();
 let lastAnchor: Element | null = null;
 
-const now = () => new Date().toLocaleTimeString();
-
-function extractUrlFromLink(link: Element | null): string {
-  if (!link) return "";
-  const explicit = (link.getAttribute("data-mud-ws") || link.getAttribute("data-mud") || "").trim();
-  if (explicit) return explicit;
-  const href = (link.getAttribute("href") || "").trim();
-  if (/^wss?:\/\//i.test(href)) return href;
-  const path = link.getAttribute("data-mud-path");
-  if (path) {
-    const base = location.protocol === "https:" ? "wss://" : "ws://";
-    return `${base}${location.host}${path}`;
-  }
-  return "";
-}
-
-function placeOverlay(root: HTMLElement, anchor?: Element | null) {
-  const usableAnchor = anchor && anchor.nodeType === 1 && anchor.isConnected ? anchor : null;
-  let inserted = false;
-  if (usableAnchor) {
-    const block = usableAnchor.closest(
-      "[data-mud-mount],p,div,section,article,li,dd,dt,main,aside,header,footer,figure"
-    );
-    if (block && block.parentNode) {
-      block.insertAdjacentElement("afterend", root);
-      root.classList.add("embedded");
-      inserted = true;
-    }
-  }
-  if (!inserted) {
-    const fallback = document.querySelector(MOUNT_SELECTOR) || document.body;
-    if (root.parentNode !== fallback) fallback.appendChild(root);
-    if (fallback === document.body) root.classList.remove("embedded");
-    else root.classList.add("embedded");
-  }
-  lastAnchor = inserted ? usableAnchor : anchor || lastAnchor;
-}
-
 const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOverlay(
   { initialUrl = "", deferConnect = false, container, onRequestClose },
   ref
 ) {
   const [url, setUrlState] = useState(initialUrl);
   const urlRef = useRef(url);
-  const [statusMode, setStatusMode] = useState<StatusState>("idle");
-  const [statusText, setStatusText] = useState("disconnected");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [health, setHealth] = useState<{ current: number; max: number } | null>(null);
-  const [xp, setXp] = useState<{ current: number; total: number } | null>(null);
-  const [level, setLevel] = useState<number | null>(null);
-  const [area, setArea] = useState("");
-  const [effects, setEffects] = useState<string[]>([]);
-  const [statusVisible, setStatusVisible] = useState(false);
 
-  const wsRef = useRef<WebSocket | null>(null);
+  const { messages, append, addGap, flushGroup, clearMessages } = useMessageBuffer({ maxLines: 5000 });
+
   const outRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const historyRef = useRef<string[]>([]);
   const historyIdxRef = useRef(-1);
 
-  const grpBufRef = useRef<string[]>([]);
-  const grpClsRef = useRef<string | null>(null);
-  const grpStampRef = useRef<string | null>(null);
-  const grpTimerRef = useRef<number | null>(null);
-  const msgIdRef = useRef(0);
-  const lastActionRef = useRef(0);
-
-  const trimMessages = useCallback((list: Message[]) => {
-    if (list.length <= MAX_LINES) return list;
-    return list.slice(list.length - MAX_LINES);
-  }, []);
-
-  const pushMessages = useCallback(
-    (entries: Message[]) => setMessages((prev) => trimMessages([...prev, ...entries])),
-    [trimMessages]
-  );
-
-  const resetGroup = useCallback(() => {
-    grpBufRef.current = [];
-    grpClsRef.current = null;
-    grpStampRef.current = null;
-    if (grpTimerRef.current) {
-      window.clearTimeout(grpTimerRef.current);
-      grpTimerRef.current = null;
-    }
-  }, []);
-
-  const flushGroup = useCallback(() => {
-    const buf = grpBufRef.current;
-    if (!buf.length) return;
-    const stamp = grpStampRef.current || now();
-    const cls = grpClsRef.current || "outl";
-    const entries: Message[] = buf.map((msg, idx) => ({
-      kind: "line",
-      id: msgIdRef.current++,
-      ts: idx === 0 ? stamp : "",
-      text: msg,
-      cls,
-    }));
-    resetGroup();
-    pushMessages(entries);
-  }, [pushMessages, resetGroup]);
-
-  const append = useCallback(
-    (text: string, cls = "outl", grouped = true) => {
-      let effectiveCls = cls;
-      let lineClass = "";
-      let useGrouping = grouped && cls === "outl";
-      const special = cls === "outl" ? detectLineEffects(text, cls) : null;
-      if (special) {
-        effectiveCls = special.cls || effectiveCls;
-        lineClass = special.lineClass || lineClass;
-        if (special.grouped === false) useGrouping = false;
-      }
-      const normalizedCls = (effectiveCls || "").trim();
-      const canGroup = useGrouping && normalizedCls === "outl";
-      if (canGroup) {
-        if (grpClsRef.current && grpClsRef.current !== normalizedCls) flushGroup();
-        grpClsRef.current = normalizedCls;
-        if (!grpStampRef.current) grpStampRef.current = now();
-        grpBufRef.current.push(String(text));
-        if (grpTimerRef.current) window.clearTimeout(grpTimerRef.current);
-        grpTimerRef.current = window.setTimeout(flushGroup, 80);
-        return;
-      }
-      flushGroup();
-      pushMessages([
-        {
-          kind: "line",
-          id: msgIdRef.current++,
-          ts: now(),
-          text,
-          cls: normalizedCls || "outl",
-          lineClass,
-        },
-      ]);
-    },
-    [flushGroup, pushMessages]
-  );
-
-  const addGap = useCallback(() => {
-    flushGroup();
-    setMessages((prev) => {
-      const last = prev[prev.length - 1];
-      if (last && last.kind === "gap") return prev;
-      return trimMessages([...prev, { kind: "gap", id: msgIdRef.current++ }]);
-    });
-  }, [flushGroup, trimMessages]);
-
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
   }, []);
 
-  const setStatus = useCallback((txt: string, state: StatusState) => {
-    setStatusText(txt);
-    setStatusMode(state);
-  }, []);
-
-  const handleSlash = useCallback(
-    (value: string) => {
-      const t = value.trim();
-      if (t === "/clear") {
-        resetGroup();
-        setMessages([]);
-        return true;
-      }
-      if (t === "/help") {
-        append("Commands: /clear, /help", "sys");
-        return true;
-      }
-      return false;
-    },
-    [append, resetGroup]
-  );
-
-  const updateStatus = useCallback((stateMsg: string) => {
-    const parts = stateMsg.split("|");
-    let hp: string | null = null;
-    let level: string | null = null;
-    let xp: string | null = null;
-    let areaStr: string | null = null;
-    let effectsList: string[] = [];
-
-    for (const part of parts) {
-      if (part.startsWith("HP:")) hp = part.substring(3);
-      else if (part.startsWith("LEVEL:")) level = part.substring(6);
-      else if (part.startsWith("XP:")) xp = part.substring(3);
-      else if (part.startsWith("AREA:")) areaStr = part.substring(5);
-      else if (part.startsWith("EFFECTS:")) {
-        const effectsStr = part.substring(8);
-        effectsList = effectsStr.split(",").filter(Boolean);
-      }
-    }
-
-    if (hp) {
-      const [current, max] = hp.split("/").map((n) => parseInt(n, 10));
-      if (Number.isFinite(current) && Number.isFinite(max)) setHealth({ current, max });
-    }
-
-    if (level) {
-      const lvl = parseInt(level, 10);
-      if (Number.isFinite(lvl)) setLevel(lvl);
-    }
-
-    if (xp) {
-      const [current, required] = xp.split("/").map((n) => parseInt(n, 10));
-      if (Number.isFinite(current) && Number.isFinite(required)) setXp({ current, total: required });
-    }
-
-    if (areaStr) setArea(areaStr);
-    setEffects(effectsList);
-    setStatusVisible(true);
-  }, []);
-
-  const disconnect = useCallback(() => {
-    try {
-      wsRef.current?.close(1000, "client closing");
-    } catch {}
-  }, []);
-
-  const connect = useCallback(() => {
-    const target = (urlRef.current || "").trim();
-    if (!target) {
-      append("No WebSocket URL provided.", "err");
-      return;
-    }
-    try {
-      wsRef.current?.close();
-    } catch {}
-
-    setStatus("connecting", "connecting");
-    append(`Connecting to ${target} …`, "sys");
-    const ws = new WebSocket(target);
-    wsRef.current = ws;
-    localStorage.setItem(LS_KEY, target);
-
-    ws.addEventListener("open", () => {
-      flushGroup();
-      setStatus("connected", "connected");
-      append("Connected.", "sys");
-      focusInput();
-    });
-
-    ws.addEventListener("message", async (ev) => {
-      try {
-        let s: string | null = null;
-        if (typeof ev.data === "string") s = ev.data;
-        else if (ev.data instanceof Blob) s = await ev.data.text();
-        else if (ev.data instanceof ArrayBuffer) {
-          append(`[binary ${ev.data.byteLength} bytes]`, "sys");
-          return;
-        } else {
-          append("[unknown message type]", "sys");
-          return;
-        }
-        if (!s) return;
-        if (s.startsWith("STATE|")) {
-          updateStatus(s);
-          return;
-        }
-        append(s, "outl");
-      } catch (e: unknown) {
-        const message = e instanceof Error ? e.message : String(e);
-        append(`Message handling error: ${message}`, "err");
-      }
-    });
-
-    ws.addEventListener("error", () => {
-      flushGroup();
-      setStatus("error", "error");
-      append("WebSocket error.", "err");
-    });
-
-    ws.addEventListener("close", (e) => {
-      flushGroup();
-      setStatus("disconnected", "idle");
-      append(`Disconnected (code ${e.code}).`, "sys");
-    });
-  }, [append, flushGroup, focusInput, setStatus, updateStatus]);
-
-  const sendDirection = useCallback(
-    (direction: string) => {
-      const nowTs = Date.now();
-      const ACTION_COOLDOWN = 500;
-      if (nowTs - lastActionRef.current < ACTION_COOLDOWN) return;
-      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-        append("Not connected.", "err");
-        return;
-      }
-      lastActionRef.current = nowTs;
-      flushGroup();
-      addGap();
-      append(direction, "inl");
-      addGap();
-      wsRef.current.send(direction);
-    },
-    [addGap, append, flushGroup]
-  );
-
-  const send = useCallback(() => {
-    const text = inputRef.current?.value || "";
-    if (!text.trim()) {
-      if (inputRef.current) inputRef.current.value = "";
-      return;
-    }
-    historyRef.current.push(text);
-    historyIdxRef.current = historyRef.current.length;
-    flushGroup();
-    addGap();
-    append(text, "inl");
-    addGap();
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      append("Not connected.", "err");
-      return;
-    }
-    wsRef.current.send(text);
-    if (inputRef.current) inputRef.current.value = "";
-  }, [addGap, append, flushGroup]);
+  const {
+    statusMode,
+    statusText,
+    statusVisible,
+    health,
+    xp,
+    level,
+    area,
+    effects,
+    isConnected,
+    connect,
+    disconnect,
+    sendDirection,
+    sendText,
+    handleSlash,
+  } = useMudConnection({
+    urlRef,
+    storageKey: LS_KEY,
+    append,
+    addGap,
+    flushGroup,
+    clearMessages,
+    focusInput,
+  });
 
   useImperativeHandle(
     ref,
@@ -405,16 +109,6 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
       unregisterThemeTarget(container);
     };
   }, [container]);
-
-  useEffect(() => {
-    return () => {
-      flushGroup();
-      if (grpTimerRef.current) window.clearTimeout(grpTimerRef.current);
-      try {
-        wsRef.current?.close(1000, "client closing");
-      } catch {}
-    };
-  }, [flushGroup]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -446,16 +140,6 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
   }, [container, sendDirection]);
 
   useEffect(() => {
-    const handleUnload = () => {
-      try {
-        wsRef.current?.close();
-      } catch {}
-    };
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
-  }, []);
-
-  useEffect(() => {
     if (!outRef.current) return;
     outRef.current.scrollTop = outRef.current.scrollHeight;
   }, [messages]);
@@ -471,7 +155,11 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
             return;
           }
         }
-        send();
+        if (sendText(v)) {
+          historyRef.current.push(v);
+          historyIdxRef.current = historyRef.current.length;
+          e.currentTarget.value = "";
+        }
       }
       if (e.key === "Escape") {
         e.preventDefault();
@@ -494,7 +182,7 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
         e.preventDefault();
       }
     },
-    [handleSlash, onRequestClose, send]
+    [handleSlash, onRequestClose, sendText]
   );
 
   const hpPercent = health && health.max > 0 ? Math.max(0, Math.min(100, (health.current / health.max) * 100)) : 0;
@@ -526,15 +214,11 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
           className="btn btn-primary"
           type="button"
           onClick={() => {
-            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-              disconnect();
-              setStatus("disconnected", "idle");
-            } else {
-              connect();
-            }
+            if (isConnected) disconnect();
+            else connect();
           }}
         >
-          {wsRef.current && wsRef.current.readyState === WebSocket.OPEN ? "Disconnect" : "Connect"}
+          {isConnected ? "Disconnect" : "Connect"}
         </button>
         <button
           className="btn btn-icon btn-muted"
@@ -592,16 +276,24 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
           placeholder="Type… (Enter=send, Ctrl+Enter=newline, /clear, /help)"
           onKeyDown={onInputKeyDown}
         />
-        <button className="btn btn-primary" type="button" onClick={send}>
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() => {
+            const v = inputRef.current?.value || "";
+            if (sendText(v)) {
+              historyRef.current.push(v);
+              historyIdxRef.current = historyRef.current.length;
+              if (inputRef.current) inputRef.current.value = "";
+            }
+          }}
+        >
           Send
         </button>
         <button
           className="btn btn-muted"
           type="button"
-          onClick={() => {
-            resetGroup();
-            setMessages([]);
-          }}
+          onClick={clearMessages}
         >
           Clear
         </button>
@@ -665,18 +357,9 @@ function ensureRoot(anchor?: Element | null) {
     root = document.createElement("div");
     root.id = OVERLAY_ID;
   }
-  placeOverlay(root, anchor || lastAnchor);
+  lastAnchor = placeOverlay(root, anchor || lastAnchor, MOUNT_SELECTOR, lastAnchor);
   registerThemeTarget(root);
   return root;
-}
-
-function resolveInitialUrl(initialUrl: string | undefined, anchor: Element | null): string {
-  const savedUrl = localStorage.getItem(LS_KEY) || "";
-  const contextualLink = anchor && anchor.isConnected
-    ? anchor
-    : (document.querySelector("a[data-mud],a[data-mud-ws],a[href^=\"ws\"],a[href^=\"wss\"],[data-mud-mount]") as Element | null);
-  const linkUrl = extractUrlFromLink(contextualLink);
-  return initialUrl || savedUrl || linkUrl || "";
 }
 
 function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; deferConnect?: boolean }) {
@@ -685,7 +368,7 @@ function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; defe
   root.style.display = "";
   const baseZ = parseInt(getComputedStyle(root).zIndex || "2147483647", 10);
   root.style.zIndex = String(baseZ + 1);
-  const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null);
+  const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null, LS_KEY);
 
   if (!controllers.has(root)) {
     const next = buildController(root, {
@@ -695,7 +378,7 @@ function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; defe
     });
     controllers.set(root, next);
   } else {
-    placeOverlay(root, anchor || null);
+    lastAnchor = placeOverlay(root, anchor || null, MOUNT_SELECTOR, lastAnchor);
   }
 
   controllers.get(root)?.onReady((api) => {
@@ -706,7 +389,9 @@ function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; defe
 
   return {
     root,
-    place: (nextAnchor?: Element | null) => placeOverlay(root, nextAnchor || lastAnchor),
+    place: (nextAnchor?: Element | null) => {
+      lastAnchor = placeOverlay(root, nextAnchor || lastAnchor, MOUNT_SELECTOR, lastAnchor);
+    },
     connect: () => controllers.get(root)?.onReady((api) => api.connect()),
     disconnect: () => controllers.get(root)?.onReady((api) => api.disconnect()),
     setUrl: (url: string) => controllers.get(root)?.onReady((api) => api.setUrl(url)),

@@ -4,6 +4,7 @@
     "module": "ESNext",
     "lib": ["DOM", "ES2020"],
     "moduleResolution": "Node",
+    "allowImportingTsExtensions": true,
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
@@ -13,5 +14,5 @@
     "skipLibCheck": true,
     "types": ["dom"]
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
