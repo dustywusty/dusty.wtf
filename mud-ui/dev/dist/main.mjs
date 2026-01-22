@@ -25005,7 +25005,7 @@ var import_jsx_runtime = __toESM(require_jsx_runtime());
 var MAX_LINES = 5e3;
 var LS_KEY = "mud_ws_url";
 var MOUNT_SELECTOR = ".container.animate-fade-up";
-var controller = null;
+var controllers = /* @__PURE__ */ new WeakMap();
 var lastAnchor = null;
 var now = () => (/* @__PURE__ */ new Date()).toLocaleTimeString();
 function extractUrlFromLink(link) {
@@ -25565,7 +25565,7 @@ function buildController(root, options) {
         initialUrl: options.initialUrl,
         deferConnect: options.deferConnect,
         container: root,
-        onRequestClose: options.onClose
+        onRequestClose: () => options.onClose(root)
       }
     )
   );
@@ -25578,7 +25578,8 @@ function buildController(root, options) {
     }
   };
 }
-function closeOverlay() {
+function closeOverlay(root) {
+  const controller = controllers.get(root);
   if (!controller) return;
   try {
     controller.reactRoot.unmount();
@@ -25586,7 +25587,7 @@ function closeOverlay() {
   }
   if (controller.root.isConnected) controller.root.remove();
   unregisterThemeTarget(controller.root);
-  controller = null;
+  controllers.delete(root);
 }
 function ensureRoot(anchor) {
   ensureStyles();
@@ -25612,16 +25613,17 @@ function spawnMudOverlay(initialUrl, options) {
   const baseZ = parseInt(getComputedStyle(root).zIndex || "2147483647", 10);
   root.style.zIndex = String(baseZ + 1);
   const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null);
-  if (!controller) {
-    controller = buildController(root, {
+  if (!controllers.has(root)) {
+    const next = buildController(root, {
       initialUrl: resolvedUrl,
       deferConnect: options?.deferConnect,
       onClose: closeOverlay
     });
+    controllers.set(root, next);
   } else {
     placeOverlay(root, anchor || null);
   }
-  controller.onReady((api) => {
+  controllers.get(root)?.onReady((api) => {
     if (resolvedUrl) api.setUrl(resolvedUrl);
     if (!options?.deferConnect) api.connect();
     api.focus();
@@ -25629,10 +25631,10 @@ function spawnMudOverlay(initialUrl, options) {
   return {
     root,
     place: (nextAnchor) => placeOverlay(root, nextAnchor || lastAnchor),
-    connect: () => controller?.onReady((api) => api.connect()),
-    disconnect: () => controller?.onReady((api) => api.disconnect()),
-    setUrl: (url) => controller?.onReady((api) => api.setUrl(url)),
-    focus: () => controller?.onReady((api) => api.focus())
+    connect: () => controllers.get(root)?.onReady((api) => api.connect()),
+    disconnect: () => controllers.get(root)?.onReady((api) => api.disconnect()),
+    setUrl: (url) => controllers.get(root)?.onReady((api) => api.setUrl(url)),
+    focus: () => controllers.get(root)?.onReady((api) => api.focus())
   };
 }
 if (!window.spawnMudOverlay) {

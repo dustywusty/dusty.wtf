@@ -57,7 +57,7 @@ type ControllerState = {
   onReady(cb: (api: MudOverlayHandle) => void): void;
 };
 
-let controller: ControllerState | null = null;
+const controllers = new WeakMap<HTMLElement, ControllerState>();
 let lastAnchor: Element | null = null;
 
 const now = () => new Date().toLocaleTimeString();
@@ -642,7 +642,10 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
   );
 });
 
-function buildController(root: HTMLElement, options: { initialUrl?: string; deferConnect?: boolean; onClose: () => void }) {
+function buildController(
+  root: HTMLElement,
+  options: { initialUrl?: string; deferConnect?: boolean; onClose: (root: HTMLElement) => void }
+) {
   const pending: Array<(api: MudOverlayHandle) => void> = [];
   let api: MudOverlayHandle | null = null;
   const reactRoot = createRoot(root);
@@ -662,7 +665,7 @@ function buildController(root: HTMLElement, options: { initialUrl?: string; defe
       initialUrl={options.initialUrl}
       deferConnect={options.deferConnect}
       container={root}
-      onRequestClose={options.onClose}
+      onRequestClose={() => options.onClose(root)}
     />
   );
 
@@ -676,14 +679,15 @@ function buildController(root: HTMLElement, options: { initialUrl?: string; defe
   } satisfies ControllerState;
 }
 
-function closeOverlay() {
+function closeOverlay(root: HTMLElement) {
+  const controller = controllers.get(root);
   if (!controller) return;
   try {
     controller.reactRoot.unmount();
   } catch {}
   if (controller.root.isConnected) controller.root.remove();
   unregisterThemeTarget(controller.root);
-  controller = null;
+  controllers.delete(root);
 }
 
 function ensureRoot(anchor?: Element | null) {
@@ -715,17 +719,18 @@ function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; defe
   root.style.zIndex = String(baseZ + 1);
   const resolvedUrl = resolveInitialUrl(initialUrl, anchor || null);
 
-  if (!controller) {
-    controller = buildController(root, {
+  if (!controllers.has(root)) {
+    const next = buildController(root, {
       initialUrl: resolvedUrl,
       deferConnect: options?.deferConnect,
       onClose: closeOverlay,
     });
+    controllers.set(root, next);
   } else {
     placeOverlay(root, anchor || null);
   }
 
-  controller.onReady((api) => {
+  controllers.get(root)?.onReady((api) => {
     if (resolvedUrl) api.setUrl(resolvedUrl);
     if (!options?.deferConnect) api.connect();
     api.focus();
@@ -734,10 +739,10 @@ function spawnMudOverlay(initialUrl?: string, options?: { anchor?: Element; defe
   return {
     root,
     place: (nextAnchor?: Element | null) => placeOverlay(root, nextAnchor || lastAnchor),
-    connect: () => controller?.onReady((api) => api.connect()),
-    disconnect: () => controller?.onReady((api) => api.disconnect()),
-    setUrl: (url: string) => controller?.onReady((api) => api.setUrl(url)),
-    focus: () => controller?.onReady((api) => api.focus()),
+    connect: () => controllers.get(root)?.onReady((api) => api.connect()),
+    disconnect: () => controllers.get(root)?.onReady((api) => api.disconnect()),
+    setUrl: (url: string) => controllers.get(root)?.onReady((api) => api.setUrl(url)),
+    focus: () => controllers.get(root)?.onReady((api) => api.focus()),
   } satisfies MudOverlayController;
 }
 
