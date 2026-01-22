@@ -2,46 +2,46 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>dusty.wtf</title>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:60978/</link>
     <description>Recent content on dusty.wtf</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 01 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:60978/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Quick AMSAT Update</title>
-      <link>http://localhost:1313/posts/amsat-adventures-pt2/</link>
+      <link>http://localhost:60978/posts/amsat-adventures-pt2/</link>
       <pubDate>Sat, 01 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/amsat-adventures-pt2/</guid>
+      <guid>http://localhost:60978/posts/amsat-adventures-pt2/</guid>
       <description>&lt;p&gt;All of our components are here and &lt;del&gt;I can start assembly soon(tm)!&lt;/del&gt; I&amp;rsquo;ve started assembly!&lt;/p&gt;</description>
     </item>
     <item>
       <title>AMSAT Adventures (Part 1)</title>
-      <link>http://localhost:1313/posts/amsat-adventures-pt1/</link>
+      <link>http://localhost:60978/posts/amsat-adventures-pt1/</link>
       <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/amsat-adventures-pt1/</guid>
+      <guid>http://localhost:60978/posts/amsat-adventures-pt1/</guid>
       <description>&lt;p&gt;Wouldn&amp;rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?&lt;/p&gt;</description>
     </item>
     <item>
       <title>DMUD</title>
-      <link>http://localhost:1313/projects/dmud/</link>
+      <link>http://localhost:60978/projects/dmud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/dmud/</guid>
+      <guid>http://localhost:60978/projects/dmud/</guid>
       <description></description>
     </item>
     <item>
       <title>Vibe-coding a MUD w/ Robots: ChatGPT, Claude, &amp; Codex agents</title>
-      <link>http://localhost:1313/posts/learning-go-building-a-mud/</link>
+      <link>http://localhost:60978/posts/learning-go-building-a-mud/</link>
       <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/learning-go-building-a-mud/</guid>
+      <guid>http://localhost:60978/posts/learning-go-building-a-mud/</guid>
       <description>&lt;p&gt;Placeholder for future talk?&lt;/p&gt;&#xA;&lt;!--more--!&gt;&#xA;&#xA;# DMUD&#xA;&#xA;..</description>
     </item>
     <item>
       <title>Dustin Clark </title>
-      <link>http://localhost:1313/about/</link>
+      <link>http://localhost:60978/about/</link>
       <pubDate>Sat, 05 Nov 2016 21:05:33 +0530</pubDate>
-      <guid>http://localhost:1313/about/</guid>
-      <description>&lt;div id=&#34;pr-1768300203885729000&#34; class=&#34;profile-row&#34; style=&#34;--img-size: 250px&#34;&gt;&#xA;  &lt;style&gt;&#xA;     &#xA;    #pr-1768300203885729000.profile-row {&#xA;      display: flex;&#xA;      align-items: flex-start;&#xA;      gap: 1rem;&#xA;      margin: 1rem 0;&#xA;    }&#xA;    #pr-1768300203885729000 .profile-row__img {&#xA;      flex: 0 0 var(--img-size);&#xA;      width: var(--img-size);&#xA;      height: var(--img-size);&#xA;      object-fit: cover;&#xA;      border-radius: 50%;&#xA;      display: block;&#xA;    }&#xA;    #pr-1768300203885729000 .profile-row__text {&#xA;      flex: 1 1 0;&#xA;      min-width: 12rem;&#xA;&#xA;    }&#xA;     &#xA;    #pr-1768300203885729000 .profile-row__text p {&#xA;      margin: 0 0 0.75rem 0;&#xA;      text-align: left;&#xA;    }&#xA;    @media (max-width: 600px) {&#xA;      #pr-1768300203885729000.profile-row { flex-direction: column; align-items: center; }&#xA;      #pr-1768300203885729000 .profile-row__text { width: 100%; }&#xA;    }&#xA;  &lt;/style&gt;&#xA;&#xA;  &lt;img&#xA;    class=&#34;profile-row__img&#34;&#xA;    src=&#34;http://localhost:1313/df.jpg&#34;&#xA;    alt=&#34;Dusty&#34;&#xA;    width=&#34;250&#34;&#xA;    height=&#34;250&#34;&#xA;    loading=&#34;lazy&#34;&#xA;    decoding=&#34;async&#34;&#xA;  /&gt;&#xA;  &lt;div class=&#34;profile-row__text&#34;&gt;&lt;p&gt;Hey y&amp;rsquo;all, my name&amp;rsquo;s Dusty! ✌️&lt;/p&gt;</description>
+      <guid>http://localhost:60978/about/</guid>
+      <description>&lt;div id=&#34;pr-1769076921960964000&#34; class=&#34;profile-row&#34; style=&#34;--img-size: 250px&#34;&gt;&#xA;  &lt;style&gt;&#xA;     &#xA;    #pr-1769076921960964000.profile-row {&#xA;      display: flex;&#xA;      align-items: flex-start;&#xA;      gap: 1rem;&#xA;      margin: 1rem 0;&#xA;    }&#xA;    #pr-1769076921960964000 .profile-row__img {&#xA;      flex: 0 0 var(--img-size);&#xA;      width: var(--img-size);&#xA;      height: var(--img-size);&#xA;      object-fit: cover;&#xA;      border-radius: 50%;&#xA;      display: block;&#xA;    }&#xA;    #pr-1769076921960964000 .profile-row__text {&#xA;      flex: 1 1 0;&#xA;      min-width: 12rem;&#xA;&#xA;    }&#xA;     &#xA;    #pr-1769076921960964000 .profile-row__text p {&#xA;      margin: 0 0 0.75rem 0;&#xA;      text-align: left;&#xA;    }&#xA;    @media (max-width: 600px) {&#xA;      #pr-1769076921960964000.profile-row { flex-direction: column; align-items: center; }&#xA;      #pr-1769076921960964000 .profile-row__text { width: 100%; }&#xA;    }&#xA;  &lt;/style&gt;&#xA;&#xA;  &lt;img&#xA;    class=&#34;profile-row__img&#34;&#xA;    src=&#34;http://localhost:60978/df.jpg&#34;&#xA;    alt=&#34;Dusty&#34;&#xA;    width=&#34;250&#34;&#xA;    height=&#34;250&#34;&#xA;    loading=&#34;lazy&#34;&#xA;    decoding=&#34;async&#34;&#xA;  /&gt;&#xA;  &lt;div class=&#34;profile-row__text&#34;&gt;&lt;p&gt;Hey y&amp;rsquo;all, my name&amp;rsquo;s Dusty! ✌️&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

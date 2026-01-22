@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mud UI Dev</title>
+    <style>
+      :root { color-scheme: dark; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { height: 100%; width: 100%; margin: 0; }
+      body {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        padding: 25px;                /* small inset */
+        background: #0b0f12;
+        overflow: hidden;
+        }
+        .container.animate-fade-up {
+        flex: 1;
+        min-height: calc(100vh - 50px); /* account for padding */
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+      }
+      #mud-ws-overlay {
+        width: min(1100px, 100%);
+        max-width: 100%;
+        height: calc(100vh - 50px);     /* full height minus padding */
+        max-height: calc(100vh - 50px);
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container animate-fade-up">
+      <div id="app"></div>
+    </div>
+    <script type="module" src="/dist/main.mjs"></script>
+  </body>
+</html>
