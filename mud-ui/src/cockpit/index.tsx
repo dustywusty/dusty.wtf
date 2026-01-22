@@ -761,10 +761,12 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
 
   const addGap = useCallback(() => {
     flushGroup();
-    const last = messages[messages.length - 1];
-    if (last && last.kind === "gap") return;
-    pushMessages([{ kind: "gap", id: msgIdRef.current++ }]);
-  }, [flushGroup, messages, pushMessages]);
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      if (last && last.kind === "gap") return prev;
+      return trimMessages([...prev, { kind: "gap", id: msgIdRef.current++ }]);
+    });
+  }, [flushGroup, trimMessages]);
 
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
@@ -973,7 +975,9 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (document.activeElement === inputRef.current) return;
+      const active = document.activeElement as HTMLElement | null;
+      if (!active || !container.contains(active)) return;
+      if (active === inputRef.current) return;
       if (e.key === "ArrowUp") {
         e.preventDefault();
         sendDirection("north");
@@ -996,7 +1000,7 @@ const MudOverlay = forwardRef<MudOverlayHandle, MudOverlayProps>(function MudOve
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [sendDirection]);
+  }, [container, sendDirection]);
 
   useEffect(() => {
     const handleUnload = () => {

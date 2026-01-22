@@ -25157,10 +25157,12 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
   );
   const addGap = (0, import_react.useCallback)(() => {
     flushGroup();
-    const last = messages[messages.length - 1];
-    if (last && last.kind === "gap") return;
-    pushMessages([{ kind: "gap", id: msgIdRef.current++ }]);
-  }, [flushGroup, messages, pushMessages]);
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      if (last && last.kind === "gap") return prev;
+      return trimMessages([...prev, { kind: "gap", id: msgIdRef.current++ }]);
+    });
+  }, [flushGroup, trimMessages]);
   const focusInput = (0, import_react.useCallback)(() => {
     inputRef.current?.focus();
   }, []);
@@ -25349,7 +25351,9 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
   }, [flushGroup]);
   (0, import_react.useEffect)(() => {
     const handler = (e) => {
-      if (document.activeElement === inputRef.current) return;
+      const active = document.activeElement;
+      if (!active || !container.contains(active)) return;
+      if (active === inputRef.current) return;
       if (e.key === "ArrowUp") {
         e.preventDefault();
         sendDirection("north");
@@ -25372,7 +25376,7 @@ var MudOverlay = (0, import_react.forwardRef)(function MudOverlay2({ initialUrl 
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [sendDirection]);
+  }, [container, sendDirection]);
   (0, import_react.useEffect)(() => {
     const handleUnload = () => {
       try {
