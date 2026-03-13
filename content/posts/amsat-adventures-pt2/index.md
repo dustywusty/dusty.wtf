@@ -1,6 +1,7 @@
 +++
 title = "Quick AMSAT Update"
 date = "2025-11-01"
+cover = "satran.jpg"
 +++
 
 All of our components are here and ~~I can start assembly soon(tm)!~~ I've started assembly!

@@ -1,6 +1,8 @@
 +++
 date = "2016-11-05T21:05:33+05:30"
 title = "Dustin Clark "
+description = "Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, Alabama."
+tagline = "good-trouble maker, eventually-consistent taco enthusiast, maker, principle engineer, gradstudent, he/him/y'all"
 +++
 
 {{< profile-row src="df.jpg" alt="Dusty" size="250" >}}
@@ -11,8 +13,12 @@ I've been tinkering w/ computers and electronics for a few decades and in my fre
 
 Hopefully, this website will be a place I keep up w/ my different projects and maybe even writing about some of my experiences in tech
 
-If you'd like to get in touch for any reason, just reach out to one of my {{< h1 >}}[socials](https://dusty.wtf){{< /h1 >}} :)
+If you'd like to get in touch for any reason, just reach out to one of my socials below :)
 {{< /profile-row >}}
+
+# Socials
+
+{{< socials >}}
 
 # This Site
 

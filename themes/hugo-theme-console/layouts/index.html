@@ -1,29 +1,24 @@
 {{ define "main" }}
 
-<div class="profile-card">
-  <div class="profile">
-    <img src="{{ "dusty.png" | relURL }}" alt="Dusty" width="175" height="175" loading="lazy" decoding="async">
-  </div>
-  <div class="intro">
-    <div class="description">
-      good-trouble maker, eventually-consistent taco enthusiast, maker, principle engineer, gradstudent, he/him/y'all
-      <a href="{{ "about/" | relURL }}">(more)</a>
-    </div>
-    {{ partial "social.html" . }}
-  </div>
-</div>
-
 <h1>Latest posts</h1>
-<div class="posts-list">
+<div class="post-cards">
 {{ with .Site.GetPage "/posts" }}
-    {{ range first 2 (sort .Pages "Date" "desc" (where .Pages ".Params.private" "!=" true))}}
-        <div class="post">
-            <p>
-                <div class="date">{{ .Date | time.Format ":date_medium" }}</div>
-                <h1><a href="{{ .RelPermalink }}" title="{{ .Title }}">{{ .Title }}</a></h1>
-                {{ .Summary }}
-            </p>
-        </div>    
+    {{ range first 3 (sort (where .Pages ".Params.private" "!=" true) "Date" "desc")}}
+        {{ $post := . }}
+        <a href="{{ .RelPermalink }}" class="post-card" title="{{ .Title }}">
+            {{ with .Params.cover }}
+            <div class="post-card__img">
+                <img src="{{ $post.RelPermalink }}{{ . }}" alt="{{ $post.Title }}" loading="lazy" decoding="async">
+            </div>
+            {{ else }}
+            <div class="post-card__img post-card__img--empty"></div>
+            {{ end }}
+            <div class="post-card__body">
+                <div class="post-card__date">{{ $post.Date | time.Format ":date_medium" }}</div>
+                <div class="post-card__title">{{ $post.Title }}</div>
+                <div class="post-card__summary">{{ $post.Summary | plainify | truncate 120 }}</div>
+            </div>
+        </a>
     {{ end }}
 {{ end }}
 </div>

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>dusty.wtf/tags/</title>
     
-    <meta name="description" content="be kind, please rewind" />
-    
+    <meta name="description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links." />
+    <link rel="canonical" href="https://dusty.wtf/tags/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="all,follow" />
     <meta name="googlebot" content="index,follow,snippet,archive" />
+    <meta name="author" content="Dustin Clark" />
     <script>
       (() => {
         const root = document.documentElement;
@@ -50,13 +51,14 @@
      <meta property="og:title" content="Tags" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://localhost:1313/tags/" />
+<meta property="og:url" content="https://dusty.wtf/tags/" />
 
 
 <meta name="twitter:title" content="Tags"/>
-<meta name="twitter:description" content="be kind, please rewind"/>
+<meta name="twitter:description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links."/>
 
-</head>
+
+  </head>
   <body class="terminal">
     <div class="container">
       <div class="terminal-nav">
@@ -102,11 +104,7 @@
 
   <div class="picker-gap" aria-hidden="true"></div>
 
-  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
-    
-    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark"></button>
-    <button class="swatch square" role="radio" aria-label="Light" data-theme="light"></button>
-  </div>
+  <button class="theme-toggle" aria-label="Toggle dark/light mode" id="theme-mode-toggle">🌙</button>
 </div>
 
 
@@ -117,11 +115,21 @@
     const root = document.documentElement;
     const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
 
+    function currentTheme() {
+      return root.getAttribute("data-theme") || "dark";
+    }
+
+    function updateModeIcon() {
+      const toggle = $("#theme-mode-toggle");
+      if (toggle) toggle.textContent = currentTheme() === "dark" ? "🌙" : "☀️";
+    }
+
     function setTheme(t) {
       root.setAttribute("data-theme", t);
       try {
         localStorage.setItem("site:theme", t);
       } catch {}
+      updateModeIcon();
       updateChecked();
     }
     function setAccent(hex) {
@@ -132,15 +140,10 @@
       updateChecked();
     }
     function swatchColor(el) {
-      
       return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
     }
     function updateChecked() {
-      const theme = root.getAttribute("data-theme");
       const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
-      $(".picker-modes .swatch", true).forEach((b) =>
-        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
-      );
       $(".picker-accents .swatch", true).forEach((b) => {
         const sw = swatchColor(b).toLowerCase();
         b.setAttribute("aria-checked", sw === accent ? "true" : "false");
@@ -151,12 +154,22 @@
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".swatch");
       if (!btn) return;
-      if (btn.dataset.theme) setTheme(btn.dataset.theme);
-      else setAccent(swatchColor(btn));
+      setAccent(swatchColor(btn));
 
       
-      if (matchMedia("(max-width: 850px)").matches && $("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
     });
+
+    
+    const modeToggle = $("#theme-mode-toggle");
+    if (modeToggle) {
+      modeToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setTheme(currentTheme() === "dark" ? "light" : "dark");
+        
+        if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      });
+    }
 
     
     document.addEventListener("keydown", (e) => {
@@ -187,6 +200,7 @@
       });
     }
 
+    updateModeIcon();
     updateChecked();
   })();
 </script>

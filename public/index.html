@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.154.5"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta name="generator" content="Hugo 0.155.3">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>dusty.wtf/</title>
     
-    <meta name="description" content="be kind, please rewind" />
-    
+    <meta name="description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links." />
+    <link rel="canonical" href="https://dusty.wtf/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="all,follow" />
     <meta name="googlebot" content="index,follow,snippet,archive" />
+    <meta name="author" content="Dustin Clark" />
     <script>
       (() => {
         const root = document.documentElement;
@@ -51,13 +52,42 @@
      <meta property="og:title" content="dusty.wtf" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://localhost:1313/" />
+<meta property="og:url" content="https://dusty.wtf/" />
 
 
 <meta name="twitter:title" content="dusty.wtf"/>
-<meta name="twitter:description" content="be kind, please rewind"/>
+<meta name="twitter:description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links."/>
 
-</head>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Dustin Clark",
+      "alternateName": "dusty",
+      "url": "https://dusty.wtf",
+      "sameAs": [
+        "https://github.com/dustywusty",
+        "https://instagram.com/dustywusty",
+        "https://bsky.app/profile/dusty.wtf",
+        "https://www.linkedin.com/in/dustinclark/"
+      ],
+      "jobTitle": "Principle Engineer",
+      "knowsAbout": ["software engineering", "electronics", "photography", "maker"],
+      "homeLocation": [
+        {
+          "@type": "Place",
+          "name": "Huntsville, Alabama"
+        },
+        {
+          "@type": "Place",
+          "name": "Austin, Texas"
+        }
+      ]
+    }
+    </script>
+    
+  </head>
   <body class="terminal">
     <div class="container">
       <div class="terminal-nav">
@@ -100,11 +130,7 @@
 
   <div class="picker-gap" aria-hidden="true"></div>
 
-  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
-    
-    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark"></button>
-    <button class="swatch square" role="radio" aria-label="Light" data-theme="light"></button>
-  </div>
+  <button class="theme-toggle" aria-label="Toggle dark/light mode" id="theme-mode-toggle">🌙</button>
 </div>
 
 
@@ -115,11 +141,21 @@
     const root = document.documentElement;
     const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
 
+    function currentTheme() {
+      return root.getAttribute("data-theme") || "dark";
+    }
+
+    function updateModeIcon() {
+      const toggle = $("#theme-mode-toggle");
+      if (toggle) toggle.textContent = currentTheme() === "dark" ? "🌙" : "☀️";
+    }
+
     function setTheme(t) {
       root.setAttribute("data-theme", t);
       try {
         localStorage.setItem("site:theme", t);
       } catch {}
+      updateModeIcon();
       updateChecked();
     }
     function setAccent(hex) {
@@ -130,15 +166,10 @@
       updateChecked();
     }
     function swatchColor(el) {
-      
       return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
     }
     function updateChecked() {
-      const theme = root.getAttribute("data-theme");
       const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
-      $(".picker-modes .swatch", true).forEach((b) =>
-        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
-      );
       $(".picker-accents .swatch", true).forEach((b) => {
         const sw = swatchColor(b).toLowerCase();
         b.setAttribute("aria-checked", sw === accent ? "true" : "false");
@@ -149,12 +180,22 @@
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".swatch");
       if (!btn) return;
-      if (btn.dataset.theme) setTheme(btn.dataset.theme);
-      else setAccent(swatchColor(btn));
+      setAccent(swatchColor(btn));
 
       
-      if (matchMedia("(max-width: 850px)").matches && $("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
     });
+
+    
+    const modeToggle = $("#theme-mode-toggle");
+    if (modeToggle) {
+      modeToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setTheme(currentTheme() === "dark" ? "light" : "dark");
+        
+        if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      });
+    }
 
     
     document.addEventListener("keydown", (e) => {
@@ -185,6 +226,7 @@
       });
     }
 
+    updateModeIcon();
     updateChecked();
   })();
 </script>
@@ -194,65 +236,39 @@
     </div>
     <div class="container animate-fade-up">
 
-<div class="profile-card">
-  <div class="profile">
-    <img src="/dusty.png" alt="Dusty" width="175" height="175" loading="lazy" decoding="async">
-  </div>
-  <div class="intro">
-    <div class="description">
-      good-trouble maker, eventually-consistent taco enthusiast, maker, principle engineer, gradstudent, he/him/y'all
-      <a href="/about/">(more)</a>
-    </div>
-    <ul class="social-links">
-  
-  <li>
-    <a href="https://github.com/dustywusty" target="_blank"  aria-label="GitHub">
-      <i class="fa-brands fa-github" aria-hidden="true"></i>
-    </a>
-  </li>
-  
-  <li>
-    <a href="https://instagram.com/dustywusty" target="_blank"  aria-label="Instagram">
-      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-    </a>
-  </li>
-  
-  <li>
-    <a href="https://bsky.app/profile/dusty.wtf" target="_blank"  aria-label="Bluesky">
-      <i class="fa-brands fa-bluesky" aria-hidden="true"></i>
-    </a>
-  </li>
-  
-  <li>
-    <a href="https://www.linkedin.com/in/dustinclark/" target="_blank"  aria-label="LinkedIn">
-      <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-    </a>
-  </li>
-  
-</ul>
-
-  </div>
-</div>
-
 <h1>Latest posts</h1>
-<div class="posts-list">
+<div class="post-cards">
 
     
-        <div class="post">
-            <p>
-                <div class="date">Nov 1, 2025</div>
-                <h1><a href="/posts/amsat-adventures-pt2/" title="Quick AMSAT Update">Quick AMSAT Update</a></h1>
-                <p>All of our components are here and <del>I can start assembly soon(tm)!</del> I&rsquo;ve started assembly!</p>
-            </p>
-        </div>    
+        
+        <a href="/posts/amsat-adventures-pt2/" class="post-card" title="Quick AMSAT Update">
+            
+            <div class="post-card__img">
+                <img src="/posts/amsat-adventures-pt2/satran.jpg" alt="Quick AMSAT Update" loading="lazy" decoding="async">
+            </div>
+            
+            <div class="post-card__body">
+                <div class="post-card__date">Nov 1, 2025</div>
+                <div class="post-card__title">Quick AMSAT Update</div>
+                <div class="post-card__summary">All of our components are here and I can start assembly soon(tm)! I&rsquo;ve started assembly!
+</div>
+            </div>
+        </a>
     
-        <div class="post">
-            <p>
-                <div class="date">Aug 29, 2025</div>
-                <h1><a href="/posts/amsat-adventures-pt1/" title="AMSAT Adventures (Part 1)">AMSAT Adventures (Part 1)</a></h1>
-                <p>Wouldn&rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?</p>
-            </p>
-        </div>    
+        
+        <a href="/posts/amsat-adventures-pt1/" class="post-card" title="AMSAT Adventures (Part 1)">
+            
+            <div class="post-card__img">
+                <img src="/posts/amsat-adventures-pt1/3d.jpg" alt="AMSAT Adventures (Part 1)" loading="lazy" decoding="async">
+            </div>
+            
+            <div class="post-card__body">
+                <div class="post-card__date">Aug 29, 2025</div>
+                <div class="post-card__title">AMSAT Adventures (Part 1)</div>
+                <div class="post-card__summary">Wouldn&rsquo;t it be awesome to pull telemetery and images from the downlink of a satellite orbiting the Earth?
+</div>
+            </div>
+        </a>
     
 
 </div>
