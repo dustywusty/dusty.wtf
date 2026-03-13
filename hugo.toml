@@ -9,7 +9,9 @@ theme = "hugo-theme-console"
       unsafe = true
 
 [params]
-  description = "be kind, please rewind"
+  description = "Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links."
+  tagline = "be kind, please rewind"
+  author = "Dustin Clark"
   animateStyle = "animate-fade-up" # Animation style for content
 
   [[params.navlinks]]

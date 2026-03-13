@@ -4,42 +4,42 @@
     
         
         <url>
-            <loc>http://localhost:1313/</loc>
+            <loc>https://dusty.wtf/</loc>
             <lastmod>2025-11-01T00:00:00+00:00</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/posts/</loc>
+            <loc>https://dusty.wtf/posts/</loc>
             <lastmod>2025-11-01T00:00:00+00:00</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/posts/amsat-adventures-pt2/</loc>
+            <loc>https://dusty.wtf/posts/amsat-adventures-pt2/</loc>
             <lastmod>2025-11-01T00:00:00+00:00</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/posts/amsat-adventures-pt1/</loc>
+            <loc>https://dusty.wtf/posts/amsat-adventures-pt1/</loc>
             <lastmod>2025-08-29T00:00:00+00:00</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/projects/dmud/</loc>
+            <loc>https://dusty.wtf/projects/dmud/</loc>
             <lastmod>2025-08-10T00:00:00+00:00</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/projects/</loc>
+            <loc>https://dusty.wtf/projects/</loc>
             <lastmod>2025-08-10T00:00:00+00:00</lastmod>
         </url>
         
@@ -48,20 +48,20 @@
     
         
         <url>
-            <loc>http://localhost:1313/about/</loc>
+            <loc>https://dusty.wtf/about/</loc>
             <lastmod>2016-11-05T21:05:33+05:30</lastmod>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/categories/</loc>
+            <loc>https://dusty.wtf/categories/</loc>
         </url>
         
     
         
         <url>
-            <loc>http://localhost:1313/tags/</loc>
+            <loc>https://dusty.wtf/tags/</loc>
         </url>
         
     

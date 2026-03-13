@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>dusty.wtf/posts/amsat-adventures-pt2/</title>
     
-    <meta name="description" content="be kind, please rewind" />
-    
+    <meta name="description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links." />
+    <link rel="canonical" href="https://dusty.wtf/posts/amsat-adventures-pt2/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="all,follow" />
     <meta name="googlebot" content="index,follow,snippet,archive" />
+    <meta name="author" content="Dustin Clark" />
     <script>
       (() => {
         const root = document.documentElement;
 
         const toInk = (hex) => {
-          const c = (hex || "#29e3c7").replace("#", "");
+          const c = (hex || "#ec4899").replace("#", "");
           const r = parseInt(c.slice(0, 2), 16) / 255;
           const g = parseInt(c.slice(2, 4), 16) / 255;
           const b = parseInt(c.slice(4, 6), 16) / 255;
@@ -26,8 +27,8 @@
 
         try {
           const theme =
-            localStorage.getItem("site:theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-          const accent = localStorage.getItem("site:accent") || "#29e3c7";
+            localStorage.getItem("site:theme") || "dark";
+          const accent = localStorage.getItem("site:accent") || "#ec4899";
           const ink = localStorage.getItem("site:accentInk") || toInk(accent);
 
           root.setAttribute("data-theme", theme);
@@ -46,16 +47,17 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
        <meta property="og:title" content="Quick AMSAT Update" />
-<meta property="og:description" content="be kind, please rewind" />
+<meta property="og:description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/posts/amsat-adventures-pt2/" /><meta property="article:published_time" content="2025-11-01T00:00:00+00:00" />
+<meta property="og:url" content="https://dusty.wtf/posts/amsat-adventures-pt2/" /><meta property="article:published_time" content="2025-11-01T00:00:00+00:00" />
 
 
 
 <meta name="twitter:title" content="Quick AMSAT Update"/>
 <meta name="twitter:description" content="All of our components are here and I can start assembly soon(tm)! I&rsquo;ve started assembly!"/>
 
-</head>
+
+  </head>
   <body class="terminal">
     <div class="container">
       <div class="terminal-nav">
@@ -64,13 +66,13 @@
              
             <a href="/" class="no-style "
               >dusty.wtf</a
-            >:~# <a
+            >:~/<a
               href='/posts'
               >posts</a
             >/<a
               href='/posts/amsat-adventures-pt2'
               >amsat-adventures-pt2</a
-            >/
+            >/<span class="prompt-hash">#</span>
           </div>
         </header>
         <nav class="terminal-menu">
@@ -104,11 +106,7 @@
 
   <div class="picker-gap" aria-hidden="true"></div>
 
-  <div class="picker-modes" role="radiogroup" aria-label="Theme mode">
-    
-    <button class="swatch square" role="radio" aria-label="Dark" data-theme="dark"></button>
-    <button class="swatch square" role="radio" aria-label="Light" data-theme="light"></button>
-  </div>
+  <button class="theme-toggle" aria-label="Toggle dark/light mode" id="theme-mode-toggle">🌙</button>
 </div>
 
 
@@ -119,11 +117,21 @@
     const root = document.documentElement;
     const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
 
+    function currentTheme() {
+      return root.getAttribute("data-theme") || "dark";
+    }
+
+    function updateModeIcon() {
+      const toggle = $("#theme-mode-toggle");
+      if (toggle) toggle.textContent = currentTheme() === "dark" ? "🌙" : "☀️";
+    }
+
     function setTheme(t) {
       root.setAttribute("data-theme", t);
       try {
         localStorage.setItem("site:theme", t);
       } catch {}
+      updateModeIcon();
       updateChecked();
     }
     function setAccent(hex) {
@@ -134,15 +142,10 @@
       updateChecked();
     }
     function swatchColor(el) {
-      
       return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
     }
     function updateChecked() {
-      const theme = root.getAttribute("data-theme");
       const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
-      $(".picker-modes .swatch", true).forEach((b) =>
-        b.setAttribute("aria-checked", b.dataset.theme === theme ? "true" : "false")
-      );
       $(".picker-accents .swatch", true).forEach((b) => {
         const sw = swatchColor(b).toLowerCase();
         b.setAttribute("aria-checked", sw === accent ? "true" : "false");
@@ -153,12 +156,22 @@
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".swatch");
       if (!btn) return;
-      if (btn.dataset.theme) setTheme(btn.dataset.theme);
-      else setAccent(swatchColor(btn));
+      setAccent(swatchColor(btn));
 
       
-      if (matchMedia("(max-width: 850px)").matches && $("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
     });
+
+    
+    const modeToggle = $("#theme-mode-toggle");
+    if (modeToggle) {
+      modeToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setTheme(currentTheme() === "dark" ? "light" : "dark");
+        
+        if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
+      });
+    }
 
     
     document.addEventListener("keydown", (e) => {
@@ -189,6 +202,7 @@
       });
     }
 
+    updateModeIcon();
     updateChecked();
   })();
 </script>
@@ -215,6 +229,336 @@ Nov 1, 2025
 <p>In the mean-time I have also been playing w/ SDR and my YAGI to ~some success</p>
 <p><img src="antenna.jpg" alt="Yagi antenna mounted on tripod" title="antenna" class="img-responsive"> </p>
 
+</div>
+    <div class="container"><div id="shell-wrapper" class="shell-wrapper">
+  <div id="shell-output" class="shell-output"></div>
+  <div class="shell-input-row">
+    <span id="shell-ps1" class="shell-header-prompt"><span class="shell-host">dusty.wtf</span>:~/<span class="prompt-hash">#</span></span>
+    <input id="shell-input-main" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input">
+  </div>
+</div>
+
+<script>
+(() => {
+  const wrapper = document.getElementById('shell-wrapper');
+  const input = document.getElementById('shell-input-main');
+  const output = document.getElementById('shell-output');
+  const ps1 = document.getElementById('shell-ps1');
+  if (!wrapper || !input) return;
+
+  let active = false;
+  let history = [];
+  let histIdx = -1;
+
+   
+  const fs = {
+    '~': {
+      type: 'dir',
+      children: {
+        'projects': {
+          type: 'dir',
+          children: {
+            'TODO.txt': {
+              type: 'file',
+              content: () => '* finish game'
+            }
+          }
+        },
+        'music.txt': {
+          type: 'file',
+          content: () =>
+`PEARLS ✌️
+  Redbone - Childish Gambino
+  Shook Ones, Pt. II - Mobb Deep
+  Pursuit Of Happiness (Nightmare) - Kid Cudi
+  L$D - A$AP Rocky
+  Paper Planes - M.I.A.
+
+On Repeat
+  Hate or Glory - Gesaffelstein
+  Just Pretend - Bad Omens
+  John Wick Mode - Le Castle Vania
+  Opr - Gesaffelstein
+  Satisfy - NERO
+  Hysteria - Muse
+  Engine No. 9 - Deftones
+  Digital Bath - Deftones
+  Deutschland - Rammstein
+  Legend Has It - Run The Jewels`
+        }
+      }
+    }
+  };
+
+  let cwd = '~';
+
+  function resolve(path) {
+    let node = fs['~'];
+    if (path === '~' || path === '/' || path === '') return node;
+    const parts = path.replace(/^~\/?/, '').split('/').filter(Boolean);
+    for (const p of parts) {
+      if (!node.children || !node.children[p]) return null;
+      node = node.children[p];
+    }
+    return node;
+  }
+
+  function normalizePath(path) {
+    let full;
+    if (path === '~' || path.startsWith('~/')) {
+      full = path;
+    } else if (path.startsWith('/')) {
+      full = '~' + path;
+    } else {
+      full = cwd === '~' ? '~/' + path : cwd + '/' + path;
+    }
+    
+    const parts = full.replace(/^~\/?/, '').split('/').filter(Boolean);
+    const resolved = [];
+    for (const p of parts) {
+      if (p === '.') continue;
+      if (p === '..') {
+        if (resolved.length > 0) resolved.pop();
+      } else {
+        resolved.push(p);
+      }
+    }
+    return resolved.length === 0 ? '~' : '~/' + resolved.join('/');
+  }
+
+  function cwdNode() {
+    return resolve(cwd);
+  }
+
+  function updatePs1() {
+    ps1.innerHTML = `<span class="shell-host">dusty.wtf</span>:${cwd}/<span class="prompt-hash">#</span>`;
+  }
+
+   
+  const commands = {
+    help: () =>
+`available commands:
+  help            show this message
+  ls              list directory contents
+  cd &lt;dir&gt;        change directory
+  cat &lt;file&gt;      read a file
+  clear           clear the screen
+  exit            exit terminal`,
+
+    ls: (args) => {
+      const path = args[0] ? normalizePath(args[0]) : cwd;
+      const target = resolve(path);
+      if (!target) return `ls: cannot access '${args[0]}': No such file or directory`;
+      if (target.type !== 'dir') return args[0];
+      const entries = Object.keys(target.children).sort();
+      return entries.map(e => {
+        const node = target.children[e];
+        return node.type === 'dir' ? `<span class="shell-dir">${e}/</span>` : e;
+      }).join('  ');
+    },
+
+    cd: (args) => {
+      if (!args[0] || args[0] === '~') {
+        cwd = '~';
+        updatePs1();
+        return null;
+      }
+      const target = normalizePath(args[0]);
+      const node = resolve(target);
+      if (!node) return `cd: ${args[0]}: No such file or directory`;
+      if (node.type !== 'dir') return `cd: ${args[0]}: Not a directory`;
+      cwd = target;
+      updatePs1();
+      return null;
+    },
+
+    cat: (args) => {
+      if (!args[0]) return 'cat: missing file operand';
+      const fullPath = normalizePath(args[0]);
+      const node = resolve(fullPath);
+      if (!node) return `cat: ${args[0]}: No such file or directory`;
+      if (node.type === 'dir') return `cat: ${args[0]}: Is a directory`;
+      return node.content();
+    },
+
+    clear: () => {
+      output.innerHTML = '';
+      cwd = '~';
+      updatePs1();
+      history = [];
+      histIdx = -1;
+      return null;
+    },
+
+    exit: () => {
+      print('bye');
+      active = false;
+      document.querySelector('.shell-input-row').style.display = 'none';
+      setTimeout(() => { doExit(); }, 400);
+      return null;
+    },
+  };
+
+   
+  function tabComplete(partial) {
+    const parts = partial.split(/\s+/);
+    
+    if (parts.length <= 1) {
+      const prefix = parts[0].toLowerCase();
+      const matches = Object.keys(commands).filter(c => c.startsWith(prefix));
+      if (matches.length === 1) return matches[0] + ' ';
+      return null;
+    }
+
+    
+    const cmd = parts[0];
+    const arg = parts.slice(1).join(' ');
+
+    
+    const lastSlash = arg.lastIndexOf('/');
+    let dirPath, namePrefix;
+    if (lastSlash >= 0) {
+      dirPath = arg.slice(0, lastSlash) || '/';
+      namePrefix = arg.slice(lastSlash + 1);
+    } else {
+      dirPath = cwd;
+      namePrefix = arg;
+    }
+
+    const fullDir = normalizePath(dirPath);
+    const dirNode = resolve(fullDir);
+    if (!dirNode || dirNode.type !== 'dir') return null;
+
+    const matches = Object.keys(dirNode.children).filter(n =>
+      n.toLowerCase().startsWith(namePrefix.toLowerCase())
+    );
+
+    if (matches.length === 1) {
+      const match = matches[0];
+      const node = dirNode.children[match];
+      const prefix = lastSlash >= 0 ? arg.slice(0, lastSlash + 1) : '';
+      const suffix = node.type === 'dir' ? '/' : '';
+      return cmd + ' ' + prefix + match + suffix;
+    }
+    return null;
+  }
+
+   
+  function print(text) {
+    if (text === null || text === undefined) return;
+    const line = document.createElement('div');
+    line.className = 'shell-line';
+    line.innerHTML = text;
+    output.appendChild(line);
+    scrollToInput();
+  }
+
+  function printPrompt(cmd) {
+    const line = document.createElement('div');
+    line.className = 'shell-line shell-prompt-line';
+    line.innerHTML = `<span class="shell-ps1"><span class="shell-host">dusty.wtf</span>:${cwd}/<span class="prompt-hash">#</span></span> ${escapeHtml(cmd)}`;
+    output.appendChild(line);
+  }
+
+  function escapeHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function scrollToInput() {
+    input.scrollIntoView({ block: 'nearest' });
+  }
+
+   
+  function exec(raw) {
+    const trimmed = raw.trim();
+    if (!trimmed) { printPrompt(''); return; }
+
+    history.push(trimmed);
+    histIdx = history.length;
+    printPrompt(trimmed);
+
+    const parts = trimmed.split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+    const args = parts.slice(1);
+
+    if (commands[cmd]) {
+      const result = commands[cmd](args);
+      if (result) print(result);
+    } else {
+      print(`${cmd}: command not found. Type 'help' for available commands.`);
+    }
+    scrollToInput();
+  }
+
+   
+  function doExit() {
+    wrapper.style.display = 'none';
+    const flash = document.createElement('div');
+    flash.className = 'crt-flash-overlay';
+    document.body.appendChild(flash);
+    setTimeout(() => { location.reload(); }, 800);
+  }
+
+   
+  function activate() {
+    if (active) return;
+    active = true;
+    document.body.classList.add('shell-active');
+    wrapper.classList.add('visible');
+    input.focus();
+  }
+
+   
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !active && location.pathname === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      activate();
+      return;
+    }
+    if (e.key === 'Escape' && active) {
+      e.preventDefault();
+      doExit();
+      return;
+    }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      exec(input.value);
+      input.value = '';
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const completed = tabComplete(input.value);
+      if (completed) input.value = completed;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (histIdx > 0) {
+        histIdx--;
+        input.value = history[histIdx];
+      }
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (histIdx < history.length - 1) {
+        histIdx++;
+        input.value = history[histIdx];
+      } else {
+        histIdx = history.length;
+        input.value = '';
+      }
+    }
+  });
+
+  document.addEventListener('click', () => {
+    if (active) input.focus();
+  });
+})();
+</script>
 </div>
     
 

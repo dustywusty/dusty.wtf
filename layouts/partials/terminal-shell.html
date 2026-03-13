@@ -1,224 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>dusty.wtf/categories/</title>
-    
-    <meta name="description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links." />
-    <link rel="canonical" href="https://dusty.wtf/categories/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="all,follow" />
-    <meta name="googlebot" content="index,follow,snippet,archive" />
-    <meta name="author" content="Dustin Clark" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-
-        const toInk = (hex) => {
-          const c = (hex || "#ec4899").replace("#", "");
-          const r = parseInt(c.slice(0, 2), 16) / 255;
-          const g = parseInt(c.slice(2, 4), 16) / 255;
-          const b = parseInt(c.slice(4, 6), 16) / 255;
-          const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
-          const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b); 
-          return L > 0.55 ? "#0f1115" : "#ffffff"; 
-        };
-
-        try {
-          const theme =
-            localStorage.getItem("site:theme") || "dark";
-          const accent = localStorage.getItem("site:accent") || "#ec4899";
-          const ink = localStorage.getItem("site:accentInk") || toInk(accent);
-
-          root.setAttribute("data-theme", theme);
-          root.style.setProperty("--accent", accent);
-          root.style.setProperty("--accent-ink", ink);
-        } catch {}
-      })();
-    </script>
-    <script defer data-domain="dusty.wtf" src="https://plausible.io/js/script.outbound-links.js"></script>
-    <link rel="stylesheet" href="/hugo-theme-console/css/terminal-0.7.4.min.css"> <link rel="stylesheet"
-    href="/hugo-theme-console/css/animate-4.1.1.min.css"> <link rel="stylesheet" href="/hugo-theme-console/css/console.css">
-    <script src="https://kit.fontawesome.com/386d44956a.js" crossorigin="anonymous"></script>
-    
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-        
-    <link href="/categories/index.xml" rel="alternate" type="application/rss+xml" title="dusty.wtf" />
-     <meta property="og:title" content="Categories" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://dusty.wtf/categories/" />
-
-
-<meta name="twitter:title" content="Categories"/>
-<meta name="twitter:description" content="Dustin Clark — principle engineer, maker, grad student. Austin, TX. Huntsville, AL. Projects, writing, and links."/>
-
-
-  </head>
-  <body class="terminal">
-    <div class="container">
-      <div class="terminal-nav">
-        <header class="terminal-logo">
-          <div class="logo terminal-prompt">
-             
-            <a href="/" class="no-style "
-              >dusty.wtf</a
-            >:~/<a
-              href='/categories'
-              >categories</a
-            >/<span class="prompt-hash">#</span>
-          </div>
-        </header>
-        <nav class="terminal-menu">
-          <ul vocab="https://schema.org/" typeof="BreadcrumbList">
-            
-            <li property="itemListElement" typeof="ListItem">
-              <a property="item" typeof="WebPage" href="/about/"> <span property="name">about</span></a>
-              <meta property="position" content="1" />
-            </li>
-            
-            <li property="itemListElement" typeof="ListItem">
-              <a property="item" typeof="WebPage" href="/posts/"> <span property="name">posts</span></a>
-              <meta property="position" content="2" />
-            </li>
-            
-            <li property="itemListElement" typeof="ListItem">
-              <a property="item" typeof="WebPage" href="/projects/"> <span property="name">projects</span></a>
-              <meta property="position" content="3" />
-            </li>
-            
-          </ul>
-          <div class="theme-picker" id="theme-drawer" aria-label="Theme & color" role="group">
-  <div class="picker-accents" role="radiogroup" aria-label="Accent color">
-    
-    <button class="swatch circle" role="radio" aria-label="Teal" data-slot="1"></button>
-    <button class="swatch circle" role="radio" aria-label="Purple" data-slot="2"></button>
-    <button class="swatch circle" role="radio" aria-label="Orange" data-slot="3"></button>
-    <button class="swatch circle" role="radio" aria-label="Pink" data-slot="4"></button>
-    <button class="swatch circle" role="radio" aria-label="Lime" data-slot="5"></button>
-  </div>
-
-  <div class="picker-gap" aria-hidden="true"></div>
-
-  <button class="theme-toggle" aria-label="Toggle dark/light mode" id="theme-mode-toggle">🌙</button>
-</div>
-
-
-<button class="theme-fab" aria-label="Theme & color" aria-controls="theme-drawer" aria-expanded="false">🎨</button>
-
-<script defer>
-  (() => {
-    const root = document.documentElement;
-    const $ = (sel, all = false) => (all ? Array.from(document.querySelectorAll(sel)) : document.querySelector(sel));
-
-    function currentTheme() {
-      return root.getAttribute("data-theme") || "dark";
-    }
-
-    function updateModeIcon() {
-      const toggle = $("#theme-mode-toggle");
-      if (toggle) toggle.textContent = currentTheme() === "dark" ? "🌙" : "☀️";
-    }
-
-    function setTheme(t) {
-      root.setAttribute("data-theme", t);
-      try {
-        localStorage.setItem("site:theme", t);
-      } catch {}
-      updateModeIcon();
-      updateChecked();
-    }
-    function setAccent(hex) {
-      root.style.setProperty("--accent", hex);
-      try {
-        localStorage.setItem("site:accent", hex);
-      } catch {}
-      updateChecked();
-    }
-    function swatchColor(el) {
-      return (el.dataset.accent || getComputedStyle(el).getPropertyValue("--swatch")).trim();
-    }
-    function updateChecked() {
-      const accent = getComputedStyle(root).getPropertyValue("--accent").trim().toLowerCase();
-      $(".picker-accents .swatch", true).forEach((b) => {
-        const sw = swatchColor(b).toLowerCase();
-        b.setAttribute("aria-checked", sw === accent ? "true" : "false");
-      });
-    }
-
-    
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest(".swatch");
-      if (!btn) return;
-      setAccent(swatchColor(btn));
-
-      
-      if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
-    });
-
-    
-    const modeToggle = $("#theme-mode-toggle");
-    if (modeToggle) {
-      modeToggle.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setTheme(currentTheme() === "dark" ? "light" : "dark");
-        
-        if ($("#theme-drawer")?.dataset.open === "true") setOpen(false);
-      });
-    }
-
-    
-    document.addEventListener("keydown", (e) => {
-      if (!e.target.classList?.contains("swatch")) return;
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        e.target.click();
-      }
-    });
-
-    
-    const fab = $(".theme-fab");
-    const drawer = $("#theme-drawer");
-    function setOpen(open) {
-      if (!drawer || !fab) return;
-      drawer.dataset.open = open ? "true" : "false";
-      fab.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-    if (fab && drawer) {
-      fab.addEventListener("click", () => setOpen(drawer.dataset.open !== "true"));
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") setOpen(false);
-      });
-      document.addEventListener("click", (e) => {
-        if (drawer.dataset.open !== "true") return;
-        if (e.target.closest(".theme-picker") || e.target.closest(".theme-fab")) return;
-        setOpen(false);
-      });
-    }
-
-    updateModeIcon();
-    updateChecked();
-  })();
-</script>
-
-        </nav>
-      </div>
-    </div>
-    <div class="container animate-fade-up">
-<h1>Categories</h1>
-<br/>
-
-
-<div class="posts-list">
-
-</div>
-
-</div>
-    <div class="container"><div id="shell-wrapper" class="shell-wrapper">
+<div id="shell-wrapper" class="shell-wrapper">
   <div id="shell-output" class="shell-output"></div>
   <div class="shell-input-row">
     <span id="shell-ps1" class="shell-header-prompt"><span class="shell-host">dusty.wtf</span>:~/<span class="prompt-hash">#</span></span>
@@ -238,7 +18,7 @@
   let history = [];
   let histIdx = -1;
 
-   
+  /* ── filesystem ── */
   const fs = {
     '~': {
       type: 'dir',
@@ -300,7 +80,7 @@ On Repeat
     } else {
       full = cwd === '~' ? '~/' + path : cwd + '/' + path;
     }
-    
+    // resolve . and ..
     const parts = full.replace(/^~\/?/, '').split('/').filter(Boolean);
     const resolved = [];
     for (const p of parts) {
@@ -322,7 +102,7 @@ On Repeat
     ps1.innerHTML = `<span class="shell-host">dusty.wtf</span>:${cwd}/<span class="prompt-hash">#</span>`;
   }
 
-   
+  /* ── commands ── */
   const commands = {
     help: () =>
 `available commands:
@@ -387,10 +167,10 @@ On Repeat
     },
   };
 
-   
+  /* ── tab completion ── */
   function tabComplete(partial) {
     const parts = partial.split(/\s+/);
-    
+    // complete commands if only one word
     if (parts.length <= 1) {
       const prefix = parts[0].toLowerCase();
       const matches = Object.keys(commands).filter(c => c.startsWith(prefix));
@@ -398,11 +178,11 @@ On Repeat
       return null;
     }
 
-    
+    // complete file/dir paths for the argument
     const cmd = parts[0];
     const arg = parts.slice(1).join(' ');
 
-    
+    // split arg into dir prefix and partial name
     const lastSlash = arg.lastIndexOf('/');
     let dirPath, namePrefix;
     if (lastSlash >= 0) {
@@ -431,7 +211,7 @@ On Repeat
     return null;
   }
 
-   
+  /* ── output helpers ── */
   function print(text) {
     if (text === null || text === undefined) return;
     const line = document.createElement('div');
@@ -458,7 +238,7 @@ On Repeat
     input.scrollIntoView({ block: 'nearest' });
   }
 
-   
+  /* ── execute ── */
   function exec(raw) {
     const trimmed = raw.trim();
     if (!trimmed) { printPrompt(''); return; }
@@ -480,7 +260,7 @@ On Repeat
     scrollToInput();
   }
 
-   
+  /* ── exit with CRT flash ── */
   function doExit() {
     wrapper.style.display = 'none';
     const flash = document.createElement('div');
@@ -489,7 +269,7 @@ On Repeat
     setTimeout(() => { location.reload(); }, 800);
   }
 
-   
+  /* ── activate ── */
   function activate() {
     if (active) return;
     active = true;
@@ -498,7 +278,7 @@ On Repeat
     input.focus();
   }
 
-   
+  /* ── event listeners ── */
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !active && location.pathname === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
       e.preventDefault();
@@ -547,8 +327,3 @@ On Repeat
   });
 })();
 </script>
-</div>
-    
-
-  </body>
-</html>
