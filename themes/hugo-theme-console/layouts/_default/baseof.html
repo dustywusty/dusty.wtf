@@ -16,7 +16,7 @@
         const root = document.documentElement;
 
         const toInk = (hex) => {
-          const c = (hex || "#29e3c7").replace("#", "");
+          const c = (hex || "#ec4899").replace("#", "");
           const r = parseInt(c.slice(0, 2), 16) / 255;
           const g = parseInt(c.slice(2, 4), 16) / 255;
           const b = parseInt(c.slice(4, 6), 16) / 255;
@@ -27,8 +27,8 @@
 
         try {
           const theme =
-            localStorage.getItem("site:theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-          const accent = localStorage.getItem("site:accent") || "#29e3c7";
+            localStorage.getItem("site:theme") || "dark";
+          const accent = localStorage.getItem("site:accent") || "#ec4899";
           const ink = localStorage.getItem("site:accentInk") || toInk(accent);
 
           root.setAttribute("data-theme", theme);
@@ -89,10 +89,10 @@
             {{ $url := trim .RelPermalink "/" }} {{ $.Scratch.Set "path" "/" }}
             <a href="{{ "/" | relURL }}" class="no-style {{ with .Site.Params.TitleCutting }}site-name{{ end }}"
               >{{ .Site.Title }}</a
-            >:~# {{ range $index, $element := split $url "/" }}{{ $.Scratch.Add "path" $element }}{{ if ne $element "" }}<a
+            >:~/{{ range $index, $element := split $url "/" }}{{ $.Scratch.Add "path" $element }}{{ if ne $element "" }}<a
               href='{{ $.Scratch.Get "path" | relURL }}'
               >{{ . }}</a
-            >/{{ $.Scratch.Add "path" "/" }}{{ end }}{{ end }}
+            >/{{ $.Scratch.Add "path" "/" }}{{ end }}{{ end }}<span class="prompt-hash">#</span>
           </div>
         </header>
         <nav class="terminal-menu">
@@ -109,6 +109,7 @@
       </div>
     </div>
     <div class="container {{ .Site.Params.animateStyle }}">{{ block "main" . }} {{ end }}</div>
+    <div class="container">{{ partial "terminal-shell.html" . }}</div>
     {{ partial "mud-overlay.html" . }}
   </body>
 </html>

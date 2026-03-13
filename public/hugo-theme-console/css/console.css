@@ -148,8 +148,11 @@ h1 {
 strong {
   font-weight: bold;
 }
+a {
+  font-weight: 700;
+}
 .logo {
-  font-weight: normal;
+  font-weight: 600;
 }
 .label {
   font-family: var(--font-stack);
@@ -199,7 +202,7 @@ p.social a {
 
 /* Lists & posts */
 .terminal-menu li {
-  margin-right: 30px;
+  margin-right: 18px;
 }
 
 figure {
@@ -224,12 +227,20 @@ figure {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.terminal-prompt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .terminal-prompt::after {
   animation: cursor 1s infinite;
   width: 10px;
 }
 .terminal-prompt::before {
   content: none;
+}
+.prompt-hash {
+  font-weight: 700;
+  color: var(--accent, var(--primary-color));
 }
 
 .gallery-image {
@@ -283,11 +294,11 @@ figure {
   background: none;
 }
 .post-card:hover .post-card__title {
-  color: var(--accent, var(--primary-color));
+  background: var(--accent, var(--primary-color));
 }
 .post-card__img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--code-bg-color);
   border-radius: 6px;
@@ -310,16 +321,21 @@ figure {
   flex: 1;
 }
 .post-card__date {
-  font-size: 0.8em;
+  font-size: var(--global-font-size);
   color: var(--accent, var(--primary-color));
 }
 .post-card__title {
   font-weight: 700;
-  font-size: 1em;
+  font-size: var(--global-font-size);
   line-height: 1.3;
+  background: var(--primary-color);
+  color: #fff;
+  display: inline;
+  padding: 0 0.2em;
 }
 .post-card__summary {
-  font-size: 0.85em;
+  font-size: var(--global-font-size);
+  font-weight: 400;
   color: var(--font-color);
   line-height: 1.4;
 }
@@ -437,7 +453,7 @@ ul.social-links a {
 .social-links a:focus,
 ul.social-links a:hover,
 ul.social-links a:focus {
-  color: var(--tertiary-color);
+  color: #fff;
   transform: translateY(-1px);
   outline: none;
 }
@@ -604,26 +620,12 @@ ul.social-links a svg {
   justify-content: flex-end;
 }
 #theme-drawer[data-open="true"] {
-  display: flex;
+  display: none;
 }
 
 /* emoji-only FAB: fixed bottom-right */
 .theme-fab {
-  position: fixed;
-  right: 12px;
-  bottom: 12px;
-  background: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  color: inherit;
-  font-size: 22px;
-  line-height: 1;
-  padding: 8px;
-  margin: 0;
-  cursor: pointer;
-  display: inline-block;
-  z-index: 1000;
-  -webkit-tap-highlight-color: transparent;
+  display: none !important;
 }
 .theme-fab:focus-visible {
   outline: none;
@@ -660,22 +662,22 @@ ul.social-links a svg {
 /* -------------------- */
 .terminal-menu li {
   color: var(--tertiary-color);
-  border-bottom: 1px solid var(--accent, var(--primary-color));
+  border-bottom: none;
 }
-:root[data-theme="dark"] .terminal-menu li a:not(.btn) {
+.terminal-menu li a:not(.btn) {
+  background: var(--accent, var(--primary-color));
   color: #fff;
-}
-:root[data-theme="light"] .terminal-menu li a:not(.btn) {
-  color: #151515;
+  padding: 0.15em 0.3em;
 }
 .terminal-menu li a:hover {
-  background-color: var(--accent, var(--primary-color));
+  background: var(--background-color);
+  color: var(--font-color);
+  text-decoration: underline;
+  text-decoration-color: var(--accent, var(--primary-color));
+  text-underline-offset: 0.35em;
 }
-:root[data-theme="dark"] .terminal-menu li a:hover {
+.link-list a:hover {
   color: #fff;
-}
-:root[data-theme="light"] .terminal-menu li a:hover {
-  color: #151515;
 }
 .profile img {
   border-color: var(--accent, var(--primary-color));
@@ -709,6 +711,127 @@ mark.hl a,
 .hl a {
   color: inherit;
   text-decoration-color: currentColor;
+}
+
+/* -------------------- */
+/*  Hidden terminal      */
+/* -------------------- */
+.shell-wrapper {
+  display: none;
+  flex-direction: column;
+  padding-top: 1px;
+}
+.shell-wrapper.visible {
+  display: flex;
+}
+
+.shell-output {
+  font-family: var(--font-stack);
+  font-size: var(--global-font-size);
+  font-weight: 600;
+  line-height: var(--global-line-height);
+  color: var(--font-color);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* shared shell text style — matches .logo exactly */
+.shell-input-row,
+.shell-line {
+  font-family: var(--font-stack);
+  font-size: var(--global-font-size);
+  font-weight: 600;
+  line-height: var(--global-line-height);
+  color: var(--font-color);
+  padding: 0;
+  margin: 0;
+}
+
+.shell-input-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85ch;
+  white-space: nowrap;
+  padding: calc(var(--global-space) * 2) 0;
+}
+.shell-header-prompt {
+  color: var(--font-color);
+  white-space: nowrap;
+}
+.shell-host {
+  color: var(--primary-color);
+}
+
+#shell-input-main {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--font-color);
+  font: inherit;
+  line-height: inherit;
+  padding: 0;
+  margin: 0;
+  caret-color: var(--accent, var(--primary-color));
+  caret-shape: block;
+  margin-left: 1px;
+}
+
+.shell-prompt-line {
+  padding: calc(var(--global-space) * 2) 0;
+}
+
+.shell-ps1 {
+  color: var(--font-color);
+}
+.shell-ps1 .shell-host {
+  color: var(--primary-color);
+}
+.shell-dir {
+  font-weight: 700;
+  color: var(--accent, var(--primary-color));
+}
+
+/* CRT flash overlay */
+@keyframes crt-flash {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; background: #fff; }
+  15%  { opacity: 1; background: #fff; transform: scaleY(0.005); }
+  30%  { opacity: 0.8; background: #fff; transform: scaleY(0.003) scaleX(0.4); }
+  45%  { opacity: 0; transform: scaleY(0) scaleX(0); }
+  55%  { opacity: 0; }
+  60%  { opacity: 0.15; background: var(--background-color); transform: scale(1); }
+  65%  { opacity: 0; }
+  75%  { opacity: 0.3; background: var(--background-color); }
+  85%  { opacity: 0.05; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* page content: collapse instantly so shell is at top */
+.shell-active .container:first-child,
+.shell-active .container.animate-fade-up {
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* CRT flash overlay element (used by JS for exit) */
+.crt-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  animation: crt-flash 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+/* suppress the blinking cursor when shell is active */
+.shell-active .terminal-prompt::after {
+  animation: none;
+  content: '';
 }
 
 /* Cat cursor for ACAB badge */
